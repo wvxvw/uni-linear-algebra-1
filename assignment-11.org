@@ -1,0 +1,425 @@
+# -*- fill-column: 80 -*-
+
+#+TITLE:     Assignment 12, Linear Algebra 1
+#+AUTHOR:    Oleg Sivokon
+#+EMAIL:     olegsivokon@gmail.com
+#+DATE:      <2014-10-31 Fri>
+#+DESCRIPTION: First asssignment in the course Linear Algebra 1
+#+KEYWORDS: Assignment, Linear Algebra
+#+LANGUAGE: en
+#+LaTeX_CLASS: article
+#+LATEX_HEADER: \usepackage[usenames,dvipsnames]{color}
+#+LATEX_HEADER: \usepackage{a4wide}
+#+LATEX_HEADER: \usepackage[backend=bibtex, style=numeric]{biblatex}
+#+LATEX_HEADER: \usepackage{commath}
+#+LATEX_HEADER: \usepackage{tikz}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usetikzlibrary{shapes,backgrounds}
+#+LATEX_HEADER: \usepackage{marginnote}
+#+LATEX_HEADER: \usepackage{enumerate}
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \hypersetup{urlcolor=blue}
+#+LATEX_HEADER: \hypersetup{colorlinks,urlcolor=blue}
+#+LATEX_HEADER: \addbibresource{bibliography.bib}
+#+LATEX_HEADER: \setlength{\parskip}{16pt plus 2pt minus 2pt}
+#+LATEX_HEADER: \definecolor{codebg}{rgb}{0.96,0.99,0.8}
+
+#+BEGIN_SRC emacs-lisp :exports none
+  (setq org-latex-pdf-process
+        '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -bibtex -f %f")
+        org-latex-listings t
+        org-latex-custom-lang-environments '((maxima "maxima"))
+        org-src-fontify-natively t)
+#+END_SRC
+
+#+RESULTS:
+: t
+
+#+BEGIN_LATEX
+  \definecolor{codebg}{rgb}{0.96,0.99,0.8}
+  \lstnewenvironment{maxima}{%
+    \lstset{backgroundcolor=\color{codebg},
+      frame=single,
+      framerule=0pt,
+      basicstyle=\ttfamily\scriptsize,
+      columns=fixed}}{}
+  }
+  \makeatletter
+  \newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
+  \makeatother
+  \verbatimfont{\small}%
+#+END_LATEX
+
+\clearpage
+
+* Problems
+
+** Problem 1
+
+   1. Given the system of linear equations below:
+
+      #+BEGIN_LATEX
+        \begin{equation*}
+          \left.
+            \begin{alignedat}{4}
+              &  x & {}+{} & 2y       & {}+{} & az & {}={} & -3 - a \\
+              &  x & {}+{} & (2 - a)y & {}-{} & z  & {}={} & 1 - a \\
+              & ax & {}+{} & ay       &       &    & {}={} & 6
+            \end{alignedat}
+          \quad \right\} \qquad
+          \begin{aligned}
+            a \in \mathbb{R}
+          \end{aligned}
+        \end{equation*}
+      #+END_LATEX
+      
+      + What assignments to $a$ produce no solutions?
+      + What assignments to $a$ produce single solution?
+      + What assignments to $a$ produce infinitely many solutions?
+        
+*** Answer 1
+
+    First, express $x$, $y$ and $z$ through $a$:
+    
+    #+NAME: prob1
+    #+HEADER: :exports both
+    #+BEGIN_SRC maxima :results output
+      programmode: false;
+      linsystem: [  x + 2*y       - a*z = -3 - a,
+                    x + (2 - a)*y -   z = 1  - a,
+                  a*x + a*y             = 6];
+      print(linsolve(linsystem, [x, y, z]));
+    #+END_SRC
+
+    #+RESULTS: prob1
+    #+begin_example
+    Solution:
+                                     3      2
+                                    a  - 8 a  + 9 a - 12
+                              x = - --------------------
+                                         3    2
+                                        a  - a  + a
+                                        2
+                                       a  + 3 a + 2
+                                   z = ------------
+                                         2
+                                        a  - a + 1
+                                     3      2
+                                    a  - 2 a  + 3 a - 6
+                                y = -------------------
+                                         3    2
+                                        a  - a  + a
+    [%t1, %t2, %t3] 
+#+end_example
+
+    It's easy to see now that by solving $a^3-a^2+a=0$ we can find such an
+    assignment to $a$, which produces no solutions for the system.
+
+    #+NAME: prob2
+    #+HEADER: :exports both
+    #+BEGIN_SRC maxima :results output
+      programmode: false;
+      print(solve([a^3 - a^2 + a = 0], a));
+    #+END_SRC
+
+    #+RESULTS: prob2
+    : solve: solution:
+    :                                    sqrt(3) %i - 1
+    :                              a = - --------------
+    :                                          2
+    :                                   sqrt(3) %i + 1
+    :                               a = --------------
+    :                                         2
+    :                                      a = 0
+    : [%t1, %t2, %t3]
+
+    Ignoring the complex solutions, we are left with $a=0$ assignement.  Let's
+    verify it:
+
+    #+NAME: prob3
+    #+HEADER: :exports both
+    #+BEGIN_SRC maxima :results output
+      programmode: false;
+      a: 0;
+      linsystem: [  x + 2*y       - a*z = -3 - a,
+                    x + (2 - a)*y -   z = 1  - a,
+                  a*x + a*y             = 6];
+      print(linsolve(linsystem, [x, y, z]));
+    #+END_SRC
+
+    #+RESULTS: prob3
+    : []
+
+    Indeed, produces no solutions.
+
+    To find out whether there might be infinite solutions, let's first find
+    the reduced echelon form of the system:
+
+    #+NAME: prob4
+    #+HEADER: :exports both
+    #+BEGIN_SRC maxima :results output
+      programmode: false;
+      linsystem: [  x + 2*y       - a*z = -3 - a,
+                    x + (2 - a)*y -   z = 1  - a,
+                  a*x + a*y             = 6];
+      print(triangularize(coefmatrix(linsystem, [x, y, z])));
+    #+END_SRC
+
+    #+RESULTS: prob4
+    : [ 1   2       - a     ]
+    : [                     ]
+    : [              2      ]
+    : [ 0  - a      a       ] 
+    : [                     ]
+    : [          3    2     ]
+    : [ 0   0   a  - a  + a ]
+
+    By examining the reduced echelon form, we can see that infinitely many
+    solutions are only possible if $a$ was equal to 0, but we know that at 0
+    system has no solutions.  Thus any assignment to $a$ will produce a unique
+    solution.
+
+** Problem 2
+
+   1. Given the system of linear equations below:
+
+      #+BEGIN_LATEX
+        \begin{equation*}
+          \left.
+            \begin{alignedat}{5}
+              &  x & {}+{} & ay        & {}+{} & bz        & {}+{} & aw         & {}={} & b \\
+              &  x & {}+{} & (a + 1)y  & {}+{} & (a + b)z  & {}+{} & (a + b)w   & {}={} & a + b \\
+              & ax & {}+{} & a^2y      & {}+{} & (ab + 1)z & {}+{} & (a + a^2)w & {}={} & b + ab \\
+              & 2x & {}+{} & (2a + 1)y & {}+{} & (a + 2b)z & {}+{} & aw         & {}={} & 2b - 2a - ab
+            \end{alignedat}
+          \quad \right\} \qquad
+          \begin{aligned}
+            a, b \in \mathbb{R}
+          \end{aligned}
+        \end{equation*}
+      #+END_LATEX
+      
+      + What assignments to $a$ and $b$ produce no solutions?
+      + What assignments to $a$ and $b$ produce single solution?
+      + What assignments to $a$ and $b$ produce infinitely many solutions?
+
+*** Answer 2
+
+    First, express $a$ and $b$ through $x$, $y$ and $z$:
+    
+    #+NAME: prob5
+    #+HEADER: :exports both
+    #+BEGIN_SRC maxima :results output
+      programmode: false;
+      linsystem: [  x + a*y         + b*z         + a*w         = b,
+                    x + (a + 1)*y   + (a + b)*z   + (a + b)*w   = a   + b,
+                  a*x + a^2*y       + (a*b + 1)*z + (a + a^2)*w = b   + a*b,
+                  2*x + (2*a + 1)*y + (a + 2*b)*z  + a*w        = 2*b - 2*a - a*b];
+      print(linsolve(linsystem, [x, y, z, w]));
+    #+END_SRC
+
+    #+RESULTS: prob5
+    #+begin_example
+    Solution:
+             3         2           2     4    3      2             4    3      2
+            b  + (- 3 a  + a - 1) b  + (a  - a  - 4 a  - a) b + 3 a  + a  + 3 a
+      x = - --------------------------------------------------------------------
+                                           b + a
+                                   2         2         2
+                                  b  + (a - a ) b - 3 a
+                              z = ----------------------
+                                          b + a
+                               2       3    2               3    2
+                          2 a b  + (- a  + a  + 2 a) b - 3 a  - a
+                    y = - ----------------------------------------
+                                           b + a
+                                         a b + 3 a
+                                     w = ---------
+                                           b + a
+    [%t1, %t2, %t3, %t4] 
+    #+end_example
+
+    One can see that assignment $a = -b$ will result in solutions (any such combination
+    will be equivalent to divsion by zero).
+
+    Since reduced echelon form of this system is:
+
+    #+NAME: prob6
+    #+HEADER: :exports both
+    #+BEGIN_SRC maxima :results output
+      programmode: false;
+      linsystem: [  x + a*y         + b*z         + a*w         = b,
+                    x + (a + 1)*y   + (a + b)*z   + (a + b)*w   = a   + b,
+                  a*x + a^2*y       + (a*b + 1)*z + (a + a^2)*w = b   + a*b,
+                  2*x + (2*a + 1)*y + (a + 2*b)*z + a*w         = 2*b - 2*a - a*b];
+      print(triangularize(coefmatrix(linsystem, [x, y, z, w])));
+    #+END_SRC
+
+    #+RESULTS: prob6
+    : [ 1  a  b     a    ]
+    : [                  ]
+    : [ 0  1  a     b    ]
+    : [                  ] 
+    : [ 0  0  1     a    ]
+    : [                  ]
+    : [ 0  0  0  - b - a ]
+
+    In order to find an assignment, which would eliminate one pivot from reduced
+    echelon form, we would need to solve $-b - a = 0$, but this is exactly the
+    assignment which gives single solution.  So, as before, there appear to be
+    no assignment that produces infinitely many solutions.
+
+* Exercises
+  Given $O$ is a homogeneous system of linear equations, and $M$ is not
+  homogeneous system of linear equations, which share the coefficients of the
+  row vectors of their respective matrices sans the last one.  Both $O$ and $M$
+  have $m$ equations and $n$ unknowns.
+  
+  + *a* if only the first statement is correct.
+  + *b* if only the second statement is correct.
+  + *c* if both statements are correct.
+  + *d* if neither statement is correct.
+
+** Exercise 1
+   
+   1. There are infinitely many solutions (to the system of linear equations
+      given below).
+   2. The homogeneous matrix created using the given system of linear equations
+      has infinitely many solutions.
+
+   #+NAME: sys1
+   #+HEADER: :exports both
+   #+BEGIN_SRC maxima :results output
+     programmode: false;
+     linsystem: [  a + 2*b -   c +   d = 2,
+                 2*a + 3*b - 3*c + 2*d = 3,
+                  -a -   b + 2*c -   d = -1,
+                 2*a + 4*b - 2*c + 3*d = 3,
+                 2*a + 2*b - 4*c + 2*d = 2];
+     linsolve(linsystem, [a, b, c, d]);
+   #+END_SRC
+
+   #+RESULTS: sys1
+   : solve: dependent equations eliminated: (2 5)
+   : Solution:
+   :                                  a = 4 - 3 %r1
+   :                                     d = - 1
+   :                                   c = 1 - %r1
+   :                                     b = %r1
+
+   /Answer:/ *c*
+
+** Exercise 2
+   1. The system given below has no solutions.
+   2. The system given below taken without its first equantion has no solutions.
+      
+   #+NAME: sys2
+   #+HEADER: :exports both
+   #+BEGIN_SRC maxima :results output
+     programmode: false;
+     linsystem: [  a +   b +         d -   e = -1,
+                               c +   d + 2*e = 2,
+                 3*a + 3*b + 2*c + 5*d + 2*e = 2,
+                 3*a + 3*b + 4*c + 7*d + 6*e = 2];
+     linsolve(linsystem, [a, b, c, d, e]);
+   #+END_SRC
+
+   #+RESULTS: sys2
+
+   #+NAME: sys3
+   #+HEADER: :exports both
+   #+BEGIN_SRC maxima :results output
+     programmode: false;
+     linsystem: [              c +   d + 2*e = 2,
+                 3*a + 3*b + 2*c + 5*d + 2*e = 2,
+                 3*a + 3*b + 4*c + 7*d + 6*e = 2];
+     linsolve(linsystem, [a, b, c, d, e]);
+   #+END_SRC
+
+   #+RESULTS: sys3
+
+   /Answer:/ *c*
+
+** Exercise 3
+
+   #+NAME: sys4
+   #+HEADER: :exports both
+   #+BEGIN_SRC maxima :results output
+     programmode: false;
+     linsystem: [  x + 2*y -  3*z = a,
+                 2*x + 6*y - 11*z = b,
+                   x - 2*y +  7*z = c];
+     linsolve(linsystem, [a, b, c]);
+   #+END_SRC
+
+   #+RESULTS: sys4
+   : Solution:
+   :                               a = - 3 z + 2 y + x
+   :                             b = - 11 z + 6 y + 2 x
+   :                                c = 7 z - 2 y + x
+
+   
+   1. There exist such $a$, $b$ and $c$, which are the unique solution to
+      the system.
+   2. There are such $a$, $b$ and $c$, which are not a solution of the system.
+      
+   Assignment $a = 1$, $b = 1$ and $c = 1$ gives no solutions.
+
+   # There's a bug in how this result gets exported.
+   #+NAME: sys5
+   #+HEADER: :exports both
+   #+BEGIN_SRC maxima :results output
+     programmode: false;
+     solution: triangularize(coefmatrix(
+     [ -3*x - 11*y + 7*z = a,
+        2*x +  6*y - 2*z = b,
+          x +  2*y +   z = c],
+          [x, y, z]));
+     print(solution);
+   #+END_SRC
+
+   #+RESULTS: sys5
+   : [ - 3  - 11   7  ]
+   : [                ]
+   : [  0    4    - 8 ] 
+   : [                ]
+   : [  0    0     0  ]
+
+   Triangulated matrix of the above solution doesn't have pivot in the third
+   column, thus it doesn't have a unique solution.
+   
+   /Answer:/ *b*
+
+** Exercise 4
+   1. If $O$ has infinitely many solutions, then $n \geq m$.
+   2. If $n > m$, then $M$ has infinitely many solutions.
+      
+   (1) Not necessarily so because it is possible to have dependent equations.
+   We could simply repeat the same euqation $n+1$ times to find a counterexample.
+
+   (2) Not necessarily so because it is possible to have such matrices, which don't
+   have solutions at all.
+
+   /Answer:/ *d*
+
+** Exercise 5
+   1. If $\vec{c}$, $\vec{d}$ are solutions of $M$, and $\mu \vec{d}$, 
+      $\lambda \vec{c}$ are solutions of $M$ then $\lambda + \mu = 1$.
+   2. If $\vec{c}$ is a solution of $M$ and $\vec{d}$ is a solution of $O$, then
+      $\vec{c} - 3\vec{d}$ is a solution of $M$.
+      
+   (1) Would be true, if $\vec{d}$ and $\vec{c}$ were the same vector and $M$ had only
+   one solution thus.  But if $\vec{c}$ and $\vec{d}$ are distinct, this warrants
+   infinitely many solutions, thus there is no requirement that a scalar multiplier
+   of the elementary operations performed on the solution be any particular value.
+   
+   (2) If $\vec{c}$ is a unique solution of $M$, then $O$ has a unique solution too.
+   Since a solution of homogenous matrix is a zero vector, then adding any multiple
+   of it won't change the value of $\vec{c}$.  But if $M$ has infinitely many
+   solutions, then it is possible to see $\vec{c} - 3\vec{d}$ as bein an elementary
+   operation, which we can accomodate in place of at least one free unknown, which
+   has to be present in this case.
+
+   /Answer:/ *b*
+
