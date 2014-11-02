@@ -1,4 +1,4 @@
-# -*- fill-column: 80 -*-
+# -*- fill-column: 80; org-confirm-babel-evaluate: nil -*-
 
 #+TITLE:     Assignment 12, Linear Algebra 1
 #+AUTHOR:    Oleg Sivokon
@@ -25,16 +25,24 @@
 #+LATEX_HEADER: \setlength{\parskip}{16pt plus 2pt minus 2pt}
 #+LATEX_HEADER: \definecolor{codebg}{rgb}{0.96,0.99,0.8}
 
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./css/style.css"/>
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css"/>
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="./css/icfp.css"/>
+
 #+BEGIN_SRC emacs-lisp :exports none
   (setq org-latex-pdf-process
         '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -bibtex -f %f")
         org-latex-listings t
         org-latex-custom-lang-environments '((maxima "maxima"))
-        org-src-fontify-natively t)
+        org-src-fontify-natively t
+        org-babel-latex-htlatex "htlatex")
+  (defmacro by-backend (&rest body)
+    `(cl-case (when (boundp 'backend) (org-export-backend-name backend))
+       ,@body))
 #+END_SRC
 
 #+RESULTS:
-: t
+: by-backend
 
 #+BEGIN_LATEX
   \definecolor{codebg}{rgb}{0.96,0.99,0.8}
@@ -51,7 +59,7 @@
   \verbatimfont{\small}%
 #+END_LATEX
 
-\clearpage
+@@latex: \clearpage@@
 
 * Problems
 
@@ -59,7 +67,9 @@
 
    1. Given the system of linear equations below:
 
-      #+BEGIN_LATEX
+      #+HEADER: :exports results
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
         \begin{equation*}
           \left.
             \begin{alignedat}{4}
@@ -72,7 +82,7 @@
             a \in \mathbb{R}
           \end{aligned}
         \end{equation*}
-      #+END_LATEX
+      #+END_SRC
       
       + What assignments to $a$ produce no solutions?
       + What assignments to $a$ produce single solution?
@@ -184,7 +194,9 @@
 
    1. Given the system of linear equations below:
 
-      #+BEGIN_LATEX
+      #+HEADER: :exports results
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
         \begin{equation*}
           \left.
             \begin{alignedat}{5}
@@ -198,7 +210,7 @@
             a, b \in \mathbb{R}
           \end{aligned}
         \end{equation*}
-      #+END_LATEX
+      #+END_SRC
       
       + What assignments to $a$ and $b$ produce no solutions?
       + What assignments to $a$ and $b$ produce single solution?
@@ -269,6 +281,176 @@
     echelon form, we would need to solve $-b - a = 0$, but this is exactly the
     assignment which gives single solution.  So, as before, there appear to be
     no assignment that produces infinitely many solutions.
+
+** Problem 3
+
+   1. Solve the system of linear equations:
+
+      #+HEADER: :exports results
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
+        \begin{equation*}
+          \left.
+            \begin{alignedat}{5}
+              &  \frac{1}{x} & {}+{} & \frac{2}{y} & {}-{} & \frac{4}{z}  & {}={} & 1 \\
+              &  \frac{2}{x} & {}+{} & \frac{3}{y} & {}+{} & \frac{8}{z}  & {}={} & 0 \\
+              &  \frac{1}{x} & {}+{} & \frac{9}{y} & {}-{} & \frac{10}{z} & {}={} & 5
+            \end{alignedat}
+          \quad \right\} \qquad
+          \begin{aligned}
+            x, y, z \in \mathbb{R}
+          \end{aligned}
+        \end{equation*}
+      #+END_SRC
+
+*** Answer 3
+
+    #+NAME: prob7
+    #+HEADER: :exports both
+    #+BEGIN_SRC maxima :results output
+      programmode: false;
+      linsystem: [ 1/x + 2/y -  4/z = 1,
+                   2/x + 3/y +  8/z = 0,
+                   1/x + 9/y + 10/z = 5];
+      linsolve(linsystem, [x, y, z]);
+   #+END_SRC
+
+    #+RESULTS: prob7
+    : Solution:
+    :                                      x = 0
+    :                                      y = 0
+    :                                      z = 0
+
+    The reduced echelon form of the matrix of this system has a pivot element in
+    every column, which means that this system can have at most one solution.
+    Unfortunately, this solution encounters division by zero, which renders this
+    system as having no solutions.
+    
+    #+NAME: prob8
+    #+HEADER: :exports both
+    #+BEGIN_SRC maxima :results output
+      programmode: false;
+      solution: triangularize(coefmatrix(
+      [ -x*y*z + 2*x*z - 4*x*y = 0,
+        2*y*z + 3*x*z + 8*x*y = 0,
+        y*z + 9*x*z + 10*x*y - 5*x*y*z = 0],
+        [x, y, z]));
+      print(solution);
+    #+END_SRC
+
+    The system above would be equivalent to the given system under assumption that
+    $x \neq 0$, $y \neq 0$ and $z \neq 0$.
+
+    #+RESULTS: prob8
+    #+begin_example
+             [ 3 z + 8 y ]         [              2 z + 8 x              ]
+             [           ]         [                                     ]
+     Col 1 = [     0     ] Col 2 = [                  2                  ]
+             [           ]         [ (2 y - 3 x - 4) z  + (8 y - 28 x) z ]
+             [     0     ]         [                                     ]
+                                   [                  0                  ]
+                                    [                 2 y + 3 x                  ]
+                                    [                                            ]
+                                    [       2                       2            ]
+                            Col 3 = [   (2 y  - 4 y) z + (8 - 8 x) y  + 28 x y   ] 
+                                    [                                            ]
+                                    [       2                    2             2 ]
+                                    [ ((98 x  + 168 x) y - 52 x y ) z - 5 x y z  ]
+    #+end_example
+
+** Problem 4
+   Given $U = \{\vec{u_1}, \vec{u_2}, \vec{u_3}, \vec{u_4}\}$ is a linearly
+   independant set of vectors in $\mathbb{R}^5$ and vectors:
+   
+   #+HEADER: :exports results
+   #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+   #+BEGIN_SRC latex
+     \begin{equation*}
+       \begin{alignedat}{4}
+         & v_1 & {}={} & 8au_1 {}+{} & 2u_2 {}+{}   & u_3 \\
+         & v_2 & {}={} &             & 16au_2 {}+{}                        & u_4 \\
+         & v_3 & {}={} & u_1 {}-{}                  & \frac{1}{2}u_3 {}+{} & au_4 \\
+         & a \in \mathbb{R}
+       \end{alignedat}
+     \end{equation*}
+   #+END_SRC
+
+   1. Find all $a$ such that $V = \{v_1, v_2, v_3\}$ is linearly dependent.
+   2. For every $a$ found in (1), write $v_2$ as linear combination of $v_1$
+      and $v_3$.
+   3. Is it possible to adjoin the vectors $v_i$ to $U$ such that 
+      $U \cup \{v_i\}$ would become a basis in $\mathbb{R}$?
+
+*** Answer 4
+
+    First we will arrange all coefficients describing vectors $v_i$ as rows of the
+    matrix:
+    
+    #+NAME: prob9
+    #+HEADER: :exports both
+    #+BEGIN_SRC maxima :results output
+      programmode: false;
+      solution: triangularize(transpose(matrix(
+          [8*a, 2,    1,   0],
+          [0,   16*a, 0,   1],
+          [1,   0,   -1/2, a])));
+      print(solution);
+    #+END_SRC
+
+    #+RESULTS: prob9
+    : [ 2   0       - 1    ]
+    : [                    ]
+    : [ 0  32 a      2     ]
+    : [                    ] 
+    : [              2     ]
+    : [ 0   0    32 a  - 2 ]
+    : [                    ]
+    : [ 0   0        0     ]
+
+    In order for this matrix to represent linearly dependent combination, it should
+    be the case that $32^a - 2 = 0$.  Otherwise, this system has no solutions (but
+    it has to, becuase it is given that $v_i$ is linearly dependant, which requires
+    that linear combinations of all dependent vectors be equal to zero vector).
+
+    #+NAME: prob10
+    #+HEADER: :exports both
+    #+BEGIN_SRC maxima :results raw
+      solution: solve([32*a^2 - 2], a);
+      tex(solution);
+    #+END_SRC
+
+    #+RESULTS: prob10
+    : $$\left[ a=-{{1}\over{4}} , a={{1}\over{4}} \right] $$
+
+    Now we can write $v_2$ as linear combination of $v_1$ and $v_3$ for ${{1}\over{4}}$:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+      \begin{alignedat}{5}
+       & (0, \frac{32}{4}, 0, 0) &{}={}& x(2, 0, 0, 0)  &{}+{}& y(-1, 2, \frac{32}{4^2} - 2) \\
+       & (0, 8, 0, 0)            &{}={}& x(2, 0, 0, 0)  &{}+{}& y(-1, 2, 0, 0) \\
+       & (0, 8, 0, 0)            &{}={}& 4(-1, 2, 0, 0) &{}+{}& 2(2, 0, 0, 0)\\
+       & v_2                     &{}={}& 4v_3           &{}+{}& 2v_1
+      \end{alignedat}
+      \end{equation*}
+    #+END_SRC
+
+    and similarly for $-{{1}\over{4}}$:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+      \begin{alignedat}{5}
+       & (0, -\frac{32}{4}, 0, 0) &{}={}& x(2, 0, 0, 0)   &{}+{}& y(-1, 2, \frac{32}{-4^2} - 2) \\
+       & (0, -8, 0, 0)            &{}={}& x(2, 0, 0, 0)   &{}+{}& y(-1, 2, 0, 0) \\
+       & (0, -8, 0, 0)            &{}={}& -4(-1, 2, 0, 0) &{}+{}& -2(2, 0, 0, 0)\\
+       & v_2                      &{}={}& -4v_3           &{}+{}& -2v_1
+      \end{alignedat}
+      \end{equation*}
+    #+END_SRC
 
 * Exercises
   Given $O$ is a homogeneous system of linear equations, and $M$ is not
@@ -366,7 +548,6 @@
       
    Assignment $a = 1$, $b = 1$ and $c = 1$ gives no solutions.
 
-   # There's a bug in how this result gets exported.
    #+NAME: sys5
    #+HEADER: :exports both
    #+BEGIN_SRC maxima :results output

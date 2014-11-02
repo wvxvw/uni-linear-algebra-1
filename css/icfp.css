@@ -1,0 +1,6 @@
+#content, #postamble { width: 800px; margin-left: auto; margin-right: auto }
+pre.src-emacs-lisp:before,
+pre.src-bash:before,
+pre.src-sh:before { content: 'sh'; color: black; font-weight: bold }
+table { margin-bottom: 20px }
+tbody tr:nth-child(odd) { background-color: #e0f0e8 }

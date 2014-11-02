@@ -1,4 +1,4 @@
-% Created 2014-10-31 Fri 21:42
+% Created 2014-11-02 Sun 23:51
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -59,7 +59,7 @@
 \makeatother
 \verbatimfont{\small}%
 
-\clearpage
+ \clearpage
 
 \section{Problems}
 \label{sec-1}
@@ -82,13 +82,14 @@
     a \in \mathbb{R}
   \end{aligned}
 \end{equation*}
+\end{enumerate}
+
 
 \begin{itemize}
 \item What assignments to $a$ produce no solutions?
 \item What assignments to $a$ produce single solution?
 \item What assignments to $a$ produce infinitely many solutions?
 \end{itemize}
-\end{enumerate}
 
 \subsubsection{Answer 1}
 \label{sec-1-1-1}
@@ -205,13 +206,14 @@ solution.
     a, b \in \mathbb{R}
   \end{aligned}
 \end{equation*}
+\end{enumerate}
+
 
 \begin{itemize}
 \item What assignments to $a$ and $b$ produce no solutions?
 \item What assignments to $a$ and $b$ produce single solution?
 \item What assignments to $a$ and $b$ produce infinitely many solutions?
 \end{itemize}
-\end{enumerate}
 
 \subsubsection{Answer 2}
 \label{sec-1-2-1}
@@ -247,7 +249,8 @@ Solution:
 [%t1, %t2, %t3, %t4]
 \end{verbatim}
 
-One can see that assignment $a = -b$, the system has no solutions.
+One can see that assignment $a = -b$ will result in solutions (any such combination
+will be equivalent to divsion by zero).
 
 Since reduced echelon form of this system is:
 
@@ -274,6 +277,158 @@ In order to find an assignment, which would eliminate one pivot from reduced
 echelon form, we would need to solve $-b - a = 0$, but this is exactly the
 assignment which gives single solution.  So, as before, there appear to be
 no assignment that produces infinitely many solutions.
+\subsection{Problem 3}
+\label{sec-1-3}
+
+\begin{enumerate}
+\item Solve the system of linear equations:
+
+\begin{equation*}
+  \left.
+    \begin{alignedat}{5}
+      &  \frac{1}{x} & {}+{} & \frac{2}{y} & {}-{} & \frac{4}{z}  & {}={} & 1 \\
+      &  \frac{2}{x} & {}+{} & \frac{3}{y} & {}+{} & \frac{8}{z}  & {}={} & 0 \\
+      &  \frac{1}{x} & {}+{} & \frac{9}{y} & {}-{} & \frac{10}{z} & {}={} & 5
+    \end{alignedat}
+  \quad \right\} \qquad
+  \begin{aligned}
+    x, y, z \in \mathbb{R}
+  \end{aligned}
+\end{equation*}
+\end{enumerate}
+
+\subsubsection{Answer 3}
+\label{sec-1-3-1}
+
+\begin{maxima}
+programmode: false;
+linsystem: [ 1/x + 2/y -  4/z = 1,
+             2/x + 3/y +  8/z = 0,
+             1/x + 9/y + 10/z = 5];
+linsolve(linsystem, [x, y, z]);
+\end{maxima}
+
+\begin{verbatim}
+Solution:
+                                     x = 0
+                                     y = 0
+                                     z = 0
+\end{verbatim}
+
+The reduced echelon form of the matrix of this system has a pivot element in
+every column, which means that this system can have at most one solution.
+Unfortunately, this solution encounters division by zero, which renders this
+system as having no solutions.
+
+\begin{maxima}
+programmode: false;
+solution: triangularize(coefmatrix(
+[ -x*y*z + 2*x*z - 4*x*y = 0,
+  2*y*z + 3*x*z + 8*x*y = 0,
+  y*z + 9*x*z + 10*x*y - 5*x*y*z = 0],
+  [x, y, z]));
+print(solution);
+\end{maxima}
+
+The system above would be equivalent to the given system under assumption that
+$x \neq 0$, $y \neq 0$ and $z \neq 0$.
+
+\begin{verbatim}
+        [ 3 z + 8 y ]         [              2 z + 8 x              ]
+        [           ]         [                                     ]
+Col 1 = [     0     ] Col 2 = [                  2                  ]
+        [           ]         [ (2 y - 3 x - 4) z  + (8 y - 28 x) z ]
+        [     0     ]         [                                     ]
+                              [                  0                  ]
+                               [                 2 y + 3 x                  ]
+                               [                                            ]
+                               [       2                       2            ]
+                       Col 3 = [   (2 y  - 4 y) z + (8 - 8 x) y  + 28 x y   ] 
+                               [                                            ]
+                               [       2                    2             2 ]
+                               [ ((98 x  + 168 x) y - 52 x y ) z - 5 x y z  ]
+\end{verbatim}
+\subsection{Problem 4}
+\label{sec-1-4}
+Given $U = \{\vec{u_1}, \vec{u_2}, \vec{u_3}, \vec{u_4}\}$ is a linearly
+independant set of vectors in $\mathbb{R}^5$ and vectors:
+
+\begin{equation*}
+  \begin{alignedat}{4}
+    & v_1 & {}={} & 8au_1 {}+{} & 2u_2 {}+{}   & u_3 \\
+    & v_2 & {}={} &             & 16au_2 {}+{}                        & u_4 \\
+    & v_3 & {}={} & u_1 {}-{}                  & \frac{1}{2}u_3 {}+{} & au_4 \\
+    & a \in \mathbb{R}
+  \end{alignedat}
+\end{equation*}
+
+\begin{enumerate}
+\item Find all $a$ such that $V = \{v_1, v_2, v_3\}$ is linearly dependent.
+\item For every $a$ found in (1), write $v_2$ as linear combination of $v_1$
+and $v_3$.
+\item Is it possible to adjoin the vectors $v_i$ to $U$ such that 
+      $U \cup \{v_i\}$ would become a basis in $\mathbb{R}$?
+\end{enumerate}
+
+\subsubsection{Answer 4}
+\label{sec-1-4-1}
+
+First we will arrange all coefficients describing vectors $v_i$ as rows of the
+matrix:
+
+\begin{maxima}
+programmode: false;
+solution: triangularize(transpose(matrix(
+    [8*a, 2,    1,   0],
+    [0,   16*a, 0,   1],
+    [1,   0,   -1/2, a])));
+print(solution);
+\end{maxima}
+
+\begin{verbatim}
+[ 2   0       - 1    ]
+[                    ]
+[ 0  32 a      2     ]
+[                    ] 
+[              2     ]
+[ 0   0    32 a  - 2 ]
+[                    ]
+[ 0   0        0     ]
+\end{verbatim}
+
+In order for this matrix to represent linearly dependent combination, it should
+be the case that $32^a - 2 = 0$.  Otherwise, this system has no solutions (but
+it has to, becuase it is given that $v_i$ is linearly dependant, which requires
+that linear combinations of all dependent vectors be equal to zero vector).
+
+\begin{maxima}
+solution: solve([32*a^2 - 2], a);
+tex(solution);
+\end{maxima}
+
+$$\left[ a=-{{1}\over{4}} , a={{1}\over{4}} \right] $$
+
+Now we can write $v_2$ as linear combination of $v_1$ and $v_3$ for ${{1}\over{4}}$:
+
+\begin{equation*}
+\begin{alignedat}{5}
+ & (0, \frac{32}{4}, 0, 0) &{}={}& x(2, 0, 0, 0)  &{}+{}& y(-1, 2, \frac{32}{4^2} - 2) \\
+ & (0, 8, 0, 0)            &{}={}& x(2, 0, 0, 0)  &{}+{}& y(-1, 2, 0, 0) \\
+ & (0, 8, 0, 0)            &{}={}& 4(-1, 2, 0, 0) &{}+{}& 2(2, 0, 0, 0)\\
+ & v_2                     &{}={}& 4v_3           &{}+{}& 2v_1
+\end{alignedat}
+\end{equation*}
+
+and similarly for $-{{1}\over{4}}$:
+
+\begin{equation*}
+\begin{alignedat}{5}
+ & (0, -\frac{32}{4}, 0, 0) &{}={}& x(2, 0, 0, 0)   &{}+{}& y(-1, 2, \frac{32}{-4^2} - 2) \\
+ & (0, -8, 0, 0)            &{}={}& x(2, 0, 0, 0)   &{}+{}& y(-1, 2, 0, 0) \\
+ & (0, -8, 0, 0)            &{}={}& -4(-1, 2, 0, 0) &{}+{}& -2(2, 0, 0, 0)\\
+ & v_2                      &{}={}& -4v_3           &{}+{}& -2v_1
+\end{alignedat}
+\end{equation*}
 \section{Exercises}
 \label{sec-2}
 Given $O$ is a homogeneous system of linear equations, and $M$ is not
