@@ -1,0 +1,892 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Assignment 11, Linear Algebra 1</title>
+<!-- 2014-11-08 Sat 23:16 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Oleg Sivokon" />
+<meta  name="description" content="First asssignment in the course Linear Algebra 1"
+ />
+<meta  name="keywords" content="Assignment, Linear Algebra" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="./css/style.css"/>
+<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="./css/icfp.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012  Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js"></script>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Assignment 11, Linear Algebra 1</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Problems</a>
+<ul>
+<li><a href="#sec-1-1">Problem 1</a>
+<ul>
+<li><a href="#sec-1-1-1">Answer 1</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-2">Problem 2</a>
+<ul>
+<li><a href="#sec-1-2-1">Answer 2</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-3">Problem 3</a>
+<ul>
+<li><a href="#sec-1-3-1">Answer 3</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-4">Problem 4</a>
+<ul>
+<li><a href="#sec-1-4-1">Answer 4</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-5">Problem 5</a>
+<ul>
+<li><a href="#sec-1-5-1">Answer 5</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Problems</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Problem 1</h3>
+<div class="outline-text-3" id="text-1-1">
+<ol class="org-ol">
+<li>Given the system of linear equations below:
+
+\begin{equation*}
+  \left.
+    \begin{alignedat}{4}
+      &  x & {}+{} & 2y       & {}+{} & az & {}={} & -3 - a \\
+      &  x & {}+{} & (2 - a)y & {}-{} & z  & {}={} & 1 - a \\
+      & ax & {}+{} & ay       &       &    & {}={} & 6
+    \end{alignedat}
+  \quad \right\} \qquad
+  \begin{aligned}
+    a \in \mathbb{R}
+  \end{aligned}
+\end{equation*}
+</li>
+</ol>
+
+
+<ol class="org-ol">
+<li>What assignments to \(a\) produce no solutions?
+</li>
+<li>What assignments to \(a\) produce single solution?
+</li>
+<li>What assignments to \(a\) produce infinitely many solutions?
+</li>
+</ol>
+</div>
+
+<div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1"><span class="section-number-4">1.1.1</span> Answer 1</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+Before answering the questions, let's reduce the matrix of coefficients of
+the given system of linear equations to the echelon form.  This will be
+useful when talking about its properties.
+</p>
+
+\begin{equation*}
+  \begin{bmatrix}[ccc|c]
+    1 & 2   & a & -3-a \\
+    1 & 2-a & 1 & 1-a \\
+    a & a   & 0 & 6 \\
+  \end{bmatrix}
+  \xrightarrow{R_2 = R_2 - R_1}
+  \begin{bmatrix}[ccc|c]
+    1 & 2  & a   & -3-a \\
+    0 & -a & 1-a & 4 \\
+    a & a  & 0   & 6 \\
+  \end{bmatrix}
+\end{equation*}
+\begin{equation*}
+  \begin{bmatrix}[ccc|c]
+    1 & 2  & a   & -3-a \\
+    0 & -a & 1-a & 4 \\
+    a & a  & 0   & 6 \\
+  \end{bmatrix}
+  \xrightarrow{R_3 = R_3 - aR_1}
+  \begin{bmatrix}[ccc|c]
+    1 & 2  & a    & -3-a \\
+    0 & -a & 1-a  & 4 \\
+    0 & -a & -a^2 & 6+3a+a^2 \\
+  \end{bmatrix}
+\end{equation*}
+\begin{equation*}
+  \begin{bmatrix}[ccc|c]
+    1 & 2  & a    & -3-a \\
+    0 & -a & 1-a  & 4 \\
+    0 & -a & -a^2 & 6+3a+a^2 \\
+  \end{bmatrix}
+  \xrightarrow{R_3 = R_3 - R_2}
+  \begin{bmatrix}[ccc|c]
+    1 & 2  & a        & -3-a \\
+    0 & -a & 1-a      & 4 \\
+    0 & 0  & -a^2+a-1 & 2+3a+a^2 \\
+  \end{bmatrix}
+\end{equation*}
+
+
+<ol class="org-ol">
+<li>From just looking at the last equation in the system, we can conclude
+that \(a=0\) creates an inconsistent system because that would imply
+\(0x+0y+0z=6\), i.e. \(0=6\), which is impossible.
+</li>
+
+<li>In order for the system to have a single solution the matrix of its
+coefficients in its echelon form must have as many pivots as there are
+unknowns.  \(a\) can't influence the pivot in the first row, we already
+know that \(-a=0\) leads to having no solutions and by solving \(-a^2+a-1\)
+we find that it has no real roots, but \(a\) is given to be real, thus
+every column has a pivot, which means that in case the matrix has
+solutions it must be unique.
+</li>
+
+<li>This system could have less pivots than the rank of the matrix of its
+coefficients if either \(-a=0 \land 1-a=0\) or \(-a^2+a-1=0\), first is
+clearly impossible and the second doesn't have any real roots (but it
+is given that \(a\) is real). So this system can never have more than
+one solution.
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> Problem 2</h3>
+<div class="outline-text-3" id="text-1-2">
+<ol class="org-ol">
+<li>Given the system of linear equations below:
+
+\begin{equation*}
+  \left.
+    \begin{alignedat}{5}
+      &  x & {}+{} & ay        & {}+{} & bz        & {}+{} & aw         & {}={} & b \\
+      &  x & {}+{} & (a + 1)y  & {}+{} & (a + b)z  & {}+{} & (a + b)w   & {}={} & a + b \\
+      & ax & {}+{} & a^2y      & {}+{} & (ab + 1)z & {}+{} & (a + a^2)w & {}={} & b + ab \\
+      & 2x & {}+{} & (2a + 1)y & {}+{} & (a + 2b)z & {}+{} & aw         & {}={} & 2b - 2a - ab
+    \end{alignedat}
+  \quad \right\} \qquad
+  \begin{aligned}
+    a, b \in \mathbb{R}
+  \end{aligned}
+\end{equation*}
+</li>
+</ol>
+
+
+<ol class="org-ol">
+<li>What assignments to \(a\) and \(b\) produce no solutions?
+</li>
+<li>What assignments to \(a\) and \(b\) produce single solution?
+</li>
+<li>What assignments to \(a\) and \(b\) produce infinitely many solutions?
+</li>
+</ol>
+</div>
+
+<div id="outline-container-sec-1-2-1" class="outline-4">
+<h4 id="sec-1-2-1"><span class="section-number-4">1.2.1</span> Answer 2</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+As before, let's first extract the coefficient matrix and by using
+Gaussian elimination bring it to echelon form:
+</p>
+
+\begin{equation*}
+  \begin{bmatrix}[cccc|c]
+    1 & a    & b    & a     & b \\
+    1 & a+1  & a+b  & a+b   & a+b \\
+    a & a^2  & ab+1 & a+a^2 & b+ab \\
+    2 & 2a+1 & a+2b & a     & 2b-2a-ab \\
+  \end{bmatrix}
+  \xrightarrow{R_2 = R_2 - R_1}
+  \begin{bmatrix}[cccc|c]
+    1 & a    & b    & a     & b \\
+    0 & 1    & a    & b     & a \\
+    a & a^2  & ab+1 & a+a^2 & b+ab \\
+    2 & 2a+1 & a+2b & a     & 2b-2a-ab \\
+  \end{bmatrix}
+\end{equation*}
+\begin{equation*}
+  \begin{bmatrix}[cccc|c]
+    1 & a    & b    & a     & b \\
+    0 & 1    & a    & b     & a \\
+    a & a^2  & ab+1 & a+a^2 & b+ab \\
+    2 & 2a+1 & a+2b & a     & 2b-2a-ab \\
+  \end{bmatrix}
+  \xrightarrow{R_4 = R_4 - 2R_1}
+  \begin{bmatrix}[cccc|c]
+    1 & a   & b    & a     & b \\
+    0 & 1   & a    & b     & a \\
+    a & a^2 & ab+1 & a+a^2 & b+ab \\
+    0 & 1   & a    & 0     & 2a-ab \\
+  \end{bmatrix}
+\end{equation*}
+\begin{equation*}
+  \begin{bmatrix}[cccc|c]
+    1 & a   & b    & a     & b \\
+    0 & 1   & a    & b     & a \\
+    a & a^2 & ab+1 & a+a^2 & b+ab \\
+    0 & 1   & a    & 0     & 2a-ab \\
+  \end{bmatrix}
+  \xrightarrow{R_3 = R_3 - aR_1}
+  \begin{bmatrix}[cccc|c]
+    1 & a & b & a & b \\
+    0 & 1 & a & b & a \\
+    0 & 0 & 1 & a & b \\
+    0 & 1 & a & 0 & 2a-ab \\
+  \end{bmatrix}
+\end{equation*}
+\begin{equation*}
+  \begin{bmatrix}[cccc|c]
+    1 & a & b & a & b \\
+    0 & 1 & a & b & a \\
+    0 & 0 & 1 & a & b \\
+    0 & 1 & a & 0 & 2a-ab \\
+  \end{bmatrix}
+  \xrightarrow{R_4 = R_4 - R_2}
+  \begin{bmatrix}[cccc|c]
+    1 & a & b & a & b \\
+    0 & 1 & a & b & a \\
+    0 & 0 & 1 & a & b \\
+    0 & 0 & 0 & -b & -3a-ab \\
+  \end{bmatrix}
+\end{equation*}
+
+<ol class="org-ol">
+<li>The only case there would be no solution to this system is when
+\(b=0\land -3a-ab\neq0\).  Otherwise we'd have that some real number not
+equal to zero equals to zero.  Suppose now that \(b=0\), then if \(-3a\neq0\)
+the system has no solutions.  Which amounts to that whenever
+\(a\neq0\land b=0\) the system has no solutions.
+</li>
+<li>In order for the system to have single solution the rank of the
+coefficient matrix needs to be equal to the number of unknowns of the
+system.  The only way for this system to not have that property is if \(b\)
+is zero and \(-3a-ab=0\). As discussed above, if the second condition doesn't
+hold, the system has no solutions, so we are only interested in all which
+remains, i.e. the cases when \(b\neq0\).
+</li>
+<li>Conversely, if \(b=0\land-3a-ab=0\) then we have a free variable in this 
+system, and hence infinite solutions.
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> Problem 3</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Solve the system of linear equations:
+</p>
+
+\begin{equation*}
+  \left.
+    \begin{alignedat}{5}
+      &  \frac{1}{x} & {}+{} & \frac{2}{y} & {}-{} & \frac{4}{z}  & {}={} & 1 \\
+      &  \frac{2}{x} & {}+{} & \frac{3}{y} & {}+{} & \frac{8}{z}  & {}={} & 0 \\
+      &  \frac{1}{x} & {}+{} & \frac{9}{y} & {}-{} & \frac{10}{z} & {}={} & 5
+    \end{alignedat}
+    \quad \right\} \qquad
+  \begin{aligned}
+    x, y, z \in \mathbb{R}
+  \end{aligned}
+\end{equation*}
+</div>
+
+<div id="outline-container-sec-1-3-1" class="outline-4">
+<h4 id="sec-1-3-1"><span class="section-number-4">1.3.1</span> Answer 3</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<p>
+Because writing coefficient matrix as reciprocals to the system unknowns will make
+this unwieldy, we'll perform Gaussian elimination directly on the equations given.
+</p>
+
+\begin{equation*}
+  \left.
+    \begin{alignedat}{5}
+      &  \frac{1}{x} & {}+{} & \frac{2}{y} & {}-{} & \frac{4}{z}  & {}={} & 1 \\
+      &  \frac{2}{x} & {}+{} & \frac{3}{y} & {}+{} & \frac{8}{z}  & {}={} & 0 \\
+      &  \frac{1}{x} & {}+{} & \frac{9}{y} & {}-{} & \frac{10}{z} & {}={} & 5
+    \end{alignedat}
+    \quad \right\}
+  \xrightarrow{R_2 = R_2 - 2R_1}
+  \left.
+    \begin{alignedat}{5}
+      &  \frac{1}{x} & {}+{} & \frac{2}{y}  & {}-{} & \frac{4}{z}  & {}={} & 1 \\
+      &  0           & {}+{} & -\frac{1}{y} & {}+{} & \frac{16}{z} & {}={} & -2 \\
+      &  \frac{1}{x} & {}+{} & \frac{9}{y}  & {}-{} & \frac{10}{z} & {}={} & 5
+    \end{alignedat}
+    \quad \right\}
+\end{equation*}
+\begin{equation*}
+  \left.
+    \begin{alignedat}{5}
+      &  \frac{1}{x} & {}+{} & \frac{2}{y} & {}-{} & \frac{4}{z}  & {}={} & 1 \\
+      &  0           & {}-{} & \frac{1}{y} & {}+{} & \frac{16}{z} & {}={} & -2 \\
+      &  \frac{1}{x} & {}+{} & \frac{9}{y} & {}-{} & \frac{10}{z} & {}={} & 5
+    \end{alignedat}
+    \quad \right\}
+  \xrightarrow{R_3 = R_3 + R_1}
+  \left.
+    \begin{alignedat}{5}
+      &  \frac{1}{x} & {}+{} & \frac{2}{y}  & {}-{} & \frac{4}{z}  & {}={} & 1 \\
+      &  0           & {}-{} & \frac{1}{y}  & {}+{} & \frac{16}{z} & {}={} & -2 \\
+      &  0           & {}+{} & \frac{11}{y} & {}-{} & \frac{6}{z}  & {}={} & 6
+    \end{alignedat}
+    \quad \right\}
+\end{equation*}
+\begin{equation*}
+  \left.
+    \begin{alignedat}{5}
+      &  \frac{1}{x} & {}+{} & \frac{2}{y}  & {}-{} & \frac{4}{z}  & {}={} & 1 \\
+      &  0           & {}-{} & \frac{1}{y}  & {}+{} & \frac{16}{z} & {}={} & -2 \\
+      &  0           & {}+{} & \frac{11}{y} & {}-{} & \frac{6}{z}  & {}={} & 6
+    \end{alignedat}
+    \quad \right\}
+  \xrightarrow{R_3 = R_3 + 11R_2}
+  \left.
+    \begin{alignedat}{5}
+      &  \frac{1}{x} & {}+{} & \frac{2}{y} & {}-{} & \frac{4}{z}   & {}={} & 1 \\
+      &  0           & {}-{} & \frac{1}{y} & {}+{} & \frac{16}{z}  & {}={} & -2 \\
+      &  0           & {}+{} & 0           & {}+{} & \frac{102}{z} & {}={} & -16
+    \end{alignedat}
+    \quad \right\}
+\end{equation*}
+\begin{equation*}
+  \left.
+    \begin{alignedat}{5}
+      &  \frac{1}{x} & {}+{} & \frac{2}{y} & {}-{} & \frac{4}{z}   & {}={} & 1 \\
+      &  0           & {}-{} & \frac{1}{y} & {}+{} & \frac{16}{z}  & {}={} & -2 \\
+      &  0           & {}+{} & 0           & {}+{} & \frac{102}{z} & {}={} & -16
+    \end{alignedat}
+    \quad \right\}
+  \xrightarrow{R_1 = R_1 + 2R_2}
+  \left.
+    \begin{alignedat}{5}
+      &  \frac{1}{x} & {}+{} & 0           & {}+{} & \frac{28}{z}  & {}={} & -3 \\
+      &  0           & {}-{} & \frac{1}{y} & {}+{} & \frac{16}{z}  & {}={} & -2 \\
+      &  0           & {}+{} & 0           & {}+{} & \frac{102}{z} & {}={} & -16
+    \end{alignedat}
+    \quad \right\}
+\end{equation*}
+\begin{equation*}
+  \left.
+    \begin{alignedat}{5}
+      &  \frac{1}{x} & {}+{} & 0           & {}+{} & \frac{28}{z}  & {}={} & -3 \\
+      &  0           & {}-{} & \frac{1}{y} & {}+{} & \frac{16}{z}  & {}={} & -2 \\
+      &  0           & {}+{} & 0           & {}+{} & \frac{102}{z} & {}={} & -16
+    \end{alignedat}
+    \quad \right\}
+  \xrightarrow{R_2 = R_2 - \frac{14}{51}R_3}
+  \left.
+    \begin{alignedat}{5}
+      &  \frac{1}{x} & {}+{} & 0           & {}+{} & \frac{28}{z}  & {}={} & -3 \\
+      &  0           & {}-{} & \frac{1}{y} & {}+{} & 0  & {}={}    & \frac{26}{51} \\
+      &  0           & {}+{} & 0           & {}+{} & \frac{102}{z} & {}={} & -16
+    \end{alignedat}
+    \quad \right\}
+\end{equation*}
+\begin{equation*}
+  \left.
+    \begin{alignedat}{5}
+      &  \frac{1}{x} & {}+{} & 0           & {}+{} & \frac{28}{z}  & {}={} & -3 \\
+      &  0           & {}-{} & \frac{1}{y} & {}+{} & 0             & {}={} & \frac{26}{51} \\
+      &  0           & {}+{} & 0           & {}+{} & \frac{102}{z} & {}={} & -16
+    \end{alignedat}
+    \quad \right\}
+  \xrightarrow{R_1 = R_1 - \frac{8}{51}R_3}
+  \left.
+    \begin{alignedat}{5}
+      &  \frac{1}{x} & {}+{} & 0           & {}+{} & 0             & {}={} & \frac{71}{51} \\
+      &  0           & {}-{} & \frac{1}{y} & {}+{} & 0             & {}={} & \frac{26}{51} \\
+      &  0           & {}+{} & 0           & {}+{} & \frac{102}{z} & {}={} & -16
+    \end{alignedat}
+    \quad \right\}
+\end{equation*}
+
+<p>
+Now we can extract the variables:
+</p>
+
+\begin{equation*}
+  x = \frac{51}{71}, \quad
+  y = -\frac{51}{26}, \quad
+  z = -\frac{102}{16}
+\end{equation*}
+
+<p>
+Let's verify:
+</p>
+
+\begin{equation*}
+  \begin{split}
+    \frac{1}{x} + \frac{2}{y} - \frac{4}{z} = 1 \\
+    \frac{71}{51} - \frac{52}{51} + \frac{64}{102} = 1 \\
+    \frac{19}{51} - \frac{32}{51} = 1 \\
+    \frac{51}{51} = 1
+  \end{split}
+\end{equation*}
+
+<p>
+Similarly for other cases.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4"><span class="section-number-3">1.4</span> Problem 4</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+Given \(U = \{\vec{u_1}, \vec{u_2}, \vec{u_3}, \vec{u_4}\}\) is a linearly
+independant set of vectors in \(\mathbb{R}^5\) and vectors:
+</p>
+
+\begin{equation*}
+  \begin{alignedat}{4}
+    & v_1 & {}={} & 8au_1 {}+{} & 2u_2 {}+{}   & u_3 \\
+    & v_2 & {}={} &             & 16au_2 {}+{}                        & u_4 \\
+    & v_3 & {}={} & u_1 {}-{}                  & \frac{1}{2}u_3 {}+{} & au_4 \\
+    & a \in \mathbb{R}
+  \end{alignedat}
+\end{equation*}
+
+<ol class="org-ol">
+<li>Find all \(a\) such that \(V = \{v_1, v_2, v_3\}\) is linearly dependent.
+</li>
+<li>For every \(a\) found in (1), write \(v_2\) as linear combination of \(v_1\)
+and \(v_3\).
+</li>
+<li>Is it possible to adjoin the vectors \(v_i\) to \(U\) such that 
+      \(U \cup \{v_i\}\) would become a basis in \(\mathbb{R}\)?
+</li>
+</ol>
+</div>
+
+<div id="outline-container-sec-1-4-1" class="outline-4">
+<h4 id="sec-1-4-1"><span class="section-number-4">1.4.1</span> Answer 4</h4>
+<div class="outline-text-4" id="text-1-4-1">
+<p>
+First we will arrange all coefficients describing vectors \(v_i\) as rows of
+the matrix.  Since in order to find a linearly dependent combination of rows
+we need the matrix to be homogenous, the last row of the matrix is the zero
+vector.  Thus, I'll only write the "interesting" columns.  I will reduce
+this matrix to the echelon form in order to find possible contradictions
+(possible contradictions are rows containing single coefficient).  These
+raws will yield equations, which, if solved, will give values of \(a\) required
+for the system to have solutions.  This will be equivalent to finding values
+of \(a\) s.t. they make linear combination of vectors \(v_i\) linearly dependant.
+</p>
+
+\begin{equation*}
+  \begin{bmatrix}[ccc]
+    8a & 0   & 1 \\
+    2  & 16a & 0 \\
+    1  & 0   & -\frac{1}{2} \\
+    0  & 1   & a \\
+  \end{bmatrix}
+  \xrightarrow{R_1 = R_2, R_2 = R_1}
+  \begin{bmatrix}[ccc]
+    2  & 16a & 0 \\
+    8a & 0   & 1 \\
+    1  & 0   & -\frac{1}{2} \\
+    0  & 1   & a \\
+  \end{bmatrix}
+  \xrightarrow{R_2 = R_2 + 4aR_1}
+  \begin{bmatrix}[ccc]
+    2 & 16a   & 0 \\
+    0 & 64a^2 & 1 \\
+    1 & 0     & -\frac{1}{2} \\
+    0 & 1     & a \\
+  \end{bmatrix}
+\end{equation*}
+\begin{equation*}
+  \begin{bmatrix}[ccc]
+    2 & 16a   & 0 \\
+    0 & 64a^2 & 1 \\
+    1 & 0     & -\frac{1}{2} \\
+    0 & 1     & a \\
+  \end{bmatrix}
+  \xrightarrow{R_3 = 2R_3}
+  \begin{bmatrix}[ccc]
+    2 & 16a   & 0 \\
+    0 & 64a^2 & 1 \\
+    2 & 0     & -1 \\
+    0 & 1     & a \\
+  \end{bmatrix}
+  \xrightarrow{R_3 = R_3 - R_1}
+  \begin{bmatrix}[ccc]
+    2 & 16a   & 0 \\
+    0 & 64a^2 & 1 \\
+    0 & -16a  & -1 \\
+    0 & 1     & a \\
+  \end{bmatrix}
+\end{equation*}
+\begin{equation*}
+  \begin{bmatrix}[ccc]
+    2 & 16a   & 0 \\
+    0 & 64a^2 & 1 \\
+    0 & -16a  & -1 \\
+    0 & 1     & a \\
+  \end{bmatrix}
+  \xrightarrow{R_3 = R_2, R_2 = R_3}
+  \begin{bmatrix}[ccc]
+    2 & 16a   & 0 \\
+    0 & -16a  & -1 \\
+    0 & 64a^2 & 1 \\
+    0 & 1     & a \\
+  \end{bmatrix}
+  \xrightarrow{R_3 = R_3 - 4aR_2}
+  \begin{bmatrix}[ccc]
+    2 & 16a  & 0 \\
+    0 & -16a & -1 \\
+    0 & 0    & 1-4a \\
+    0 & 1    & a \\
+  \end{bmatrix}
+\end{equation*}
+\begin{equation*}
+  \begin{bmatrix}[ccc]
+    2 & 16a  & 0 \\
+    0 & -16a & -1 \\
+    0 & 0    & 1-4a \\
+    0 & 1    & a \\
+  \end{bmatrix}
+  \xrightarrow{R_4 = 16R_4}
+  \begin{bmatrix}[ccc]
+    2 & 16a  & 0 \\
+    0 & -16a & -1 \\
+    0 & 0    & 1-4a \\
+    0 & 16a  & 16a^2 \\
+  \end{bmatrix}
+  \xrightarrow{R_4 = R_4 - R_2}
+  \begin{bmatrix}[ccc]
+    2 & 16a  & 0 \\
+    0 & -16a & -1 \\
+    0 & 0    & 1-4a \\
+    0 & 0    & 16a^2-1 \\
+  \end{bmatrix}
+\end{equation*}
+
+<p>
+Which gives us two candidate equations: \(1-4a=0\) and \(16a^2-1=0\) with respective roots
+\({{1}\over{4}}\) and \(-{{1}\over{4}}\).
+</p>
+
+<p>
+Now we can write \(v_2\) as linear combination of \(v_1\) and \(v_3\) for \({{1}\over{4}}\):
+</p>
+
+\begin{equation*}
+\begin{alignedat}{5}
+ & (0, \frac{32}{4}, 0, 0) &{}={}& x(2, 0, 0, 0)  &{}+{}& y(-1, 2, \frac{32}{4^2} - 2) \\
+ & (0, 8, 0, 0)            &{}={}& x(2, 0, 0, 0)  &{}+{}& y(-1, 2, 0, 0) \\
+ & (0, 8, 0, 0)            &{}={}& 4(-1, 2, 0, 0) &{}+{}& 2(2, 0, 0, 0)\\
+ & v_2                     &{}={}& 4v_3           &{}+{}& 2v_1
+\end{alignedat}
+\end{equation*}
+
+<p>
+and similarly for \(-{{1}\over{4}}\):
+</p>
+
+\begin{equation*}
+\begin{alignedat}{5}
+ & (0, -\frac{32}{4}, 0, 0) &{}={}& x(2, 0, 0, 0)   &{}+{}& y(-1, 2, \frac{32}{-4^2} - 2) \\
+ & (0, -8, 0, 0)            &{}={}& x(2, 0, 0, 0)   &{}+{}& y(-1, 2, 0, 0) \\
+ & (0, -8, 0, 0)            &{}={}& -4(-1, 2, 0, 0) &{}+{}& -2(2, 0, 0, 0)\\
+ & v_2                      &{}={}& -4v_3           &{}+{}& -2v_1
+\end{alignedat}
+\end{equation*}
+
+<p>
+No, it is not possible to create a basis from \(u_i \cup v_i\) because none of \(v_i\) affects
+the fifth dimension of \(\mathbb{R}^5\) and because everyone of \(v_i\) is a linear combination
+of \(u_i\), none of \(u_i\) could have any effect on the fifth dimension either.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5"><span class="section-number-3">1.5</span> Problem 5</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+Given \(\vec{a_1}, ..., \vec{a_k}\) and \(\vec{b}\) all in \(\mathbb{R}^n\).  Also
+given that \(\vec{b} \neq 0\) and all \(\vec{a_1}, ..., \vec{a_k}\) are distinct.
+Assume also that the equation \(x_1\vec{a}_1+...+x_k\vec{a}_k=\vec{b}\) has
+infinitely many solutions.
+</p>
+
+<p>
+Prove or disprove:
+</p>
+
+<ol class="org-ol">
+<li>If \(k \geq n+1\), then \(\{\vec{a_1}, ..., \vec{a_k}\}\) spans \(\mathbb{R}^n\).
+</li>
+<li>\(\{\vec{a_1}, ..., \vec{a_k}\}\) is linearly dependant.
+</li>
+<li>Exists \(\vec{c} \in \mathbb{R}^n\) s.t. 
+      \(x_1\vec{a}_1+...+x_k\vec{a}_k=\vec{c}\) has unique solution.
+</li>
+</ol>
+</div>
+
+<div id="outline-container-sec-1-5-1" class="outline-4">
+<h4 id="sec-1-5-1"><span class="section-number-4">1.5.1</span> Answer 5</h4>
+<div class="outline-text-4" id="text-1-5-1">
+<p>
+(1) \(\{\vec{a_1}, ..., \vec{a_k}\}\) doesn't necessary span \(\mathbb{R}^n\).
+In order to span a field of a dimension \(n\), this set has to have at least
+\(n\) pivot elements in its coefficient matrix.  This can only happen when
+there are at least \(n\) linearly independant vectors (but we are only given
+that they are distinct, not necessarily independant).  More so, we are given
+that there exists \(\vec{b}\), which guarantees that the rank of the matrix of
+the coefficients will be at least one point short (but possibly more) of
+representing a spanning set.
+</p>
+
+<p>
+To convince yourself this is actually possible, let's construct such vectors
+for \(k=3\), \(n=2\).
+</p>
+
+\begin{equation*}
+  \begin{split}
+    \vec{a_1} = (0, 0)\\
+    \vec{a_2} = (0, 1)\\
+    \vec{a_3} = (0, 2)\\
+    \vec{b} = (0, 3)\\
+  \end{split}
+\end{equation*}
+
+
+<p>
+The matrix of coefficients of this set of vectors would be:
+</p>
+
+\begin{equation*}
+  \begin{bmatrix}[ccc|c]
+    0 & 0 & 0  & 0 \\
+    0 & 1 & 2  & 3 \\
+  \end{bmatrix}
+\end{equation*}
+
+
+<p>
+This matrix has infinitely many solutions (because it lacks a pivot in the
+first column), so it satisfies the requirement, but the vectors used to
+construct its columns are clearly not a spanning set of \(\mathbb{R}^2\)
+(becuase the first element of \(\mathbb{R}^2\) is never assigned to).
+</p>
+
+<p>
+(2) Yes, \(\{\vec{a_1}, ..., \vec{a_k}\}\) is linearly dependant.  This is
+warranted by infinite number of solutions to the equation describing the sum
+of the vectors, by Rouché–Capelli theorem.
+</p>
+
+<p>
+(3) No, there can't be a \(\vec{c}\) that would force this system to have a
+unique solution.  The number of solutions of a system is the property of its
+augmented matrix and its coefficient matrix, neither of which include
+\(\vec{c}\).
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">&lt;2014-11-07 Fri&gt;</span></span></p>
+<p class="author">Author: Oleg Sivokon</p>
+<p class="date">Created: 2014-11-08 Sat 23:16</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.0.50.1 (<a href="http://orgmode.org">Org</a> mode 8.2.2)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
