@@ -17,3 +17,10 @@
 /test.org
 /test.pdf
 /test.tex
+*-blx.bib
+*.bbl
+*..blg
+*.blg
+*.fdb_latexmk
+*.fls
+*.run.xml

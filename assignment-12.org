@@ -1,0 +1,411 @@
+# -*- fill-column: 80; org-confirm-babel-evaluate: nil -*-
+
+#+TITLE:     Assignment 12, Linear Algebra 1
+#+AUTHOR:    Oleg Sivokon
+#+EMAIL:     olegsivokon@gmail.com
+#+DATE:      <2014-11-15 Sat>
+#+DESCRIPTION: First asssignment in the course Linear Algebra 1
+#+KEYWORDS: Assignment, Linear Algebra
+#+LANGUAGE: en
+#+LaTeX_CLASS: article
+#+LATEX_HEADER: \usepackage[usenames,dvipsnames]{color}
+#+LATEX_HEADER: \usepackage{a4wide}
+#+LATEX_HEADER: \usepackage[backend=bibtex, style=numeric]{biblatex}
+#+LATEX_HEADER: \usepackage{commath}
+#+LATEX_HEADER: \usepackage{tikz}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usetikzlibrary{shapes,backgrounds}
+#+LATEX_HEADER: \usepackage{marginnote}
+#+LATEX_HEADER: \usepackage{enumerate}
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \hypersetup{urlcolor=blue}
+#+LATEX_HEADER: \hypersetup{colorlinks,urlcolor=blue}
+#+LATEX_HEADER: \addbibresource{bibliography.bib}
+#+LATEX_HEADER: \setlength{\parskip}{16pt plus 2pt minus 2pt}
+#+LATEX_HEADER: \definecolor{codebg}{rgb}{0.96,0.99,0.8}
+
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./css/style.css"/>
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css"/>
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="./css/icfp.css"/>
+
+#+BEGIN_SRC emacs-lisp :exports none
+  (setq org-latex-pdf-process
+        '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -bibtex -f %f")
+        org-latex-listings t
+        org-latex-custom-lang-environments '((maxima "maxima"))
+        org-src-fontify-natively t
+        org-babel-latex-htlatex "htlatex")
+  (defmacro by-backend (&rest body)
+    `(cl-case (when (boundp 'backend) (org-export-backend-name backend))
+       ,@body))
+#+END_SRC
+
+#+RESULTS:
+: by-backend
+
+#+BEGIN_LATEX
+  \definecolor{codebg}{rgb}{0.96,0.99,0.8}
+  \lstnewenvironment{maxima}{%
+    \lstset{backgroundcolor=\color{codebg},
+      frame=single,
+      framerule=0pt,
+      basicstyle=\ttfamily\scriptsize,
+      columns=fixed}}{}
+  }
+  \makeatletter
+  \newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
+  \makeatother
+  \verbatimfont{\small}%
+  \makeatletter
+  \renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+    \hskip -\arraycolsep
+    \let\@ifnextchar\new@ifnextchar
+    \array{#1}}
+  \makeatother
+#+END_LATEX
+
+@@latex: \clearpage@@
+
+* Problems
+
+** Problem 1
+
+   Given two systems of linear equations $O$ homogenous and $M$ nonhomogenous.
+
+   #+HEADER: :exports results
+   #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+   #+BEGIN_SRC latex
+     \begin{equation*}
+       \left.
+         \begin{alignedat}{4}
+           & ax + & by + & cz = & 0 \\
+           & fx + & gy + & hz = & 0 \\
+         \end{alignedat}
+         \quad \right\}
+       \begin{aligned} = O \end{aligned}
+       \left.
+         \begin{alignedat}{4}
+           & ax + & by + & cz = & d \\
+           & fx + & gy + & hz = & k \\
+         \end{alignedat}
+         \quad \right\}
+       \begin{aligned} = M \end{aligned}
+     \end{equation*}
+   #+END_SRC
+      
+   $(1, 0, 1)$ and $(-1, 1, 1)$ are known to be the solutions of $O$ and $(2, -3, 1)$
+   is a solution of $M$.
+
+   Find general solution for $O$.
+        
+*** Answer 1
+
+** Problem 2
+
+   Given matrices
+
+   #+HEADER: :exports results
+   #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+   #+BEGIN_SRC latex
+     \begin{equation*}
+       \begin{bmatrix}
+         1 & 0 & 1  & 0 \\
+         0 & 1 & 0  & 1 \\
+         0 & 0 & 1  & -1 \\
+       \end{bmatrix}
+       \begin{aligned} = B \end{aligned}
+       \begin{bmatrix}
+         1 & 0 & 1  & 0 \\
+         2 & 1 & 2  & 1 \\
+         0 & 0 & 3  & -3 \\
+       \end{bmatrix}
+       \begin{aligned} = A \end{aligned}
+     \end{equation*}
+   #+END_SRC
+
+   1. Use elementary operations to obtain $C$ such that $CC^{-1}=I$ and $B = CA$.
+   2. Write $C$ as a product of elementary matrices.
+
+*** Answer 2
+    It is easier to start answering from (2). Since we can see that all we need
+    is to find two elementary matrices, one such that it would reduce the second
+    row by twice the first row and one that would diminish the third row by
+    ${1\over 3}$, we can readily represent these operations as multiplication
+    of two elementary matrices:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{bmatrix}
+          1 & 0 & 0 \\
+          -2 & 1 & 0 \\
+          0 & 0 & 1 \\
+        \end{bmatrix}
+        \begin{aligned} = C_1 \end{aligned}
+        \begin{bmatrix}
+          1 & 0 & 0 \\
+          0 & 1 & 0 \\
+          0 & 0 & {1\over 3} \\
+        \end{bmatrix}
+        \begin{aligned} = C_2 \end{aligned}
+      \end{equation*}
+    #+END_SRC
+
+    The product of $C_1 \times C_2 = C$ gives us the matrix $C$ we were asked to
+    find.
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{bmatrix}
+          1 & 0 & 0 \\
+          -2 & 1 & 0 \\
+          0 & 0 & 1 \\
+        \end{bmatrix}
+        \begin{aligned} \times \end{aligned}
+        \begin{bmatrix}
+          1 & 0 & 0 \\
+          0 & 1 & 0 \\
+          0 & 0 & {1\over 3} \\
+        \end{bmatrix}
+        \begin{aligned} = \end{aligned}
+        \begin{bmatrix}
+          1 & 0 & 0 \\
+          -2 & 1 & 0 \\
+          0 & 0 & {1\over 3} \\
+        \end{bmatrix}
+      \end{equation*}
+    #+END_SRC
+
+    Now, let's find $C^{-1}$:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{bmatrix}[ccc|ccc]
+          1  & 0 & 0          & 1 & 0 & 0 \\
+          -2 & 1 & 0          & 0 & 1 & 0 \\
+          0  & 0 & {1\over 3} & 0 & 0 & 1 \\
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_2 = R_2 + 2R_1} \end{aligned}
+        \begin{bmatrix}[ccc|ccc]
+          1 & 0 & 0          & 1 & 0 & 0 \\
+          0 & 1 & 0          & 2 & 1 & 0 \\
+          0 & 0 & {1\over 3} & 0 & 0 & 1 \\
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_3 = 3R_3} \end{aligned}
+        \begin{bmatrix}[ccc|ccc]
+          1 & 0 & 0 & 1 & 0 & 0 \\
+          0 & 1 & 0 & 2 & 1 & 0 \\
+          0 & 0 & 1 & 0 & 0 & 3 \\
+        \end{bmatrix}
+      \end{equation*}
+    #+END_SRC
+
+    Finally $CC^{-1}=I$:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \begin{bmatrix}
+          1 & 0 & 0 \\
+          -2 & 1 & 0 \\
+          0 & 0 & {1\over 3} \\
+        \end{bmatrix}
+        \begin{aligned} \times \end{aligned}
+        \begin{bmatrix}
+          1 & 0 & 0 \\
+          2 & 1 & 0 \\
+          0 & 0 & 3 \\
+        \end{bmatrix}
+        \begin{aligned} = \end{aligned}
+        \begin{bmatrix}
+          1 & 0 & 0 \\
+          0 & 1 & 0 \\
+          0 & 0 & 1 \\
+        \end{bmatrix}
+      \end{equation*}
+    #+END_SRC
+    
+** Problem 3
+
+   Let $A$ be a square matrix of the $n$-th order.  Assume $A^2+A+I=0$ holds.
+
+   1. Prove that $A$ is invertible and that $A^2=A^{-1}$.
+   2. Prove $A^2-A+I=0$ is invertible.
+      
+   Let $A$ and $B$ be of the order of $n \times n$. Prove that if $AB^2-A$ is
+   invertible, so is $AB-A$.
+
+*** Answer 3
+
+    First, show that $A$ is invertible:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        A^2+A+I    =  0  & \iff     & \textrm{given} \\
+        AA+A       =  -I & \iff     & \textrm{by simple algebra} \\
+        A(A+I)     =  -I & \iff     & \textrm{by associativity} \\
+        A(-(A+I))  =  I  & \implies & \textrm{multiplication by scalar} \\
+                         &          & \textrm{$A$ is invertible}
+      \end{align*}
+    #+END_SRC
+
+    Then, suppose $A^2$ is the inverse of $A$, it must be then:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        A^{-1} + A + I = 0   & \iff     & \textrm{by assumption $A^2=A^{-1}$} \\
+        A^{-1} + A = -I      & \iff     & \textrm{move $I$ to the right} \\
+        AA^{-1} + AA = A(-I) & \iff     & \textrm{multiply both sides by $A$} \\
+        I + A^2 = -A         & \iff     & \textrm{simplifying} \\
+        I + A^2 + A = 0      & \iff     & \textrm{move $-A$ to the left} \\
+        A^2 + A + I = 0      &          & \textrm{completes the proof}
+      \end{align*}
+    #+END_SRC
+
+*** Answer 4
+     Now, we show that $A^2-A+I$ is invertible. First, observe that
+     $A=(A^{-1})^2$ (since we already proven $A^2=A^{-1}$, for complete proof,
+     see below).  Next, we'll use the $A^2+A+I=0$ to write the following
+     equation: $A^2-A+I=-2A$.  This reduces the proof to proving that $A$ is
+     invertible, but it is because $A^2$ is, for extended proof see below.
+
+     #+HEADER: :exports results
+     #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+     #+BEGIN_SRC latex
+       \begin{align*}
+         A^2B  = I & \iff & \textrm{by definition of invertibility} \\
+         (AA)B = I & \iff & \textrm{by elementary algebra} \\
+         A(AB) = I & \iff & \textrm{by associativity} \\
+                   &      & \textrm{$A$ is invertible} \\
+       \end{align*}
+     #+END_SRC
+
+     #+HEADER: :exports results
+     #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+     #+BEGIN_SRC latex
+       \begin{align*}
+         A^2  = A^{-1}                & \iff & \textrm{proven earlier} \\
+         (AA)^{-1} = A^{-1}A^{-1}     & \iff & \textrm{by definition of invertibility} \\
+         (A^{-1})^{-1} = A^{-1}A^{-1} & \iff & \textrm{since $AA = A^2 = A^{-1}$} \\
+         A = A^{-1}A^{-1}             &      & \textrm{inverse of inverse} \\
+       \end{align*}
+     #+END_SRC
+
+*** Answer 5
+     We can represent the matrix we know to be invertible as a product of
+     subtraction and addition (by distributivity of multiplication over addition).
+     We are also guaranteed to have a $C$ s.t. $A^2C-A=I$, thus:
+
+     #+HEADER: :exports results
+     #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+     #+BEGIN_SRC latex
+      \begin{align*}
+        (AB^2 - A)C = I & \iff & \textrm{by definition of invertibility} \\
+        A(B^2 - I)C = I & \iff & \textrm{by distributivity of multiplication} \\
+        A(B - I)(B + I)C = I & \iff & \textrm{difference of squares $II=I$} \\
+        A(B - I) & \implies & \textrm{$(B - I)$ and $A$ are invertible} \\
+        (B - I)A & \implies & \textrm{is invertible (product of invertible matrices)} \\
+        BA - A & \implies & \textrm{is invertible} \\
+      \end{align*}
+     #+END_SRC
+
+** Problem 4
+   Given $p(x)=a_kx^k+a_{k-1}x^{k-1}+...+a_1x+a_0$ is a polynomial and $A$ is
+   an $n\times n$ matrix. We will denote $p(A)$ the matrix
+   $p(A)=a_kA^k+a_{k-1}A^{k-1}+...+a_1A+I_n$. Given $p(A)=0$ and $p(0)\neq 0$.
+
+   1. Prove that $A$ is invertible.
+   2. Prove that $g(A^{-1})=0$ when $g(x)=a_0x^k+a_1x^{k-1}+...+a_{k-1}x+a_k$.
+
+*** Answer 6
+    $p(0)\neq 0$ means that the last polynomial term isn't zero (which is even
+    more obvious if we look at $p(A)$, where the last term is the identity matrix
+    of the same shape as $A$.  Once we know that the sum of polynomial terms,
+    with the last term omitted amounts to the additive inverse of identity matrix,
+    i.e. the $-I$, we obtain that the sum of other polynomial terms must produce
+    $-I$, which is itself ivertible.
+
+    Next, we can employ the distributivity of multiplication over addition and
+    rewrite the equation as:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        (a_kA^{k-1}+a_{k-1}A^{k-2}+...+a_1)A=-I_n
+      \end{equation*}
+    #+END_SRC
+
+    Since $A$ is a factor that gives, multiplied by some other matrix an identity
+    matrix, it is invertible (by definition of invertibility $BA=I$).
+
+*** Answer 7
+    Define $A^{-1}$ to be $-(a_kA^{k-1}+a_{k-1}A^{k-2}+...+a_1)^{-1}$.  (This
+    immediately follows from [[Answer 6]].)  Then observe that $g(x) - a_1$ multiplied
+    with this term gives us $-I$.  Since we already established $a_1=I$, we
+    obtain $-I+I=0$, hence $g(A^{-1})=0$.
+
+** Problem 5
+   Calculate these determinants:
+
+   #+HEADER: :exports results
+   #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+   #+BEGIN_SRC latex
+     \begin{equation*}
+       D_1 = \left|
+         \begin{array}{cccccc}
+           a      & b      & 0      & \hdots & \hdots & 0 \\
+           0      & a      & b      & 0      & \hdots & 0 \\
+           0      & \ddots & \ddots & \ddots &        & \vdots \\
+           \vdots &        & \ddots & \ddots & \ddots & 0 \\
+           0      & 0      & \hdots & 0      & a      & b \\
+           b      & 0      & 0      & \hdots & 0      & a \\
+         \end{array}
+       \right|
+     \end{equation*}
+   #+END_SRC
+
+   #+HEADER: :exports results
+   #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+   #+BEGIN_SRC latex
+     \begin{equation*}
+       D_2 = \left|
+         \begin{array}{ccccccc}
+           1      & 2   & 3 & \hdots & n-2 & n-1 & n \\
+           2      & 3   & 4 & \hdots & n-1 & n   & n \\
+           3      & 4   & 5 & \hdots & n   & n   & n \\
+           \vdots &     &   &        &     &     & \vdots \\
+           n-2    & n-1 & n & \hdots & n   & n   & n \\
+           n-1    & n   & n & \hdots & n   & n   & n \\
+           n      & n   & n & \hdots & n   & n   & n \\
+         \end{array}
+       \right|
+     \end{equation*}
+   #+END_SRC
+
+*** Answer 8
+    $D_1$ is the sum of two determinants, one of the identity matrix mutiplied
+    by $a$, and the other is the full permutation matrix, multiplied by $b$,
+    which has the same determinant as the identity matrix.  Hence $D_1=a^n+b^n$.
+
+*** Answer 9
+    $D_2$ is zero for $n>2$ since those matrices are singular.  In order to get
+    convinced they are singular, notice that when reducing such matrice to the
+    row echelon form, the third row will always be the linear combination of the
+    first and the second rows.  By subtracting a multiple of the first row from
+    the second, we obtain its two's-complement (i.e. the values of $R_2$, which
+    I'll denote $r_{2,i}$) will be calculated as $r_{2,i}=-(r_{1,i}-1)$.
+    The third row then will be $r_{3,i}=3r_{1,i}+2r_{2,i}$.  Direct calculation
+    of determinants for $n=2$ gives us, using formula $D(A_{2\times 2})=ad-bc$,
+    $1\times 3-2\times 2=-1$.
