@@ -1,0 +1,429 @@
+% Created 2014-12-27 Sat 22:39
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage[utf8]{inputenc}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{a4wide}
+\usepackage[backend=bibtex, style=numeric]{biblatex}
+\usepackage{commath}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usetikzlibrary{shapes,backgrounds}
+\usepackage{marginnote}
+\usepackage{enumerate}
+\usepackage{listings}
+\usepackage{color}
+\hypersetup{urlcolor=blue}
+\hypersetup{colorlinks,urlcolor=blue}
+\addbibresource{bibliography.bib}
+\setlength{\parskip}{16pt plus 2pt minus 2pt}
+\definecolor{codebg}{rgb}{0.96,0.99,0.8}
+\author{Oleg Sivokon}
+\date{\textit{<2014-12-12 Fri>}}
+\title{Assignment 13, Linear Algebra 1}
+\hypersetup{
+  pdfkeywords={Assignment, Linear Algebra},
+  pdfsubject={Third asssignment in the course Linear Algebra 1},
+  pdfcreator={Emacs 25.0.50.1 (Org mode 8.2.2)}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+\lstset{ %
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\scriptsize,
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=false,
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  framexleftmargin=10pt,
+  xleftmargin=10pt,
+  framerule=0pt,
+  frame=tb,                        % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stringstyle=\color{codestr},     % string literal style
+  tabsize=2,                       % sets default tabsize to 2 spaces
+}
+
+ \clearpage
+
+\section{Problems}
+\label{sec-1}
+
+\subsection{Problem 1}
+\label{sec-1-1}
+
+\begin{enumerate}
+\item Given:
+
+\begin{equation*}
+  \begin{split}
+    w = 1 - i \\
+    t = \cos{\frac{3 \pi}{4}} + i \sin{\frac{3 \pi}{4}}
+  \end{split}
+\end{equation*}
+\end{enumerate}
+
+
+Solve:
+
+\begin{equation*}
+  z^3 = \frac{w}{\bar{t}}
+\end{equation*}
+
+
+\begin{enumerate}
+\item Let $z_1, z_2, ..., z_n$ be all solutions of an equation $z^n=1$ in $\mathbb{C}$.
+
+Prove that $z_1 \times z_2 \times ... \times z_n = 1$.
+\end{enumerate}
+
+\subsubsection{Answer 1}
+\label{sec-1-1-1}
+Let's first represent $w$ in polar form:
+
+\begin{align*}
+  w            &= re^{\theta i} \\
+  r            &= \sqrt{1^2 - i^2} = \sqrt{1 + 1} = \sqrt{2} \\
+  \tan{\theta} &= \frac{-1}{1} \\
+  \theta       &= \tan^{-1}{-1} = \frac{\pi}{4} \\
+  w            &= \sqrt{2}e^{\frac{\pi}{4}}
+\end{align*}
+
+Next, substitute both $w$ and $\bar{t}$ into equation:
+
+\begin{align*}
+  z &= \Big(\frac{\sqrt{2}e^{\frac{i\pi}{4}}}{e^{\frac{-i4\pi}{3}}}\Big)^{\frac{1}{3}} \\
+    &= \big(\sqrt{2}e^{\frac{i\pi - (-3i\pi)}{4}}\big)^{\frac{1}{3}} \\
+    &= (\sqrt{2}e^{\pi})^{\frac{1}{3}} \\
+    &= \sqrt[2\times 3]{2}e^{i\pi \times \frac{1}{3}} \\
+    &= \sqrt[6]{2}e^{\frac{i\pi}{3}}
+\end{align*}
+
+Which is the reduced polar form.
+
+Now, let's verify:
+
+\lstset{language=Lisp,numbers=none}
+\begin{lstlisting}
+(expt
+ (/ (- 1 #c(0 -1))
+    (- (cos (/ (* 3 pi) 4))
+       (* #c(0 1) (sin (/ (* 3 pi) 4)))))
+      1/3)
+\end{lstlisting}
+
+\begin{verbatim}
+#C(0.5612310241546866d0 0.9720806486198328d0)
+\end{verbatim}
+
+\lstset{language=Lisp,numbers=none}
+\begin{lstlisting}
+(* (expt 2 1/6) (expt (exp 1) (* #c(0 1) (/ pi 3))))
+\end{lstlisting}
+
+\begin{verbatim}
+#C(0.5612310480260124d0 0.9720806185750182d0)
+\end{verbatim}
+
+By fundamental theorem of algebra, this equation must have two more results.
+So, the general solution to this equation must be given by
+
+\begin{align*}
+  z &= \sqrt[6]{2}e^{\frac{i\pi+2\pi K}{3}}
+\end{align*}
+
+Where $k=1,2,3$. \emph{(this is probably wrong)}
+\subsubsection{Answer 2}
+\label{sec-1-1-2}
+Unfortunately, the conjecture is false, thus no proof is possible.  For example,
+for the case $n=2$, it gives $z^2=1$ with two roots: $z=1$ and $z=-1$, where
+$1 \times (-1) = -1$.
+
+However, with some refinements, it is possible to prove this conjecture for
+all non-real roots, to do so let $a_i$, $i=1...n$ be the solution of $z^n-1=0$.
+Then:
+
+\begin{equation*}
+  z - 1^n = (z - a_1)(z - a_2)...(z - a_n)
+\end{equation*}
+
+After we open parenthesis and multiply the terms, we will get:
+
+\begin{equation*}
+  (-1)^n a_1...a_n
+\end{equation*}
+
+When we equate the coefficients, we get that:
+
+\begin{equation*}
+  a_1...a_n = (-1)^{n+1}
+\end{equation*}
+
+Now, observe that one $n$ is odd, then the only real solution is 1, then
+the rest of the solutions would give us $(-1)^{n+1} = 1$.  And when $n$
+is even, we will have two real solutions: 1 and $-1$. Then the product of
+all non-real solutions would be: $\frac{(-1)^{n+1}}{-1} = 1$.
+\subsection{Problem 2}
+\label{sec-1-2}
+Given $A = \{(x,1)|x \in \mathbb{R}\}$ is a subset of $\mathbb{R}^2$ and
+operations over $A$ defined as follows:
+
+\begin{itemize}
+\item Addition, $\oplus$: 
+     $\forall x, y \in \mathbb{R}: (x,1)\oplus(y,1) = (x+y,1)$.
+\item Multiplication by scalar, $\odot$:
+     $\forall k, y \in \mathbb{R}: k \odot (x,1) = (k^2x,1)$.
+\item Multiplication, $*$:
+     $\forall x, y \in \mathbb{R}: (x,1)*(y,1) = (x*y,1)$.
+\end{itemize}
+
+
+\begin{enumerate}
+\item Is $(A, \oplus, \odot)$ a vector space over $\mathbb{R}$?
+\item Is $(A, \oplus, *)$ a field?
+\end{enumerate}
+
+\subsubsection{Answer 3}
+\label{sec-1-2-1}
+No, $(A, \oplus, \odot)$ is not a vector space over $\mathbb{R}$.  One of
+requirements of a vector field is that multiplication with scalar give
+a \emph{unique} solution in $A$, while every pair of any member of $A$ and
+its additive inverse violates this requirement, for instance:
+
+\begin{equation*}
+  -1\odot(x,1)=((-1)^2x,1)=(x,1)=(1^2x,1)=1\odot(x,1)
+\end{equation*}
+
+\begin{enumerate}
+\item Vector addition is commutative:
+\begin{equation*}
+  (x,1)+(y,1)=(x+y,1)=(y+x,1)=(y,1)+(x,1)
+\end{equation*}
+\end{enumerate}
+
+
+\begin{enumerate}
+\item Vector addition is associative:
+\begin{equation*}
+  (x,1)+((y,1)+(z,1))=(x,1)+(y+z,1)=(x+y+z,1)=(x+y,1)+(z,1)
+\end{equation*}
+\end{enumerate}
+
+
+\begin{enumerate}
+\item There exists additive identity $0$:
+As the previous two, this follows from addition in $\mathbb{R}$ having
+additive identity.
+
+\item 1 is the multiplicative idenity:
+Since $1^2=1$, we can reuse the multiplicative identity defined on reals.
+
+\item Every element has an additive inverse:
+Again, we are using the addition in real numbers, so we are guaranteed to
+have additive inverses for every such number.
+
+\item Scalar multiplication is associative:
+\begin{equation*}
+  r(k\odot(x,1))=r(k^2x,1)=(r^2k^2x,1)=((rk)^2x,1)=(rk)(x,1)
+\end{equation*}
+\end{enumerate}
+
+
+\begin{enumerate}
+\item Scalar multiplication is distributive:
+\begin{equation*}
+  k\odot((x,1)+(y,1))=k\odot(x+y,1)=(k^2(x+y),1)=(k^2x,1)+(k^2y,1)=k\odot(x,1)+k\odot(y,1)
+\end{equation*}
+\end{enumerate}
+\subsection{Problem 3}
+\label{sec-1-3}
+\begin{enumerate}
+\item Establish which of the given sets are linear vector fields over $\mathbb{F}$
+under normal \emph{(what is considered ``normal'' addition of tuples of complex}
+\emph{numbers?)} operations.
+
+\begin{itemize}
+\item $U = \{ (z, w) \in \mathbb{C}^2 \; | \; 2z = 3w \}$, $\mathbb{F} = \mathbb{C}$.
+\item $W = \{ f : \mathbb{R} \to \mathbb{R} \; | \; f(x + 1) = f(x) + 1, x \in \mathbb{R} \}$,
+        $\mathbb{F} = \mathbb{R}$.
+\item $M = \{ p(x) \in \mathbb{R}^4[x] \; | \; p(x) = p(x - 1) \}$, 
+        $\mathbb{F} = \mathbb{R}$.
+\item $S = \Bigg \{ \begin{bmatrix}a &b \\ c &d\end{bmatrix} \in M_2(\mathbb{R}) \; | \; ad = 0 \Bigg \}$,
+        $\mathbb{F} = \mathbb{R}$.
+\end{itemize}
+
+\item For every vector space found, write its finite spanning set.
+\end{enumerate}
+
+\subsubsection{Answer 4}
+\label{sec-1-3-1}
+$U$ is a vector space, assuming addition is point-wise.  Addition properties
+follow from the same properties of addition of complex numbers.  Similarly
+for multiplication with field's identity element and multiplicatin by scalar.
+
+$W$ is certainly not a vector space.  Put $f(0) = -3$, then $f(1) = -2$ and
+$f(2) = -1$.  Now $4 \times f(1 + 2) = 4 \times f(3) = 4 \times 0 = 0$, while
+$4 \times f(1) + 4 \times f(2) = 4 \times -2 + 4 \times -1 = -8 - 4 = -12$.
+Clearly $-12 \neq 0$.
+
+$M$ is a vector space since.  To see this let's first eamine what kinds of
+polinomials are represented by $W$:
+
+First, let's find the zero polinomial.  Looking at $p(1)$ would be also
+interesting because it will immediately show what kinds of polinomials are
+possible in this field.
+
+\begin{equation*}
+  \begin{split}
+    p(0)=\alpha_0 + \alpha_1 \times 0 + \alpha_2 \times 0^2 + \alpha_2 \times 0^3 \\
+    p(1)=\alpha_0 + \alpha_1 \times 1 + \alpha_2 \times 1^2 + \alpha_2 \times 1^3
+  \end{split}
+\end{equation*}
+
+
+Which, in turn implies that since $p(1)=p(1-1)=p(0)$, only the constant term of
+these two polinomials matters, in other words, $p(0)=\alpha_0=p(1)$ implies
+that other terms of these polinomials must be zero.
+
+This leaves us with polinomials of the form $p(x)=\alpha_0$, adding such
+polinomials will be equivalent to addition defined for real numbers, same goes
+for multiplication.
+
+$S$ is not a vector space.  Adding any two matrices where $a \neq d$ and $a' \neq a$
+would give us a matrix where both $a$ and $d$ are non-zero, producing a matrix
+outside the valid range.
+\subsubsection{Answer 5}
+\label{sec-1-3-2}
+
+\begin{enumerate}
+\item Example spanning set for $U$ would be $Sp(i, \frac{3}{2}i)$.
+\item Example spanning set for $M$ would be $Sp(p(x)=1)$.
+\end{enumerate}
+\subsection{Problem 4}
+\label{sec-1-4}
+\begin{enumerate}
+\item Let $\vec{u}$, $\vec{v}$ and $\vec{w}$ be vectors in linear vector field $V$
+over $\mathbb{F}$.  Does it then hold that:
+$Sp \{u, v, w\} = Sp \{u + v - w, u - v + 2w, v + w\}$?
+\item Let $U = Sp \{ (1, 2, 5), (1, 1, 3)\}$ and $W = Sp \{ (1, 0, 1), (0, 1, 1)\}$.
+Are $U = W$?
+\end{enumerate}
+
+\subsubsection{Answer 6}
+\label{sec-1-4-1}
+Let's equate two expressions and try to see if equality holds:
+
+\begin{tabular}{lll}
+  u+v+w&=&\lambda_0(u+v-w)+\lambda_1(u-v+2w)+\lambda_2(v+w) \\
+  &=&u(\lambda_0+\lambda_1)+v(\lambda_0-\lambda_1+\lambda_2)+
+  w(-\lambda_0+2\lambda_1+\lambda_2)
+\end{tabular}
+
+From here we can already see that we can make coefficients arbitrary large.
+In other words, the coefficients of the vectors are linearly independant:
+
+\begin{equation*}
+  \begin{bmatrix}
+    1 & 1 & -1 \\
+    1 & -1 & 2 \\
+    0 & 1 & 1 \\
+  \end{bmatrix}
+  \to
+  \begin{bmatrix}
+    1 & 1 & -1 \\
+    0 & 1 & 1 \\
+    1 & -1 & 2 \\
+  \end{bmatrix}
+  \to
+  \begin{bmatrix}
+    1 & 1 & -1 \\
+    0 & 1 & 1 \\
+    0 & -2 & 3 \\
+  \end{bmatrix}
+  \to
+  \begin{bmatrix}
+    1 & 1 & -1 \\
+    0 & 1 & 1 \\
+    0 & 0 & 5 \\
+  \end{bmatrix}
+\end{equation*}
+
+Since every column of this matrix has a pivot, the vectors represented by
+its columns are linearly independent.  Hence, both spans are quivalent.
+\subsubsection{Answer 7}
+\label{sec-1-4-2}
+Assuming equality of spanning sets means that its the spaces spanned by them
+must be equal and not the spanning sets themselves (otherwise the answer
+would be obviously negative).  In order to find out whether the span of the
+space is the same, we could adjoin a vecotr from one set to the vectors from
+another set and see if we obtain linearly dependant set.  If the set is
+linearly dependent, it would mean that the vector from another set may be
+generated from the first set, and if this is true for all vectors in the
+other set, then it would mean that two spans are the same.  However, knowing
+that a vector from a spanning set cannot be generated by applying elementary
+operations to the set of vectors, we would know that it is not possible to
+generate it using the spanning set, thus they must be different.
+
+We will adjoin (1, 0, 1), (0, 1, 1) and (1, 1, 3):
+
+\begin{equation*}
+  \begin{bmatrix}
+    1 & 0 & 1 \\
+    0 & 1 & 1 \\
+    1 & 1 & 3 \\
+  \end{bmatrix}
+  \begin{aligned} \to \end{aligned}
+  \begin{bmatrix}
+    1 & 0 & 1 \\
+    0 & 1 & 1 \\
+    0 & 1 & 2 \\
+  \end{bmatrix}
+  \begin{aligned} \to \end{aligned}
+  \begin{bmatrix}
+    1 & 0 & 1 \\
+    0 & 1 & 1 \\
+    0 & 0 & 1 \\
+  \end{bmatrix}
+\end{equation*}
+
+Since the rank of this matrix is 3, it represents a linearly independent
+combination of vectors, hence $U \neq W$.
+\subsection{Problem 5}
+\label{sec-1-5}
+Let $U$ and $W$ be sub-spaces of the linear vector space $V$ s.t. $U \oplus W = V$.
+Let $S \subseteq U$ and $T \subseteq W$ be two finite linearly independent sets.
+Prove that $S \cup T$ is linearly independent.
+
+\subsubsection{Answer 8}
+\label{sec-1-5-1}
+Since we know that $S$ and $T$ are both linearly independant, they are also spans,
+they either span the entire subspace, from which they are taken, or a subspace of
+that subspace.  Now, suppose their union was linearly dependant, this, would also
+imply that the subspaces from which they were taken had common members other than
+the zero vector (those would be exactly the vectors that must have been common
+to the union of $S$ and $T$.  Since by the definition of direct sum this is not
+possible, it must be that union of $S$ and $T$ is linearly independant.
+% Emacs 25.0.50.1 (Org mode 8.2.2)
+\end{document}
