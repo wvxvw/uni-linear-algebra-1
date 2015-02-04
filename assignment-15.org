@@ -1,0 +1,218 @@
+# -*- fill-column: 80; org-confirm-babel-evaluate: nil -*-
+
+#+TITLE:     Assignment 15, Linear Algebra 1
+#+AUTHOR:    Oleg Sivokon
+#+EMAIL:     olegsivokon@gmail.com
+#+DATE:      <2015-01-24 Sat>
+#+Description: Fourth asssignment in the course Linear Algebra 1
+#+KEYWORDS: Assignment, Linear Algebra
+#+LANGUAGE: en
+#+LaTeX_CLASS: article
+#+LaTeX_CLASS_OPTIONS: [fleqn]
+#+LATEX_HEADER: \usepackage[usenames,dvipsnames]{color}
+#+LATEX_HEADER: \usepackage{a4wide}
+#+LATEX_HEADER: \usepackage[backend=bibtex, style=numeric]{biblatex}
+#+LATEX_HEADER: \usepackage{commath}
+#+LATEX_HEADER: \usepackage{tikz}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usetikzlibrary{shapes,backgrounds}
+#+LATEX_HEADER: \usepackage{marginnote}
+#+LATEX_HEADER: \usepackage{enumerate}
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \hypersetup{urlcolor=blue}
+#+LATEX_HEADER: \hypersetup{colorlinks,urlcolor=blue}
+#+LATEX_HEADER: \addbibresource{bibliography.bib}
+#+LATEX_HEADER: \setlength{\parskip}{16pt plus 2pt minus 2pt}
+#+LATEX_HEADER: \definecolor{codebg}{rgb}{0.96,0.99,0.8}
+#+LATEX_HEADER: \DeclareMathOperator{\Sp}{Sp}
+#+LATEX_HEADER: \DeclareMathOperator{\Solutions}{P}
+#+LATEX_HEADER: \DeclareMathOperator{\Dim}{dim}
+#+LATEX_HEADER: \DeclareMathOperator{\Image}{Im}
+#+LATEX_HEADER: \DeclareMathOperator{\Ker}{Ker}
+
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./css/style.css"/>
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css"/>
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="./css/icfp.css"/>
+
+#+BEGIN_SRC emacs-lisp :exports none
+(setq org-latex-pdf-process
+        '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -bibtex -f %f")
+        org-latex-listings t
+        org-src-fontify-natively t
+        org-babel-latex-htlatex "htlatex")
+(defmacro by-backend (&rest body)
+    `(cl-case (when (boundp 'backend) (org-export-backend-name backend))
+       ,@body))
+#+END_SRC
+
+#+RESULTS:
+: by-backend
+
+#+BEGIN_LATEX
+  \lstset{ %
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\scriptsize,
+    breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+    breaklines=false,
+    captionpos=b,                    % sets the caption-position to bottom
+    commentstyle=\color{mygreen},    % comment style
+    framexleftmargin=10pt,
+    xleftmargin=10pt,
+    framerule=0pt,
+    frame=tb,                        % adds a frame around the code
+    keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+    keywordstyle=\color{blue},       % keyword style
+    showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+    showstringspaces=false,          % underline spaces within strings only
+    showtabs=false,                  % show tabs within strings adding particular underscores
+    stringstyle=\color{codestr},     % string literal style
+    tabsize=2,                       % sets default tabsize to 2 spaces
+  }
+#+END_LATEX
+
+@@latex: \clearpage@@
+
+* Problems
+
+** Problem 1
+
+   Check whether the following transformations are linear:
+
+   1. $T_1 : \mathbb{R}^2 \to \mathbb{R}^2, T_1(x, y)=(\sin{x}, y)$.
+   2. $T_2 : \mathbb{R} \to \mathbb{R}, T_2(x)=\abs{x}$.
+   3. $T_3 : \mathbb{R}[x] \to \mathbb{R}[x], T_3(p(x))=(x+1)p'(x)-p(x)$.
+        
+*** Answers 1, 2, 3
+    1. $T_1$ is not a linear transformation because it is not a bijection: it will
+       send any multiple of $\pi$ to the same value in the image.
+    2. $T_2$ is not a linear transformation by the same reasoning: it fails to be
+       a bijection because it will send every value in the domain and its multiple
+       with $-1$ to the same value in the image.
+    3. $T_3$, if I understood it correctly (there was a typo in the assignment
+       description---a missing parenthesis), is indeed a linear transformation:
+       the derivative (I believe that $p'$ is a first order derivative, but it 
+       could be anything else really as long as it's some kind of polynomial of
+       a finite degree) will be dominated by the polynomial of which it is a 
+       derivative, else it will be some finite order polynomial, in which case it
+       is still possible to find a bijectin and a total function.
+
+** Problem 2
+   Does there exist a linear non-zero transformation $T:\mathbb{R}^3\to\mathbb{R}^3$
+   such that $T(1,0,1)=T(1,2,1)=T(0,1,1)=T(2,3,3)$?  Prove an example if exists,
+   else explain in detail why it doesn't.
+
+*** Answer 4
+    No, such transformation doesn't exist.  The easiest way to see why is by
+    attempting to construct one.  In order to do so, let's give names to the
+    elements of the first row of the matrix representing the transformation $T$.
+    /(We will only need the first row because the same equation will be obtained/
+    /by multiplying any row of the matrix with a vector)/.  Hence, to reduce
+    the verbosity of the proof, let $a,b,c$ be the elements of the first row of
+    $T$.  Then $T(1,0,1)_1=a+c$ /(I will use subscripts to denote the elements/
+    /within vectors)/.  Other elements of the vector $T(1,0,1)$ will be, similarly,
+    the sums of the first and the last elements of the consequent rows of $T$.
+
+    Similarly, we find that $T(1,2,1)_1=a+2b+c$, $T(0,1,1)_1=b+c$,
+    $T(2,3,3)_1=2a+3b+3c$.  Now, since we know that the vectors are equal (from
+    the given), we may equate them.  Thus obtains:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        a+c      &= a+2b+c \\
+        a+c      &= b+c \\
+        2a+3b+3c &= a+2b+c
+      \end{align*}
+    #+END_SRC
+
+    solving these two equations gives us that $a=b$ and $2b=0$, hence $b=0$,
+    then, $a+b+2c=0$, which then gives $2c=0$, hence $c=0$.  In other words
+    the only transformation which satisfies the given condition is the
+    transformation, where all elements of the matrix representing it are zeros.
+
+** Problem 3
+   Given $\{v_1, v_2, \ldots, v_k\}$ is a linearly independent group in linear
+   vector space $V$.  Provided $T:V\to V$ prove or disprove:
+
+   1. If $\{T(v_1), T(v_2), \ldots, T(v_3)\}$ is linearly independent, then
+      $\Dim(\Image(T))=k$.
+   2. If $\{T(v_1), T(v_2), \ldots, T(v_3)\}$ spans $V$, then $\dim{V}=k$.
+
+*** Answer 5
+    This is not necessarily true.  There could be some other vector, let's call
+    it $v_{k+1} \in V$, linearly independent from
+    $\{T(v_1), T(v_2), \ldots, T(v_3)\}$ and yet $T(v_{k+1}) \in V$.  Let, for the
+    sake of simplicity, choose $k=2$ and $V=\Sp\{e_1,e_2,e_3\}$, where $e_i$ are
+    the vectors from the standard basis, $T$ would be the identity transformation.
+
+    It is easy to see that $T$ will send all $\{e_1,e_2,e_3\}$ back to themselves,
+    thus $\Dim(\Image(T))=3$, yet was assumed to be 2.  This completes the proof.
+
+*** Answer 6
+    First, observe that $k$ cannot be smaller than $\Dim{V}$, because the span
+    generated by $T$ will be at least the basis of $V$, and basis needs to have the
+    same dimension as the space of which it is a basis.  The domain of $T$ is also
+    given as linearly independant.  In other words, the dimension of its span
+    cannot be larger than that of $V$.  Since $T$ is a function, it cannot assign
+    more than one element in its image to an element in its domain.  Thus, the only
+    possible way this transformation could have the given properties is if it was
+    an injection, and this would mean that its domain can have at most $k$ linearly
+    independent vectors in it, hence $k=\dim{V}$.
+
+** Problem 4
+   Given
+   #+HEADER: :exports results
+   #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+   #+BEGIN_SRC latex
+     \begin{equation*}
+       A =
+       \begin{bmatrix}
+          1 & -2 & -2 \\
+          2 & -1 &  5 \\
+         -2 &  3 &  1 
+       \end{bmatrix}
+     \end{equation*}
+   #+END_SRC
+   And linear transformation $T:\textbf{M}^{\mathbb{R}}_{3 \times 3}
+   \to\textbf{M}^{\mathbb{R}}_{3 \times 3}$ defined as $T(X)=AX$ for all
+   $X \in \textbf{M}^{\mathbb{R}}_{3 \times 3}$.
+   Let $T_A:\mathbb{R}^3\to\mathbb{R}^3$ be the matrix defined using $A$, in other
+   words $\forall x \in \mathbb{R}^3 : T_A(x)=Ax$.
+
+   1. Find basis for $\Ker{T_A}$ and $\Image{T_A}$.
+   2. Prove that $T$ is not invertible.
+   3. Find basis for $\Ker{T}$ and $\Image{T}$.
+   4. Prove that if $Y \in \Image{T}$, then $\rho(Y) \leq \Dim(\Image(T_A))$.
+   5. Prove that if $Y \in \Ker{T}$, then $\rho(Y) \leq \Dim(\Ker(T_A))$.
+
+** Problem 5
+   Let $T:\mathbb{R}^4\to\mathbb{R}^4$ be a linear transformation such that
+   $\Dim(\Ker(T))>\Dim(\Image(T))$ and the matrix representing the transformation
+   $T$ with the basis $B=((1,1,1,1),(1,1,1,0),(1,1,0,0),(1,0,0,0))$ is given
+   by:
+   #+HEADER: :exports results
+   #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+   #+BEGIN_SRC latex
+     \begin{equation*}
+       [T]_B =
+       \begin{bmatrix}
+         1 & 2 & 3 & 4 \\
+         1 & a_1 & b_1 & c_1 \\
+         1 & a_2 & b_2 & c_2 \\
+         1 & a_3 & b_3 & c_3
+       \end{bmatrix}
+     \end{equation*}
+   #+END_SRC
+
+   1. Find $a_i,b_i,c_i$ for $1 \leq i \leq 3$.
+   2. Find basis of $\Image{T}$ and $\Ker{T}$.
+
+** Problem 6
+   1. Let $V$ be a finitely generated vector space and $T:V\to V$ a linear 
+      transformation.  Prove that if $T$ is not an isomorphism, then there
+      exists a baisis $B$ in $V$ such that $[T]_B$ is a matrix with a column of
+      zeros.
+   2. Prove that if $A$ is singular, then $A$ is similar to a matrix with a
+      column of zeros.

@@ -1,0 +1,140 @@
+# -*- fill-column: 80; org-confirm-babel-evaluate: nil -*-
+
+#+TITLE:     Assignment 16, Linear Algebra 1
+#+AUTHOR:    Oleg Sivokon
+#+EMAIL:     olegsivokon@gmail.com
+#+DATE:      <2015-02-04 Wed>
+#+Description: Fourth asssignment in the course Linear Algebra 1
+#+KEYWORDS: Assignment, Linear Algebra
+#+LANGUAGE: en
+#+LaTeX_CLASS: article
+#+LaTeX_CLASS_OPTIONS: [fleqn]
+#+LATEX_HEADER: \usepackage[usenames,dvipsnames]{color}
+#+LATEX_HEADER: \usepackage{a4wide}
+#+LATEX_HEADER: \usepackage[backend=bibtex, style=numeric]{biblatex}
+#+LATEX_HEADER: \usepackage{commath}
+#+LATEX_HEADER: \usepackage{tikz}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usetikzlibrary{shapes,backgrounds}
+#+LATEX_HEADER: \usepackage{marginnote}
+#+LATEX_HEADER: \usepackage{enumerate}
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \hypersetup{urlcolor=blue}
+#+LATEX_HEADER: \hypersetup{colorlinks,urlcolor=blue}
+#+LATEX_HEADER: \addbibresource{bibliography.bib}
+#+LATEX_HEADER: \setlength{\parskip}{16pt plus 2pt minus 2pt}
+#+LATEX_HEADER: \definecolor{codebg}{rgb}{0.96,0.99,0.8}
+#+LATEX_HEADER: \DeclareMathOperator{\Sp}{Sp}
+#+LATEX_HEADER: \DeclareMathOperator{\Trace}{tr}
+#+LATEX_HEADER: \DeclareMathOperator{\Solutions}{P}
+#+LATEX_HEADER: \DeclareMathOperator{\Dim}{dim}
+#+LATEX_HEADER: \DeclareMathOperator{\Image}{Im}
+#+LATEX_HEADER: \DeclareMathOperator{\Ker}{Ker}
+
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./css/style.css"/>
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css"/>
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="./css/icfp.css"/>
+
+#+BEGIN_SRC emacs-lisp :exports none
+(setq org-latex-pdf-process
+        '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -bibtex -f %f")
+        org-latex-listings t
+        org-src-fontify-natively t
+        org-babel-latex-htlatex "htlatex")
+(defmacro by-backend (&rest body)
+    `(cl-case (when (boundp 'backend) (org-export-backend-name backend))
+       ,@body))
+#+END_SRC
+
+#+RESULTS:
+: by-backend
+
+#+BEGIN_LATEX
+  \lstset{ %
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\scriptsize,
+    breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+    breaklines=false,
+    captionpos=b,                    % sets the caption-position to bottom
+    commentstyle=\color{mygreen},    % comment style
+    framexleftmargin=10pt,
+    xleftmargin=10pt,
+    framerule=0pt,
+    frame=tb,                        % adds a frame around the code
+    keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+    keywordstyle=\color{blue},       % keyword style
+    showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+    showstringspaces=false,          % underline spaces within strings only
+    showtabs=false,                  % show tabs within strings adding particular underscores
+    stringstyle=\color{codestr},     % string literal style
+    tabsize=2,                       % sets default tabsize to 2 spaces
+  }
+#+END_LATEX
+
+@@latex: \clearpage@@
+
+* Problems
+
+** Problem 1
+
+   Given the matrix:
+   #+HEADER: :exports results
+   #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+   #+BEGIN_SRC latex
+     \begin{equation*}
+       A = \begin{pmatrix}
+         0 & a & 1 \\
+         a & 0 & -1 \\
+         0 & 0 & a \\
+       \end{pmatrix}
+     \end{equation*}
+   #+END_SRC
+   $a$ being a real number.
+
+   1. What are the values of $a$ that make this matrix diagonalisable?
+   2. Put $a=1$, find diagonal matrix $D$ and invertible matrix $P$ such that
+      $D=A^{-1}PA$.
+        
+*** Answers 1
+    
+
+** Problem 2
+   1. Prove that there doesn't exist a $3\times 3$ matrix with a characteristic
+      polynomial $p(x)=x^7-x^5+x^3$.
+   2. Let $T : \mathbb{R}^2 \to \mathbb{R}^2$ be a linear transformation with
+      characteristic polynomial $p(x)=x^2+2x-3$.
+      1. Porve that linear mapping $2T+I$ is an isomorphism.
+      2. What is the characteristic polynomial of $T^3$.
+   3. Let $A$ be a $5 \times 5$ matrix such that $\Trace(A) = 0$ and $\rho(A)=1$.
+      Find all eigenvalues of $A$.
+
+*** Answer 4
+
+** Problem 3
+   Prove or disprove (by providing an example) each one of the following:
+   1. If two matrices $A$ and $B$ share characteristic polynomial, then their
+      rank is the same.
+   2. Put $m>1$, $m$ being a real number. If $A^m=0$, then 0 is the *only*
+      eigenvalue of $A$.
+   3. Matrices: $A=\begin{pmatrix}2 & -\sqrt{3} \\ -\sqrt{3} & 2\end{pmatrix}$
+      and $A=\begin{pmatrix}1 & 0 \\ 0 & -1\end{pmatrix}$ are similar.
+   4. Matrices: $C=\begin{pmatrix}1 & 1 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{pmatrix}$
+      and $D=\begin{pmatrix}1 & 1 & 0 \\ 0 & 1 & 1 \\ 0 & 0 & 1\end{pmatrix}$
+      are similar.
+      
+*** Answer 5
+
+** Problem 4
+   Let $\vec{u}, \vec{v}$ be vectors distinct from $\vec{0}$ in $\mathbb{R}^n$.
+   Given that $\vec{u}$ is orthogonal to $\vec{v}$ and $\norm{u}=\norm{v}$.
+   Find all values of the real number $a$ such that $\vec{u}a+\vec{v}$ is
+   orthogonal to $\vec{v}a+\vec{u}$.
+
+** Problem 5
+   Let $U_1$ and $U_2$ be subspaces of $\mathbb{R}^n$.
+   1. Let $\mathbb{R}^n=U_1\oplus U_2$, prove that 
+      $U_1^{\bot}\cap U_2^{\bot}=\{\vec{0}\}$ and 
+      $\mathbb{R}^n=U_1^{\bot}\oplus U_2^{\bot}$.
+   2. Let $U_1+U_2=\mathbb{R}^n$, does it follow that 
+      $\mathbb{R}^n=U_1^{\bot}+U_2^{\bot}$?

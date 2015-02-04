@@ -25,3 +25,7 @@
 *.fls
 *.run.xml
 /.directory
+/assignment-11a_flymake.aux
+/assignment-11a_flymake.log
+/assignment-11a_flymake.out
+/assignment-11a_flymake.toc
