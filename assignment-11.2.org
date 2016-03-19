@@ -1,0 +1,883 @@
+# -*- fill-column: 80; org-confirm-babel-evaluate: nil -*-
+
+#+TITLE:     Assignment 11, Linear Algebra 1
+#+AUTHOR:    Oleg Sivokon
+#+EMAIL:     olegsivokon@gmail.com
+#+DATE:      <2016-02-27 Sat>
+#+DESCRIPTION: First asssignment in the course Linear Algebra 1
+#+KEYWORDS: Assignment, Linear Algebra
+#+LANGUAGE: en
+#+LaTeX_CLASS: article
+#+LATEX_HEADER: \usepackage[usenames,dvipsnames]{color}
+#+LATEX_HEADER: \usepackage{a4wide}
+#+LATEX_HEADER: \usepackage{commath}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{marginnote}
+#+LATEX_HEADER: \usepackage{enumerate}
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \hypersetup{urlcolor=blue}
+#+LATEX_HEADER: \hypersetup{colorlinks,urlcolor=blue}
+#+LATEX_HEADER: \setlength{\parskip}{16pt plus 2pt minus 2pt}
+#+LATEX_HEADER: \definecolor{codebg}{rgb}{0.96,0.99,0.8}
+
+#+BEGIN_SRC emacs-lisp :exports none
+  (setq org-latex-pdf-process
+          '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -f %f")
+          ;; org-latex-listings t
+          org-src-fontify-natively t
+          ;; org-latex-custom-lang-environments '((maxima "maxima"))
+          ;; org-listings-escape-inside '("(*@" . "@*)")
+          ;; org-babel-latex-htlatex "htlatex"
+          )
+
+    (defmacro by-backend (&rest body)
+      `(progn
+         (cl-case org-export-current-backend ,@body)))
+#+END_SRC
+
+#+RESULTS:
+: by-backend
+
+#+BEGIN_LATEX
+\definecolor{codebg}{rgb}{0.96,0.99,0.8}
+\lstnewenvironment{maxima}{%
+  \lstset{backgroundcolor=\color{codebg},
+    frame=single,
+    framerule=0pt,
+    basicstyle=\ttfamily\scriptsize,
+    columns=fixed}}{}
+}
+\makeatletter
+\newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
+\makeatother
+\verbatimfont{\small}%
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+\clearpage
+#+END_LATEX
+
+* Problems
+
+** Problem 1
+   Solve given systems of linear equations:
+
+   #+HEADER: :exports results
+   #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+   #+BEGIN_SRC latex
+     \begin{equation*}
+       \left.
+         \begin{alignedat}{4}
+           & 2x & {}-{} & y  & {}+{} & 4z & {}={} & 1 \\
+           &  x & {}+{} & 2y & {}-{} & 3z & {}={} & 6 \\
+           &  x & {}-{} & y  & {}+{} &  z & {}={} & 3
+         \end{alignedat}
+         \quad \right\} \qquad
+       \begin{aligned}
+         x,y,z \in \mathbb{R}
+       \end{aligned}
+     \end{equation*}
+   #+END_SRC
+
+   #+HEADER: :exports results
+   #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+   #+BEGIN_SRC latex
+     \begin{equation*}
+       \left.
+         \begin{alignedat}{5}
+           & 2x & {}+{} & 2y & {}+{} & 8z & {}+{} & w   & {}={} & 0 \\
+           & 3x & {}+{} & 3y & {}+{} & 3z & {}+{} & 13w & {}={} & 0 \\
+           & 2x & {}+{} & 2y & {}+{} & 4z & {}+{} & 3w  & {}={} & 0
+         \end{alignedat}
+         \quad \right\} \qquad
+       \begin{aligned}
+         x,y,z,w \in \mathbb{R}
+       \end{aligned}
+     \end{equation*}
+   #+END_SRC
+
+   Which variables are bound, which are free?
+
+*** Answer 1
+
+    #+NAME: prob1
+    #+HEADER: :exports both
+    #+BEGIN_SRC maxima :results output
+      programmode: false;
+      linsystem: [  2*x -   y + 4*z = 1,
+                      x + 2*y - 3*z = 6,
+                      x -   y +   z = 3];
+      print(linsolve(linsystem, [x, y, z]));
+    #+END_SRC
+
+    #+RESULTS: prob1
+    #+begin_example
+    Solution:
+                                            17
+                                        x = --
+                                            5
+                                              7
+                                        y = - -
+                                              5
+                                              9
+                                        z = - -
+                                              5
+    [%t1, %t2, %t3] 
+    #+end_example
+
+    First, we subtract third equation from the second in order to express $y$ in
+    terms of $z$:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+      (x + 2y - 3z) - (x - y + z) &= 6 - 3 \iff \\
+                          3y - 4z &= 3 \iff \\
+                                y &= \frac{3+4z}{3}\;.
+      \end{align*}
+    #+END_SRC
+
+    Next, we do the same for third and first equation to express $x$ in terms of
+    $z$:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+      (2x - y + 4z) - (x - y + z) &= 1 - 3 \iff \\
+                          x + 3z &= 2 \iff \\
+                                x &= -2 - 3z\;.
+      \end{align*}
+    #+END_SRC
+
+    Then we substitute $x$ and $y$ into the third equation:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+      -2 - 3z - \frac{3 + 4z}{3} + z &= 3 \iff \\
+              -2z - 1 - \frac{4}{3}z &= 5 \iff \\
+                      -\frac{10}{3}z &= 6 \iff \\
+                                   z &= -\frac{9}{5}\;.
+      \end{align*}
+    #+END_SRC
+
+    Similarly, we find $x = \frac{17}{5}$ and $y = -\frac{7}{5}$.
+
+    Substituting the results into original system gives:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \left.
+          \begin{alignedat}{4}
+            & 2\frac{17}{5} & {}-{} & -\frac{7}{5}  & {}+{} & -4\frac{9}{5} & {}={} & 1 \\
+            &  \frac{17}{5} & {}+{} & -2\frac{7}{5} & {}-{} & -3\frac{9}{5} & {}={} & 6 \\
+            &  \frac{17}{5} & {}-{} & -\frac{7}{5}  & {}+{} & -\frac{9}{5}  & {}={} & 3
+          \end{alignedat}
+          \quad \right\} &
+        \iff \\
+        \left.
+        \begin{alignedat}{4}
+          & 34 & {}+{} & 7  & {}-{} & 36 & {}={} & 5 \\
+          & 17 & {}-{} & 14 & {}+{} & 27 & {}={} & 30 \\
+          & 17 & {}+{} & 7  & {}-{} &  9 & {}={} & 15
+        \end{alignedat}
+        \quad \right\} & 
+        \iff \\
+        \left.
+        \begin{alignedat}{4}
+          & 5 & {}={} & 5 \\
+          & 30 & {}={} & 30 \\
+          & 15 & {}={} & 15
+        \end{alignedat}
+        \quad \right\} & \;.
+      \end{align*}
+    #+END_SRC
+
+    If we convert the given system to a matrix and bring the matrix to the
+    row-echelon form we get:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \begin{bmatrix}
+          2 & -1 & 4 \\
+          1 & 2  & -3 \\
+          1 & -1 & 1
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_3 = R_3 - R_2} \end{aligned}
+        \begin{bmatrix}
+          2 & -1 & 4 \\
+          1 & 2  & -3 \\
+          0 & -3 & 4
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_1 = R_1 - 2R_2} \end{aligned} \\
+        \begin{bmatrix}
+          0 & -3 & 10 \\
+          1 & 2  & -3 \\
+          0 & -3 & 4
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_1 = R_2, R_2 = R_1} \end{aligned}
+        \begin{bmatrix}
+          1 & 2  & -3 \\
+          0 & -3 & 10 \\
+          0 & -3 & 4
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_3 = R_3 - R_2} \end{aligned}
+        \begin{bmatrix}
+          1 & 2  & -3 \\
+          0 & -3 & 10 \\
+          0 & 0 & -6
+        \end{bmatrix}
+      \end{align*}
+    #+END_SRC
+
+    We can see that all columns have leading variables, thus there are no free
+    variables.
+
+*** Answer 2
+
+    #+NAME: prob2
+    #+HEADER: :exports both
+    #+BEGIN_SRC maxima :results output
+      programmode: false;
+      linsystem: [  2*x + 2*y + 8*z +    w = 0,
+                    3*x + 3*y + 3*z + 13*w = 0,
+                    2*x + 2*y + 4*z +  3*w = 0];
+      print(linsolve(linsystem, [x, y, z, w]));
+    #+END_SRC
+
+    #+RESULTS: prob2
+    : Solution:
+    :                                    x = - %r1
+    :                                      z = 0
+    :                                      w = 0
+    :                                     y = %r1
+    : [%t1, %t2, %t3, %t4] 
+
+    Similarly to the [[Answer 1]], we first express $w$ in terms of $z$:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+      2x + 2y + 8z + w - 2x - 2y - 4z - 3w &= 0 \iff \\
+      4z - 2w &= 0 \iff \\
+      w = &= 2z\;.
+      \end{align*}
+    #+END_SRC
+
+    Now we can rewrite the system as:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \left.
+          \begin{alignedat}{4}
+            & 2x & {}+{} & 2y & {}+{} & 10z & {}={} & 0 \\
+            & 3x & {}+{} & 3y & {}+{} & 29z & {}={} & 0 \\
+            & 2x & {}+{} & 2y & {}+{} & 10z & {}={} & 0
+          \end{alignedat}
+          \quad \right\} \qquad
+        \begin{aligned}
+          x,y,z \in \mathbb{R}
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+
+    which is essentially the same as:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{equation*}
+        \left.
+          \begin{alignedat}{4}
+            & 2x & {}+{} & 2y & {}+{} & 10z & {}={} & 0 \\
+            & 3x & {}+{} & 3y & {}+{} & 29z & {}={} & 0 
+          \end{alignedat}
+          \quad \right\} \qquad
+        \begin{aligned}
+          x,y,z \in \mathbb{R}
+        \end{aligned}
+      \end{equation*}
+    #+END_SRC
+
+    Expressing $x$ in terms of $y$ and $z$ gives:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        3x + 3y + 29z - 2x - 2y - 10z &= 0 \iff \\
+        x + y + 19z &= 0 \iff \\
+        x &= -y - 19z\;.
+      \end{align*}
+    #+END_SRC
+
+    Substituting it back into firxt equation to solve for $y$:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        3(-y - 19z) + 3y + 29z &= 0 \iff \\
+        3y - 3y - 57z + 29z &= 0 \iff \\
+        28z &= 0 \iff \\
+        z &= 0\;.
+      \end{align*}
+    #+END_SRC
+
+    Now we substitute this result back into our description of $x$, thus
+    obtaining:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+      x &= -y - 19 \times 0 \iff \\
+      x &= -y\;.
+      \end{align*}
+    #+END_SRC
+
+    Which is the solution for the given system of linear equations.
+
+    We'll bring the matrix corresponding to this system to the row-echelon form
+    to find the free and the bound variables.
+    
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \begin{bmatrix}
+          2 & 2 & 8 & 1 \\
+          3 & 3 & 3 & 13 \\
+          2 & 2 & 4 & 3
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_3 = R_3 - R_1} \end{aligned}
+        \begin{bmatrix}
+          2 & 2 & 8 & 1 \\
+          3 & 3 & 3 & 13 \\
+          0 & 0 & -4 & 2
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_2 = 2R_2} \end{aligned} \\
+        \begin{bmatrix}
+          2 & 2 & 8 & 1 \\
+          6 & 6 & 6 & 26 \\
+          0 & 0 & -4 & 2
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_2 = R_2 - 3R_1} \end{aligned}
+        \begin{bmatrix}
+          2 & 2 & 8   & 1 \\
+          0 & 0 & -18 & 23 \\
+          0 & 0 & -4  & 2
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_3 = 9R_3} \end{aligned} \\
+        \begin{bmatrix}
+          2 & 2 & 8   & 1 \\
+          0 & 0 & -18 & 23 \\
+          0 & 0 & -36  & 18
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_3 = R_3 - 2R_2} \end{aligned}
+        \begin{bmatrix}
+          2 & 2 & 8   & 1 \\
+          0 & 0 & -18 & 23 \\
+          0 & 0 & 0   & -28
+        \end{bmatrix}
+      \end{align*}
+    #+END_SRC
+
+    Since the second column doesn't have a pivot element, I conclude that $y$ is
+    free in this linear system, while the rest of the variables are bound.
+
+** Problem 2
+   
+   For the given system:
+
+   #+HEADER: :exports results
+   #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+   #+BEGIN_SRC latex
+     \begin{equation*}
+       \left.
+         \begin{alignedat}{4}
+           & x  & {}+{} & ay   & {}+{} & z & {}={} & 1 \\
+           & ax & {}+{} & a^2y & {}+{} & z & {}={} & 2+a \\
+           & ax & {}+{} & 3ay  & {}+{} & z & {}={} & 2-t
+         \end{alignedat}
+         \quad \right\} \qquad
+       \begin{aligned}
+         a,t,x,y,z \in \mathbb{R}
+       \end{aligned}
+     \end{equation*}
+   #+END_SRC
+
+   1. Find $a, t$ s.t. the system has a unique solution.
+   2. Find $a, t$ s.t. the system has infinitely many solutions.
+   3. Find $a, t$ s.t. the system has no solutions.
+
+*** Answer 3
+    We could first reduce the matrix representing this system to the row-echelon
+    form:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+     \begin{align*}
+       \begin{bmatrix}
+         1 & a   & 1 \\
+         a & a^2 & 1 \\
+         a & 3a  & a
+       \end{bmatrix}
+       \begin{aligned} \xrightarrow{R_3 = R_3 - R_2} \end{aligned}
+       \begin{bmatrix}
+         1 & a      & 1 \\
+         a & a^2    & 1 \\
+         0 & 3a-a^2 & a
+       \end{bmatrix}
+       \begin{aligned} \xrightarrow{R_2 = R_2 - aR_2} \end{aligned}
+       \begin{bmatrix}
+         1 & a      & 1 \\
+         0 & 0      & 1-a \\
+         0 & 3a-a^2 & a
+       \end{bmatrix}
+     \end{align*}
+    #+END_SRC
+
+    From which we conclude that whenever $1-a \neq 0$ and $3a-a^2 \neq 0$ there
+    would be a pivot element in every column, thus ensuring the system has
+    exactly one solution.
+
+    Second equation factors as $a(3-a)$, thus its roots are $a=0$ and $a=3$.
+    Subsequently, whenever $a \neq 1$ and $a \neq 0$ and $a \neq 3$ the system
+    has a unique solution.
+
+*** Answer 4
+    If we put $a = 3, t = -3$ then the system has infinitely many solutions since
+    the second and the third its equations become multiples of each other:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        3x + 3^2y + z &= 2+3 \\
+          &\textit{while, at the same time} \\
+        3x + 3 \times 3 + z &= 2-(-3) \\
+          &\textit{simplifying both parts} \\
+        3x + 9y + z &= 5 \\
+          &\textit{and} \\
+        3x + 9y + z &= 5\;.
+      \end{align*}
+    #+END_SRC
+
+*** Answer 5
+    It is easy to see that whenever $a = 1$, no matter the value of $t$, the
+    system is inconsistent:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        x + 1 \times y + z &= 1 \\
+          &\textit{while, at the same time} \\
+        1 \times x + 1^2y + z &= 2+1 \\
+          &\textit{subtracting both parts} \\
+        x + y + z - x - y - z &= 1 - 3 \iff \\
+        0 &= -2\;.
+      \end{align*}
+    #+END_SRC
+
+    Another case when the system becomes inconsisten is when $a = 0$ and $t \neq
+    0$, since the third and the second equations would become inconsistent:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        0x + 0^2y + z &= 2+0 \\
+          &\textit{while, at the same time} \\
+        0x + 3 \times 0 + z &= 2-t \\
+          &\textit{simplifying both parts} \\
+        z &= 2 \\
+          &\textit{and} \\
+        z &= 2-t\;.
+      \end{align*}
+    #+END_SRC
+
+** Problem 3
+   Given that vectors $\vec{v}=(4, -2, -2, 4)$ and $\vec{u}=(-2, 4, 4, -2)$ are
+   solutions to the system of linear equations $M$ with four unknowns.  Also
+   known that $(2, 2, 2, 2)$ isn't a solution of $M$.
+
+   1. Prove that the system isn't homogeneous.
+   2. Prove that $(0, 2, 2, 0)$ is also a solution of the system.
+
+*** Answer 6
+    Suppose, for contradiction, $M$ is homogeneous.  Then it must be the case
+    that any linear combination of $\vec{v}$ and $\vec{u}$ is also a solution
+    to the system.  In particular, $\vec{v}+\vec{u}$ is such a solution, but
+    $\vec{v}+\vec{u} = (2, 2, 2, 2)$, contrary to the given.
+
+    Hence, by contradiction, $M$ is not homogeneous.
+
+*** Answer 7
+    Since the set of all solutions to the linear system is closed under
+    multiplication by a scalar, it is possible that $\vec{v}$, $\vec{u}$, or
+    their linear combination multiplied by a scalar will result in $(0, 2, 2,
+    0)$, and indeed, $\frac{1}{3}(\vec{v}+2\vec{u})=(0, 2, 2, 0)$.
+
+    Hence, $(0, 2, 2, 0)$ is a solution of $M$.
+    
+** Problem 4
+   Let $\{\vec{u_1}, \vec{u_2}, \vec{u_3}, \vec{u_4}\}$ be a basis in $\mathbb{R}^4$.
+
+   #+HEADER: :exports results
+   #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+   #+BEGIN_SRC latex
+     \begin{align*}
+       \vec{v_1} &= k\vec{u_1} - \vec{u_3} + \vec{u_4} \\
+       \vec{v_2} &= \vec{u_1} + \vec{u_2} - \vec{u_4} \\
+       \vec{v_3} &= 4\vec{u_2} + k\vec{u_3} - 6\vec{u_4} \\
+       \textit{where}\; k \in \mathbb{R}
+     \end{align*}
+   #+END_SRC
+
+   1. For what values of $k$ vectors $\vec{v_1}$, $\vec{v_2}$, $\vec{v_3}$ are
+      linearly (in-)dependent?
+   2. Whenever the above vectors are linearly dependent, write $\vec{v_3}$ as a
+      combination of $\vec{v_1}$ and $\vec{v_2}$.
+   3. What are the values of $k$ for which the set $\{\vec{u_1}, \vec{u_2},
+      \vec{u_3}, \vec{v_1}, \vec{v_2}\}$ spans $\mathbb{R}^4$?
+
+*** Answer 8
+    Recall that matrix comprised of column vectors adjoined to the solution
+    vector (zero in our case) will have single solution if the vectors are
+    linearly independent.  Hence, represent the $\vec{v_i}$ first in terms of
+    $\vec{u_i}$, then in matrix form:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        a_1(k\vec{u_1} - \vec{u_3} + \vec{u_4}) +
+        a_2(\vec{u_1} + \vec{u_2} - \vec{u_4}) +
+        a_3(\vec{u_2} + k\vec{u_3} - 6\vec{u_4}) &= \vec{0} \iff \\
+        (a_1k + a_2)\vec{u_1} + 
+        (a_2 + 4a_3)\vec{u_2} + 
+        (ka_3 - a_1)\vec{u_3} + 
+        (a_1 - a_2 - 6a_3)\vec{u_4} &= \vec{0} \iff \\
+        \textit{has unique solution} &
+                                       \begin{bmatrix}
+                                         k  & 1  & 0 \\
+                                         0  & 1  & 4 \\
+                                         -1 & 0  & k \\
+                                         1  & -1 & -6
+                                       \end{bmatrix}
+      \end{align*}
+    #+END_SRC
+
+    It is important now to see what happens when $k=0$ since this will affect
+    the first pivot element:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \begin{bmatrix}
+          0  & 1  & 0 \\
+          0  & 1  & 4 \\
+          -1 & 0  & 0 \\
+          1  & -1 & -6
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_1 = R_4, R_4 = R_1} \end{aligned}
+        \begin{bmatrix}
+          1  & -1 & -6 \\
+          0  & 1  & 4 \\
+          -1 & 0  & 0 \\
+          0  & 1  & 0
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_3 = R_3 + R_1} \end{aligned}
+        \begin{bmatrix}
+          1  & -1 & -6 \\
+          0  & 1  & 4 \\
+          0  & -1 & -6 \\
+          0  & 1  & 0
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_3 = R_3 + R_2} \end{aligned} \\
+        \begin{bmatrix}
+          1  & -1 & -6 \\
+          0  & 1  & 4 \\
+          0  & 0  & -2 \\
+          0  & 1  & 0
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_4 = R_4 - R_2} \end{aligned}
+        \begin{bmatrix}
+          1  & -1 & -6 \\
+          0  & 1  & 4 \\
+          0  & 0  & -2 \\
+          0  & 0  & -4
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_4 = R_4 + 2R_3} \end{aligned}
+        \begin{bmatrix}
+          1  & -1 & -6 \\
+          0  & 1  & 4 \\
+          0  & 0  & -2 \\
+          0  & 0  & 0
+        \end{bmatrix}
+      \end{align*}
+    #+END_SRC
+
+    I.e. when $k = 0$, the system has unique solution.  Otherwise:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \begin{bmatrix}
+          k  & 1  & 0 \\
+          0  & 1  & 4 \\
+          -1 & 0  & k \\
+          1  & -1 & -6
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_3 = R_3 + R_4} \end{aligned}
+        \begin{bmatrix}
+          k & 1  & 0 \\
+          0 & 1  & 4 \\
+          0 & -1 & k-6 \\
+          1 & -1 & -6
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_4 = kR_4 - R_1} \end{aligned}
+        \begin{bmatrix}
+          k & 1    & 0 \\
+          0 & 1    & 4 \\
+          0 & -1   & k-6 \\
+          0 & -k-1 & -6
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_3 = R_3 + R_2} \end{aligned} \\
+        \begin{bmatrix}
+          k & 1    & 0 \\
+          0 & 1    & 4 \\
+          0 & 0    & k-2 \\
+          0 & -k-1 & -6
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_4 = R_4 + (k+1)R_2} \end{aligned}
+        \begin{bmatrix}
+          k & 1 & 0 \\
+          0 & 1 & 4 \\
+          0 & 0 & k-2 \\
+          0 & 0 & 4k-2 
+        \end{bmatrix}
+      \end{align*}
+    #+END_SRC
+
+    We can see that the third and fourth equations are equivalent, and the system
+    only has unique solution whenever $k \neq \frac{1}{2}$ and $k \neq 2$.
+
+*** Answer 9
+    In the way similar to the [[Answer 8]], we can write a system of symultaneous
+    equations:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \left.
+        \begin{alignedat}{3}
+          & kx_1 & {}+{} & x_2 & {}={} & 0 \\
+          &  &           & x_2 & {}={} & 4y \\
+          & -x_1 &       &     & {}={} & ky \\
+          & -x_1 & {}-{} & x_2 & {}={} & 6y
+        \end{alignedat} \quad \right\} \iff \\
+        -x_1 &= 6y + x_2 &\iff \\
+        ky   &= 6y + x_2 &\iff \\
+        (k + 6)y &= 4y &\iff \\
+        k + 6 &= 4 \lor y = 0 \\
+        &\texit{assume}\; y \neq 0 \\
+        k &= -2 \;.
+      \end{align*}
+    #+END_SRC
+
+    Verifying:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        -2x_1 + x_2 &=  0  \; \land \\
+        x_2         &= 4y  \; \land \\
+        -x_1        &= -2y \; \land \\
+        -x_1 - x_2  &= 6y \\
+        \textit{is consitent} \iff \\
+        x_1                   &= \frac{1}{2}x_2 \; \land \\
+        x_2                   &= 4y             \; \land \\
+        -\frac{1}{2}x_2       &= -2y            \; \land \\
+        -\frac{1}{2}x_2 - x_2 &= -\frac{3}{2}x_2 = 6y \;.
+      \end{align*}
+    #+END_SRC
+
+    Hence whenever $k = -2$, $y(v_1+v_2)=v_3$.
+
+*** Answer 10
+    Since $u_i$ are the basis, none of them is a linear combination of the
+    others.  Hence $v_1$ and $v_2$ must ``compensate'' for the loss of $u_4$.
+    In other words, whenever $u_4$ is a linear combination of $v_1$ and $v_2$,
+    the set $\{\vec{u_1}, \vec{u_2}, \vec{u_3}, \vec{v_1}, \vec{v_2}\}$ spans
+    $\mathbb{R}^4$.
+
+    More formally, whenever:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        a_1(k\vec{u_1} - \vec{u_3} + \vec{u_4}) +
+        a_2(\vec{u_1} + \vec{u_2} - \vec{u_4}) &= \vec{u_4} \iff \\
+        (ka_1 + a_2)\vec{u_1} + a_2\vec{u_2} - a_1\vec{u_3} - (a_1 - a_2 - 1)\vec{u_4} &= 0 \iff \\
+        \begin{bmatrix}
+          k  & 1  & 0 \\
+          0  & 1  & 0 \\
+          -1 & 0  & 0 \\
+          1  & -1 & 1
+        \end{bmatrix} \textit{has solution}
+      \end{align*}
+    #+END_SRC
+    
+    The above set spans $\mathbb{R}^4$.
+
+    As before, we need to solve for $k = 0$ and when it doesn't.
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \begin{bmatrix}
+          0  & 1  & 0 \\
+          0  & 1  & 0 \\
+          -1 & 0  & 0 \\
+          1  & -1 & 1
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_1 \; \textit{is redundatn}} \end{aligned}
+        \begin{bmatrix}
+          0  & 1  & 0 \\
+          -1 & 0  & 0 \\
+          1  & -1 & 1
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_1 = R_2, R_2 = R_1} \end{aligned}
+        \begin{bmatrix}
+          -1 & 0  & 0 \\
+          0  & 1  & 0 \\
+          1  & -1 & 1
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_3 = R_3 + R_1} \end{aligned} \\
+        \begin{bmatrix}
+          -1 & 0  & 0 \\
+          0  & 1  & 0 \\
+          0  & -1 & 1
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_3 = R_3 + R_2} \end{aligned}
+        \begin{bmatrix}
+          -1 & 0  & 0 \\
+          0  & 1  & 0 \\
+          0  & 0 & 1
+        \end{bmatrix}
+      \end{align*}
+    #+END_SRC
+
+    In conclusion, whenever $k = 0$, we can represent $\vec{u_4}$ as a linear
+    combination of $\vec{v_1}$ and $\vec{v_2}$.
+
+    $k \neq 0$ case:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \begin{bmatrix}
+          k  & 1  & 0 \\
+          0  & 1  & 0 \\
+          -1 & 0  & 0 \\
+          1  & -1 & 1
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_4 = R_4 + R_3} \end{aligned}
+        \begin{bmatrix}
+          k  & 1  & 0 \\
+          0  & 1  & 0 \\
+          -1 & 0  & 0 \\
+          0  & -1 & 1
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_3 = kR_3 + R_1} \end{aligned}
+        \begin{bmatrix}
+          k & 1  & 0 \\
+          0 & 1  & 0 \\
+          0 & 1  & 0 \\
+          0 & -1 & 1
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_2 \; \textit{is redundant}} \end{aligned} \\
+        \begin{bmatrix}
+          k & 1  & 0 \\
+          0 & 1  & 0 \\
+          0 & -1 & 1
+        \end{bmatrix}
+        \begin{aligned} \xrightarrow{R_3 = R_3 + R_2} \end{aligned}
+        \begin{bmatrix}
+          k & 1 & 0 \\
+          0 & 1 & 0 \\
+          0 & 0 & 1
+        \end{bmatrix}
+      \end{align*}
+    #+END_SRC
+
+    Thus, independent of $k$, we will always be able to represent $\vec{u_4}$ as
+    a linear combination of vectors $\vec{v_1}$ and $\vec{v_2}$.  Another way to
+    see this is to notice that both $\vec{v_1}$ and $\vec{v_2}$ have a component
+    from $\vec{u_4}$ and this component cannot be cancelled by any other vector,
+    otherwise those other vectors wouldn't have formed a basis of $\mathbb{R}^n$.
+
+** Problem 5
+   Let $\vec{v}$, $\vec{u_1},\dots,\vec{u_k}$ be vectors in $\mathbb{R}^n$.
+   $\vec{v}$ has a unique representation as a linear combination of vectors
+   $\vec{u_1},\dots,\vec{u_k}$.
+
+   For questions (2) and (3) assume that for some $w \in \mathbb{R}$, $w =
+   x_1\vec{u_1}+\dots+x_k\vec{u_k}$ has no solutions.
+
+   1. Prove $\vec{u_1},\dots,\vec{u_k}$ are linearly independent.
+   2. Prove $k < n$.
+   3. Prove $\{w, \vec{u_1},\dots,\vec{u_k}\}$ is linearly independant.
+
+*** Answer 11
+    Assume, for contradiction, $\vec{u_1},\dots,\vec{u_k}$ are linearly
+    dependent.  Then, there exist some $\vec{u_n}$ s.t. for some
+    $x_1\vec{u_1}+\dots+x_k\vec{u_k}=\vec{u_n}$.  Then, since $\vec{u_n}$ is
+    used in the representation of $\vec{v}$, we can write this represenation
+    in two distinct ways: one that involves $\vec{u_n}$ and the other one
+    which doesn't.  However, we are given the representation is unique.
+
+    Hence, by contradiction, $\vec{u_1},\dots,\vec{u_k}$ are linearly
+    independant.
+
+*** Answer 12
+    Observe that $k$ is at most $n$, otherwise $\vec{u_1},\dots,\vec{u_k}$ would
+    be linearly dependent.  (We proved this in [[Answer 11]].)
+
+    Assume, for contradiction $k = n$, then $\vec{u_1},\dots,\vec{u_k}$ spans
+    $\mathbb{R}^n$, hence, every vector in $\mathbb{R}^n$ is representable as a
+    linear combination of $\vec{u_1},\dots,\vec{u_k}$.  However, we are given
+    that $w$ is not representable as a linear combination of these vectors.
+
+    Hence, by contradition, $k < n$.
+
+*** Answer 13
+    The proof is immediate from the definition. $w \neq
+    x_1\vec{u_1}+\dots+x_k\vec{u_k}$, hence $w$ is not a linear combination of
+    $\vec{u_1},\dots,\vec{u_k}$, hence $\{w, \vec{u_1},\dots,\vec{u_k}\}$ are
+    linearly independent.
