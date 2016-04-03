@@ -20,6 +20,7 @@
 #+LATEX_HEADER: \hypersetup{colorlinks,urlcolor=blue}
 #+LATEX_HEADER: \setlength{\parskip}{16pt plus 2pt minus 2pt}
 #+LATEX_HEADER: \definecolor{codebg}{rgb}{0.96,0.99,0.8}
+#+LATEX_HEADER: \DeclareMathOperator{\det}{det}
 
 #+BEGIN_SRC emacs-lisp :exports none
   (setq org-latex-pdf-process
@@ -69,20 +70,27 @@
 
    1. Prove that there exists a vector $\vec{v} \in \mathbb{R}^3$ s.t. $A\vec{v}
       \neq 0$.
-   2. Prove that there exits vectors $\vec{v} \in \mathbb{R}^3$ s.t.
+   2. Prove that there exits vector $\vec{v} \in \mathbb{R}^3$ s.t.
       $\{\vec{v}, \vec{v}A, \vec{v}A^2\}$ are the basis of $\mathbb{R}^3$.
 
 *** Answer 1
-    Notice that $A$ itself is made of the column vectors, call them $r_1, r_2,
-    r_3$.  All of which are in $\mathbb{R}^3$.  Suppose, for contradiction, that
+    Notice that $A$ itself is made of the column vectors, call them $c_1, c_2,
+    c_3$.  All of which are in $\mathbb{R}^3$.  Suppose, for contradiction, that
     there is no vector in $\vec{v} \in \mathbb{R}^3$ satisfying $A\vec{v} \neq
-    0$.  In particular, none of the $\vec{r}_1, \vec{r}_2, \vec{r}_3$ satisfies
-    the above condition.  In other words, $A\vec{r}_1 = 0$, $A\vec{r}_2 = 0$,
-    $A\vec{r}_3 = 0$.  (where 0 means zero matrix).  On the other hand,
-    $A\vec{r}_1 + A\vec{r}_2 + A\vec{r}_3 = A^2 \neq 0$.  Contradiction.  Hence,
+    0$.  In particular, none of the $\vec{c}_1, \vec{c}_2, \vec{c}_3$ satisfies
+    the above condition.  In other words, $A\vec{c}_1 = 0$, $A\vec{c}_2 = 0$,
+    $A\vec{c}_3 = 0$.  (where 0 means zero matrix).  On the other hand, a matrix
+    $(A\vec{c}_1, A\vec{c}_2, A\vec{c}_3) = A^2 \neq 0$.  Contradiction.  Hence,
     there exists $\vec{v} \in \mathbb{R}^3$ s.t. $A\vec{v} \neq 0$.
 
 *** Answer 2
+    Suppose for contradiction there was no such vector $\vec{v}$.  This would in
+    turn imply that all vectors $\vec{x} \in \mathbb{R}^3$ would be sent by
+    $A^2(\vec{x})$ to its kernel, i.e $\forall \vec{x} \in \mathbb{R}^3:
+    A^2(\vec{x}) = [0]$.  But we just proved the opposite in the previous
+    answer.  Hence, by contradiction, there must exist $\vec{v}$
+    s.t. $\{\vec{v}, A\vec{v}, A^2\vec{v}\}$ is the span (and hence the basis)
+    of $\mathbb{R}^3$.
     
 ** Problem 2
    Given square matrices $A, B, C, D$ of order $n \times n$ s.t. $ABCD = I$,
@@ -111,9 +119,29 @@
 ** Problem 3
    Let $A$ be a square matrix of order $m \times m$, let $B$ be a matrix of
    order $m \times n$.  Prove in two different ways that if $A$ is invertible,
-   then $B\vec{x} = 0$ and $AB\vec{x} = 0$ has the same solution space.
+   then homogeneous systems $B\vec{x} = 0$ and $AB\vec{x} = 0$ have the same
+   solution space.
 
 *** Answer 4
+    1. Since $A$ is invertible, we can write:
+
+       #+HEADER: :exports results
+       #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+       #+BEGIN_SRC latex
+         \begin{align*}
+           Bx &= \vec{0} \iff \\
+           ABx &= A\vec{0} \iff \\
+           ABx &= \vec{0} \\
+                 &\textit{Alternatively:} \\
+           ABx &= \vec{0} \iff \\
+           A^{-1}ABx &= A^{-1}\vec{0} \iff \\
+           Bx &= \vec{0}\;.
+         \end{align*}
+       #+END_SRC
+    2. Alternatively, let $T_A(x)=Ax$ and $T_B(x) = Bx$ be linear
+       transformations.  Since $T_A(x)$ is one-to-one and onto (due to $A$ being
+       invertible), then $(T_A \circ T_B)(x)$ has the same kernel space as
+       $T_B(x)$.  In other words, $ABx = Bx$ when $Bx = 0$.
 
 ** Problem 4
    Given matrix $A$ of a general form:
@@ -193,3 +221,215 @@
         A^{-1} &= (-2B)^{-1} \;.
       \end{align*}
     #+END_SRC
+** Problem 6
+   1. Compute the determinant:
+      #+HEADER: :exports results
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
+        \begin{equation*}
+          D = \left|
+            \begin{array}{lllrll}
+              1      & 1      & 1      & \dots  & 1      & 1      \\
+              1      & 1      & 1      & \dots  & 1      & 2      \\
+              1      & 1      & \dots  & 1      & 3      & 1      \\
+              \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+              1      & 1      & n-1    & \dots  & 1      & 1      \\
+              1      & n      & 1      & \dots  & 1      & 1
+            \end{array}
+          \right|
+        \end{equation*}
+      #+END_SRC
+
+   2. Prove that given:
+
+      #+HEADER: :exports results
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
+        \begin{equation*}
+          \Delta = \left|
+            \begin{array}{llllll}
+              a_1    & a^2_1    & \dots  & a^{n-1}_1    & 1 + a^n_1    \\
+              a_2    & a^2_2    & \dots  & a^{n-1}_2    & 1 + a^n_2    \\
+              \vdots & \vdots  & \vdots & \vdots      & \vdots      \\
+              a_{n-1} & a^2_{n-1} & \dots  & a^{n-1}_{n-1} & 1 + a^n_{n-1} \\
+              a_n    & a^2_n    & \dots  & a^{n-1}_n    & 1 + a^n_n
+            \end{array}
+          \right|
+        \end{equation*}
+      #+END_SRC
+
+      and
+
+      #+HEADER: :exports results
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
+        \begin{equation*}
+          \Delta_1 = \left|
+            \begin{array}{llllll}
+              a_1    & a^2_1    & \dots  & a^{n-1}_1    & 1      \\
+              a_2    & a^2_2    & \dots  & a^{n-1}_2    & 1      \\
+              \vdots & \vdots  & \vdots & \vdots      & \vdots \\
+              a_{n-1} & a^2_{n-1} & \dots  & a^{n-1}_{n-1} & 1      \\
+              a_n    & a^2_n    & \dots  & a^{n-1}_n    & 1
+            \end{array}
+          \right|
+        \end{equation*}
+      #+END_SRC
+
+      where $a_1, a_2, \dots, a_n \in \mathbb{R}$.  When $\Delta = 0$ and
+      $\Delta_1 \neq 0$, $\prod_{i=1}^n a_i = -1$.
+
+*** Answer 7
+    Firs, notice that we can row-reduce this matrix without affecting the value
+    of the determinant by subtracting the top row from other rows.  Once this is
+    done, we will swap rows in order to bring this matrix to upper-diagonal
+    form.  To do this, we will need to swap $\frac{n}{2}$ times if $n$ is even
+    and $\frac{n-1}{2}$ times when $n$ is odd.  Thus, we can compute $D$ using
+    the formula below:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        D &= \begin{cases}
+          n!,          &\textbf{if}\; \lfloor \frac{n}{2} \rfloor \equiv 0 \mod 2 \\
+          -1\times n!, &\textbf{if}\; \lfloor \frac{n}{2} \rfloor \equiv 1 \mod 2
+        \end{cases}
+      \end{align*}
+    #+END_SRC
+
+    Note that we get $n!$ term by multiplying the diagonal entries, the $-1$
+    appears due to the odd number of row swaps.
+
+*** Answer 8
+    Let $\Delta = \det(A)$, $\Delta_1 = \det(B)$, $C = (A_0, A_1, \dots, [a_1^n,
+    a_2^n, \dots, a_n^n])$ s.t. $\abs{C} + \abs{B} = \abs{A}$.  Or, in other
+    words, $\abs{C} = -\abs{B} = (-1)^n\abs{B}$.  However, since we know that
+    the determinant of $C$ is a multiple of determinant of $B$, and they differ
+    in one row, we can conclude that these rows are multiples of each other.  In
+    other words, $(-1)^n \tiems [1, 1, \dots, 1] = [a^n_1, a^n_2, \dots,
+    a^n_n]$.  Hence $\prod_{i = 1}^n a_i = (-1)^n1 = (-1)^n$.
+
+** Problem 7
+   Given antisymmetric matrix $A \in \mathbb{M}^{3\times 3}$ and any matrix $B
+   \in \mathbb{M}^{3\times 3}$, 
+
+   1. prove $(A^2B)\vec{x} = \vec{0}$ has non-trivial soution.
+   2. Assume $B$ is antisymmetric, and both $A$ and $B$ are non-zero, is $(A +
+      B)^2$ symmetric, invertible?
+
+*** Answer 9
+    Any antisymmetric matrix of odd degre is not invertible since $\det(A) =
+    \det(A^T) = \det(-A^T) = (-1)^n\det(A^T)$.  Thus, in particular, $A^2B$ is
+    not invertible (product of invertible and non-invertible matrix is not
+    invertible).  Non-invertible means free variable, hence infinitely many
+    solutions.
+
+*** Answer 10
+    The matrix $(A - B)^2$ is not in general invertible or symmetric, or
+    antisymmetric.  For example, let:
+    
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        A = \begin{bmatrix}
+          0 & 0 & -1 \\
+          0 & 0 & 0 \\
+          1 & 0 & 0
+        \end{bmatrix} \\
+        B = \begin{bmatrix}
+          0  & 0 & -1 \\
+          0  & 0 & 0 \\
+          -1 & 0 & 0
+        \end{bmatrix}
+      \end{align*}
+    #+END_SRC
+
+    then:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        (A - B)^2 = \left(\begin{bmatrix}
+          0 & 0 & -1 \\
+          0 & 0 & 0 \\
+          1 & 0 & 0
+        \end{bmatrix} -
+        \begin{bmatrix}
+          0  & 0 & -1 \\
+          0  & 0 & 0 \\
+          -1 & 0 & 0
+        \end{bmatrix} \right)^2 = \\
+        \begin{bmatrix}
+          0 & 0 & 0 \\
+          0 & 0 & 0 \\
+          1 & 0 & 0
+        \end{bmatrix} \times 
+        \begin{bmatrix}
+          0 & 0 & 0 \\
+          0 & 0 & 0 \\
+          1 & 0 & 0
+        \end{bmatrix} = 
+        \begin{bmatrix}
+          0 & 0 & 0 \\
+          0 & 0 & 0 \\
+          0 & 0 & 0
+        \end{bmatrix}
+      \end{align*}
+    #+END_SRC
+
+    Symmetric, but not invertible.  While for:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        A = \begin{bmatrix}
+          0 & 0 & -1 \\
+          0 & 0 & 0 \\
+          1 & 0 & 0
+        \end{bmatrix} \\
+        B = \begin{bmatrix}
+          -1 & 0  & 0 \\
+          0  & -1 & 0 \\
+          0  & 0  & -1
+        \end{bmatrix}
+      \end{align*}
+    #+END_SRC
+
+    
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        (A - B)^2 = \left(\begin{bmatrix}
+          0 & 0 & -1 \\
+          0 & 0 & 0 \\
+          1 & 0 & 0
+        \end{bmatrix} -
+        \begin{bmatrix}
+          -1 & 0  & 0 \\
+          0  & -1 & 0 \\
+          0  & 0  & -1
+        \end{bmatrix} \right)^2 = \\
+        \begin{bmatrix}
+          1 & 0 & -1 \\
+          0 & 1 & 0 \\
+          1 & 0 & 1
+        \end{bmatrix} \times 
+        \begin{bmatrix}
+          1 & 0 & -1 \\
+          0 & 1 & 0 \\
+          1 & 0 & 1
+        \end{bmatrix} = 
+        \begin{bmatrix}
+          0 & 0 & -2 \\
+          0 & 1 & 0 \\
+          2 & 0 & 0
+        \end{bmatrix}
+      \end{align*}
+    #+END_SRC
+
+    which isn't symmetric or antisymmetric, but is invertible.
