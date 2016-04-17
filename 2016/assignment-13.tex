@@ -1,0 +1,138 @@
+% Created 2016-04-16 Sat 20:23
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage[hidelinks]{hyperref}
+\tolerance=1000
+\usepackage[utf8]{inputenc}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{a4wide}
+\usepackage{commath}
+\usepackage{amsmath}
+\usepackage{marginnote}
+\usepackage{enumerate}
+\usepackage{listings}
+\usepackage{color}
+\hypersetup{urlcolor=blue}
+\hypersetup{colorlinks,urlcolor=blue}
+\setlength{\parskip}{16pt plus 2pt minus 2pt}
+\definecolor{codebg}{rgb}{0.96,0.99,0.8}
+\DeclareMathOperator{\Sp}{Sp}
+\author{Oleg Sivokon}
+\date{\textit{<2016-04-16 Sat>}}
+\title{Assignment 13, Linear Algebra 1}
+\hypersetup{
+  pdfkeywords={Assignment, Linear Algebra},
+  pdfsubject={Third asssignment in the course Linear Algebra 1},
+  pdfcreator={Emacs 25.1.50.2 (Org mode 8.2.10)}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+\definecolor{codebg}{rgb}{0.96,0.99,0.8}
+\lstnewenvironment{maxima}{%
+  \lstset{backgroundcolor=\color{codebg},
+    frame=single,
+    framerule=0pt,
+    basicstyle=\ttfamily\scriptsize,
+    columns=fixed}}{}
+}
+\makeatletter
+\newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
+\makeatother
+\verbatimfont{\small}%
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+\clearpage
+
+\section{Problems}
+\label{sec-1}
+
+\subsection{Problem 1}
+\label{sec-1-1}
+\begin{enumerate}
+\item Find all solutions of $z^3 + 3i\overline{z} = 0$.
+\item Let $z_1, z_2$ be complex numbers.  Prove that unless $z_1z_2 = 1$ and
+$\abs{z_1} = \abs{z_2} = 1$, then $\frac{z_1 + z_2}{1 + z_1z_2}$ is a real
+number.
+\end{enumerate}
+
+\subsection{Problem 2}
+\label{sec-1-2}
+Let $\mathbb{Q}$ denote the field of rational numbers.  And $K$ defined as follows:
+\begin{align*}
+K = \left\{\begin{bmatrix}
+      a & 2b \\
+      b & a
+    \end{bmatrix} \;|\; a,b \in \mathbb{Q}\right\}\;.
+\end{align*}
+
+Is $K$ a field under matrix addition and multiplication?
+
+\subsection{Problem 3}
+\label{sec-1-3}
+Verify that $V$ is a vectors space over field $\textbf{F}$:
+\begin{enumerate}
+\item $\textbf{F} = \mathbb{C}, V = \mathbb{M}_{n\times n}^{\mathbb{C}}$ and
+addition defined to be the rational addition, while multiplication is
+defined to be $\lambda\times A = \abs{\lambda}\times A$.
+\item $\textbf{F} = \mathbb{R}, V = \{(x,y) \in \mathbb{R}^2\;|\;y=2x\}$,
+with addition being the addition of $\mathbb{R}^2$ and multiplication
+$\lambda\times (x,y) = (\lambda x, 0)$.
+\end{enumerate}
+
+\subsection{Problem 4}
+\label{sec-1-4}
+Given sets:
+\begin{enumerate}
+\item $K = \{(x,y,z,t) \in \mathbb{R}^4\;|\; x+y-z+t=0 \land 2x+y+z-3t=0\}$.
+\item $L = \{f \in V\;|\; f\left(\frac{1}{2}\right)>f(2)\}$, $V$ is the vector
+space of all real-valued functions.
+\item $M = \{p(x) \in \mathbb{R}^4[x]\;|\; p(-3) = 0\}$.
+\item $R = \{(x,y) \in \mathbb{R}^3\;|\; x^2 + y^2 = 0\}$.
+\item $R = \{(x,y) \in \mathbb{R}^3\;|\; x^2 - y^2 = 0\}$.
+\end{enumerate}
+
+Fore each of sets given, assert them being vector spaces.  In case they are,
+prove this in two different ways.
+
+\subsection{Problem 5}
+\label{sec-1-5}
+Given vector space $V$ and $\vec{v}_1, \vec{v}_2, \vec{v}_3$ distinct vectors
+prove or disprove:
+\begin{enumerate}
+\item If $\Sp\{\vec{v}_1, \vec{v}_2\} = \Sp\{\vec{v}_1, \vec{v}_3\}$, then
+$\vec{v}_2$ is a multiple of $\vec{v}_3$.
+\item If $\vec{v}_1 - 2\vec{v}_2 + \vec{v}_3 = \vec{0}$, then 
+$\Sp\{\vec{v}_1, \vec{v}_2\} = \Sp\{\vec{v}_1, \vec{v}_3\}$.
+\item If $\{\vec{v}_1, \vec{v}_2, \vec{v}_3\}$ is linearly dependent, then
+$\Sp\{\vec{v}_1, \vec{v}_2\} = \Sp\{\vec{v}_1 + \vec{v}_3, \vec{v}_3 +
+      \vec{v}_3\}$.
+\end{enumerate}
+
+\subsection{Problem 6}
+\label{sec-1-6}
+Given following subspaces of $\mathbb{R}^4$:
+$U = \Sp\{(1,1,2), (2,2,1)\}$ and $W = \Sp\{(1,3,4), (2,5,1)\}$,
+find spanning set of $U \cap W$.
+% Emacs 25.1.50.2 (Org mode 8.2.10)
+\end{document}

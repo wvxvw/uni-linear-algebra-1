@@ -20,7 +20,6 @@
 #+LATEX_HEADER: \hypersetup{colorlinks,urlcolor=blue}
 #+LATEX_HEADER: \setlength{\parskip}{16pt plus 2pt minus 2pt}
 #+LATEX_HEADER: \definecolor{codebg}{rgb}{0.96,0.99,0.8}
-#+LATEX_HEADER: \DeclareMathOperator{\det}{det}
 
 #+BEGIN_SRC emacs-lisp :exports none
   (setq org-latex-pdf-process
