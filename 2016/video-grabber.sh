@@ -1,17 +1,23 @@
 #!/bin/bash
 
-i=0
+# curl 'http://p2-vd-se01.se.openuvd01.vds-is.bynetcdn.com/vod/mp4:vod/openu/PRV1/MXHaQrsMAY/App/MXHaQrsMAY_2.mp4/media_b1200000_0.ts' -H 'Host: p2-vd-se01.se.openuvd01.vds-is.bynetcdn.com' -H 'User-Agent: Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:44.0) Gecko/20100101 Firefox/44.0' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: en-US,en;q=0.5' -H 'Accept-Encoding: gzip, deflate' -H 'Referer: http://opal.openu.ac.il/local/ouil_video/theoplayer.php?&width=640&height=480&method=VOD&in=0&out=0&vtt=c20109_16b_784_81_8&clipurl=http%3A%2F%2Fapi.bynetcdn.com%2FRedirector%2Fopenu%2Fmanifest%2Fc20109_16b_784_81_8_mp4%2FHLS%2Fplaylist.m3u8&protocol=hls' -H 'Origin: http://opal.openu.ac.il' -H 'Connection: keep-alive'
+
+# curl 'http://p2-vd-se01.se.openuvd01.vds-is.bynetcdn.com/vod/mp4:vod/openu/PRV1/uwlJS1bPaJ/App/uwlJS1bPaJ_2.mp4/media_b1200000_2.ts' -H 'Host: p2-vd-se01.se.openuvd01.vds-is.bynetcdn.com' -H 'User-Agent: Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:44.0) Gecko/20100101 Firefox/44.0' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: en-US,en;q=0.5' -H 'Accept-Encoding: gzip, deflate' -H 'Referer: http://opal.openu.ac.il/local/ouil_video/theoplayer.php?&width=640&height=480&method=VOD&in=0&out=0&vtt=c20407_16b_784_81_6&clipurl=http%3A%2F%2Fapi.bynetcdn.com%2FRedirector%2Fopenu%2Fmanifest%2Fc20407_16b_784_81_6_mp4%2FHLS%2Fplaylist.m3u8&protocol=hls' -H 'Origin: http://opal.openu.ac.il' -H 'Connection: keep-alive'
+
+# curl 'http://p2-vd-se01.se.openuvd01.vds-is.bynetcdn.com/vod/mp4:vod/openu/PRV1/ObiwetgnTd/App/ObiwetgnTd_2.mp4/media_b1200000_0.ts' -H 'Host: p2-vd-se01.se.openuvd01.vds-is.bynetcdn.com' -H 'User-Agent: Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:44.0) Gecko/20100101 Firefox/44.0' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: en-US,en;q=0.5' -H 'Accept-Encoding: gzip, deflate' -H 'Referer: http://opal.openu.ac.il/local/ouil_video/theoplayer.php?&width=640&height=480&method=VOD&in=0&out=0&vtt=c20109_16b_784_81_7&clipurl=http%3A%2F%2Fapi.bynetcdn.com%2FRedirector%2Fopenu%2Fmanifest%2Fc20109_16b_784_81_7_mp4%2FHLS%2Fplaylist.m3u8&protocol=hls' -H 'Origin: http://opal.openu.ac.il' -H 'Connection: keep-alive'
+
+i=238
 mkdir -p /tmp/vod
 while [ $i -lt 1200 ]; do
     file="media_b1200000_$i.ts"
     echo "saving to: <$file>"
-    curl "http://openuvd01.vds-is.bynetcdn.com/vod/mp4:vod/openu/PRV1/Ht9javLOiu/App/Ht9javLOiu_2.mp4/$file" \
+    curl "http://p2-vd-se01.se.openuvd01.vds-is.bynetcdn.com/vod/mp4:vod/openu/PRV1/aMJe6xhpwr/App/aMJe6xhpwr_2.mp4/$file" \
          -H 'Host: openuvd01.vds-is.bynetcdn.com' \
          -H 'User-Agent: Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:44.0) Gecko/20100101 Firefox/44.0' \
          -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' \
          -H 'Accept-Language: en-US,en;q=0.5' \
          --compressed \
-         -H 'Referer: http://opal.openu.ac.il/local/ouil_video/theoplayer.php?&width=640&height=480&method=VOD&in=0&out=0&vtt=c20109_16b_784_81_5&clipurl=http%3A%2F%2Fapi.bynetcdn.com%2FRedirector%2Fopenu%2Fmanifest%2Fc20109_16b_784_81_5_mp4%2FHLS%2Fplaylist.m3u8&protocol=hls' \
+         -H 'Referer: http://opal.openu.ac.il/local/ouil_video/theoplayer.php?&width=640&height=480&method=VOD&in=0&out=0&vtt=c20407_16b_784_81_7&clipurl=http%3A%2F%2Fapi.bynetcdn.com%2FRedirector%2Fopenu%2Fmanifest%2Fc20407_16b_784_81_7_mp4%2FHLS%2Fplaylist.m3u8&protocol=hls' \
          -H 'Origin: http://opal.openu.ac.il' \
          -H 'Connection: keep-alive' > /tmp/vod/"$file"
     i=$((i+1))

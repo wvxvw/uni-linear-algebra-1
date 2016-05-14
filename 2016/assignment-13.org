@@ -16,11 +16,15 @@
 #+LATEX_HEADER: \usepackage{enumerate}
 #+LATEX_HEADER: \usepackage{listings}
 #+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \usepackage{breqn}
+#+LATEX_HEADER: \usepackage{flexisym}
+#+LATEX_HEADER: \usepackage{mathstyle}
 #+LATEX_HEADER: \hypersetup{urlcolor=blue}
 #+LATEX_HEADER: \hypersetup{colorlinks,urlcolor=blue}
 #+LATEX_HEADER: \setlength{\parskip}{16pt plus 2pt minus 2pt}
 #+LATEX_HEADER: \definecolor{codebg}{rgb}{0.96,0.99,0.8}
 #+LATEX_HEADER: \DeclareMathOperator{\Sp}{Sp}
+#+LATEX_HEADER: \DeclareMathOperator{\cis}{cis}
 
 #+BEGIN_SRC emacs-lisp :exports none
   (setq org-latex-pdf-process
@@ -70,6 +74,59 @@
       $\abs{z_1} = \abs{z_2} = 1$, then $\frac{z_1 + z_2}{1 + z_1z_2}$ is a real
       number.
 
+*** Answer 1
+    First, note that zero is a solution of this equation.  Other roots can be
+    found as follows:
+    
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        z &=  r\cis \theta \\
+        \\
+        r^3 \cis(3 \theta) + 3i \cis(-\theta) &= 0 \iff \\
+        r^3 \cis(3 \theta) + 3(i \cos(-\theta) + i^2 \sin(-\theta)) &= 0 \iff \\
+        r^3 \cis(3 \theta) + 3(i \sin(\theta) + \cos(\theta)) &= 0 \iff \\
+        r^3 \cis(3 \theta) + 3 \cis(\theta) &= 0 \iff \\
+        r^3 \cis(3 \theta) &= -3 \cis(\theta) \\
+        \textit{Equating radius and angle:} & \\
+        r^3 &= -3 \iff \\
+        r &= -3^{\frac{1}{3}} \\
+        3 \theta &= \theta \mod 2\pi \iff \\
+        2 \theta &= 0 \mod 2\pi \iff \\
+        \theta &= \pi \mod 2\pi \;.
+      \end{align*}
+    #+END_SRC
+
+    Hence, other roots are:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        z_1 &= -3^{\frac{1}{3}}\cis(0) \\
+        z_2 &= -3^{\frac{1}{3}}\cis(\pi)
+      \end{align*}
+    #+END_SRC
+
+*** Answer 3
+    Since $\abs{z_1}^2 = z_1 \overline{z_1} = 1$, we have that $z_1 =
+    \overline{z_1} = \frac{1}{z_1}$, and similarly $z_2 = \overline{z_2} =
+    \frac{1}{z_2}$.  Further using the properties of complex conjugate we have:
+
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \frac{z_1 + z_2}{1 + z_1z_2} &= \frac{\frac{1}{z_1} + \frac{1}{z_2}}{1 + \frac{1}{z_1z_2}} \\
+                                     &= \frac{\overline{z_1} + \overline{z_2}}{1 + \overline{z_1z_2}} \\
+                                     &= \overline{\frac{z_1 + z_2}{1 + z_1z_2}}
+      \end{align*}
+    #+END_SRC
+
+    And since $z = \overline{z} \implies z \in \mathbb{R}$, we have that the given
+    expression is real.
+
 ** Problem 2
    Let $\mathbb{Q}$ denote the field of rational numbers.  And $K$ defined as follows:
    #+HEADER: :exports results
@@ -85,14 +142,448 @@
 
    Is $K$ a field under matrix addition and multiplication?
 
+*** Answer 3
+    Yes, $K$ is a field, following is the illustration of field axioms satisfied
+    by $K$.
+
+    1. Closure under addition:
+       #+HEADER: :exports results
+       #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+       #+BEGIN_SRC latex
+         \begin{align*}
+           \begin{bmatrix}
+             a & 2b \\
+             b & a
+           \end{bmatrix} + 
+           \begin{bmatrix}
+             c & 2d \\
+             d & c
+           \end{bmatrix} =
+           \begin{bmatrix}
+             a + c & 2(b + d) \\
+             b + d & a + c
+           \end{bmatrix}
+         \end{align*}
+       #+END_SRC
+       where $(a + c) \in \mathbb{Q} = e$, $(b + d) \in \mathbb{Q} = f$, results in
+       a general matrix:
+       #+HEADER: :exports results
+       #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+       #+BEGIN_SRC latex
+         \begin{align*}
+           \begin{bmatrix}
+             e & 2f \\
+             f & e
+           \end{bmatrix} \in K
+         \end{align*}
+       #+END_SRC
+    2. Closure under multiplication:
+       #+HEADER: :exports results
+       #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+       #+BEGIN_SRC latex
+         \begin{align*}
+           \begin{bmatrix}
+             a & 2b \\
+             b & a
+           \end{bmatrix} \times 
+           \begin{bmatrix}
+             c & 2d \\
+             d & c
+           \end{bmatrix} =
+           \begin{bmatrix}
+             ac + 2db & 2ad + 2bc \\
+             bc + ad & 2db + ac
+           \end{bmatrix}
+         \end{align*}
+       #+END_SRC
+       where $(ac + 2db) \in \mathbb{Q} = e$ and $2(ad + 2bc) \in \mathbb{Q} =
+       f$ and, similarly:
+       #+HEADER: :exports results
+       #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+       #+BEGIN_SRC latex
+         \begin{align*}
+           \begin{bmatrix}
+             e & 2f \\
+             f & e
+           \end{bmatrix} \in K
+         \end{align*}
+       #+END_SRC
+    3. Associativity of addition:
+       #+HEADER: :exports results
+       #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+       #+BEGIN_SRC latex
+         \begin{align*}
+           \left(\begin{bmatrix}
+             a & 2b \\
+             b & a
+           \end{bmatrix} + 
+           \begin{bmatrix}
+             c & 2d \\
+             d & c
+           \end{bmatrix}\right) +
+           \begin{bmatrix}
+             e & 2f \\
+             f & e
+           \end{bmatrix} =
+           \begin{bmatrix}
+             a + c & 2(b + d) \\
+             b + d & a + c
+           \end{bmatrix} +
+           \begin{bmatrix}
+             e & 2f \\
+             f & e
+           \end{bmatrix} = \\
+           \begin{bmatrix}
+             a + c + e & 2(b + d + f) \\
+             b + d + f & a + c + e
+           \end{bmatrix} = \\
+           \begin{bmatrix}
+             a & 2b \\
+             b & a
+           \end{bmatrix} + 
+           \begin{bmatrix}
+             c + e & 2(d + f) \\
+             d + f & c + e
+           \end{bmatrix} =
+           \begin{bmatrix}
+             a & 2b \\
+             b & a
+           \end{bmatrix} + 
+           \left(\begin{bmatrix}
+             c & 2d \\
+             d & c
+           \end{bmatrix} +
+           \begin{bmatrix}
+             e & 2f \\
+             f & e
+           \end{bmatrix}\right)
+         \end{align*}
+       #+END_SRC
+    4. Associativity of multiplication:
+       #+HEADER: :exports results
+       #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+       #+BEGIN_SRC latex
+         \begin{align*}
+           \left(\begin{bmatrix}
+             a & 2b \\
+             b & a
+           \end{bmatrix} \times 
+           \begin{bmatrix}
+             c & 2d \\
+             d & c
+           \end{bmatrix}\right) \times 
+           \begin{bmatrix}
+             e & 2f \\
+             f & e
+           \end{bmatrix} =
+           \begin{bmatrix}
+             ac + 2db & 2ad + 2bc \\
+             bc + ad & 2db + ac
+           \end{bmatrix} \times 
+           \begin{bmatrix}
+             c & 2d \\
+             d & c
+           \end{bmatrix} = \\
+           \begin{bmatrix}
+             e(ac + 2db) + f(2ad + 2bc) & 2f(ad + 2db) + e(2ad + 2bc) \\
+             e(bc + ad) + f(2db + ac) & 2f(bc + ad) + e(2db + ac)
+           \end{bmatrix} = \\
+           \begin{bmatrix}
+             a & 2b \\
+             b & a
+           \end{bmatrix} \times
+           \begin{bmatrix}
+             ec + 2df & 2fc + 2ed \\
+             ed + fc & 2fd + ec
+           \end{bmatrix} =
+           \begin{bmatrix}
+             a & 2b \\
+             b & a
+           \end{bmatrix} \times 
+           \left(\begin{bmatrix}
+             c & 2d \\
+             d & c
+           \end{bmatrix} \times 
+           \begin{bmatrix}
+             e & 2f \\
+             f & e
+           \end{bmatrix}\right)
+         \end{align*}
+       #+END_SRC
+    5. Commutativity of addition:
+       #+HEADER: :exports results
+       #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+       #+BEGIN_SRC latex
+         \begin{align*}
+           \begin{bmatrix}
+             a & 2b \\
+             b & a
+           \end{bmatrix} + 
+           \begin{bmatrix}
+             c & 2d \\
+             d & c
+           \end{bmatrix} =
+           \begin{bmatrix}
+             a + c & 2(b + d) \\
+             b + d & a + c
+           \end{bmatrix} = 
+           \begin{bmatrix}
+             c & 2d \\
+             d & c
+           \end{bmatrix} + 
+           \begin{bmatrix}
+             a & 2b \\
+             b & a
+           \end{bmatrix}
+         \end{align*}
+       #+END_SRC
+    6. Commutativity of multiplication:
+       #+HEADER: :exports results
+       #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+       #+BEGIN_SRC latex
+         \begin{align*}
+           \begin{bmatrix}
+             a & 2b \\
+             b & a
+           \end{bmatrix} \times
+           \begin{bmatrix}
+             c & 2d \\
+             d & c
+           \end{bmatrix} =
+           \begin{bmatrix}
+             ac + 2db & 2ad + 2bc \\
+             bc + ad & 2db + ac
+           \end{bmatrix} = 
+           \begin{bmatrix}
+             c & 2d \\
+             d & c
+           \end{bmatrix} \times
+           \begin{bmatrix}
+             a & 2b \\
+             b & a
+           \end{bmatrix}
+         \end{align*}
+       #+END_SRC
+    7. Additive identity is the zero matrix (from matrix addition properties).
+    8. Multiplicative identity is the identity matrix (again, from matrix
+       multiplication properties).
+    9. General inverse under addition:
+       #+HEADER: :exports results
+       #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+       #+BEGIN_SRC latex
+         \begin{align*}
+           \left(\begin{bmatrix}
+             a & 2b \\
+             b & a
+           \end{bmatrix}\right)^{-1} =
+           \begin{bmatrix}
+             c & 2d \\
+             d & c
+           \end{bmatrix} \\
+           \textit{where } c + a = 0, d + b = 0 \\
+           \textit{i.e. } c = -a, d = -b \\
+           \left(\begin{bmatrix}
+             a & 2b \\
+             b & a
+           \end{bmatrix}\right)^{-1} =
+           \begin{bmatrix}
+             -a & -2b \\
+             -b & -a
+           \end{bmatrix}
+         \end{align*}
+       #+END_SRC
+    10. General inverse under multiplication.  First, we will find the
+        determinant of a generic matrix in $K$:
+        #+HEADER: :exports results
+        #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+        #+BEGIN_SRC latex
+          \begin{align*}
+          D = \left|
+            \begin{array}{ll}
+              a & 2b \\
+              b & a
+            \end{array} \right| = aa - 2bb = a^2 - 2b^2
+          \end{align*}
+        #+END_SRC
+        Since 2 appears without a pair in the expression $2b^2$, it means that
+        the prime factorization of this expression contains an odd number of
+        twos.  Hence, it is not possible for $a^2$ to be equal to $2b^2$, unless
+        both $a = 0$ and $b = 0$.  Hence, the only element of $K$ which doesn't
+        have an inverse is the zero matrix.  For every other element its inverse
+        is:
+        #+HEADER: :exports results
+        #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+        #+BEGIN_SRC latex
+          \begin{align*}
+            \left(\begin{bmatrix}
+              a & 2b \\
+              b & a 
+            \end{bmatrix}\right)^{-1} =
+            \frac{1}{D}\begin{bmatrix}
+              a  & -2b \\
+              -b & a 
+            \end{bmatrix} = 
+            \frac{1}{a^2 - 2b^2}\begin{bmatrix}
+              a  & -2b \\
+              -b & a 
+            \end{bmatrix} = 
+            \begin{bmatrix}
+              \frac{a}{a^2 - 2b^2}  & \frac{-2b}{a^2 - 2b^2} \\
+              \frac{-b}{a^2 - 2b^2} & \frac{a}{a^2 - 2b^2}
+            \end{bmatrix}
+          \end{align*}
+        #+END_SRC
+        As before, $\frac{a}{a^2 + 2b^2} \in \mathbb{Q} = e$ and $\frac{-b}{a^2 +
+        2b^2} \in \mathbb{Q} = f$, hence:
+        #+HEADER: :exports results
+        #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+        #+BEGIN_SRC latex
+         \begin{align*}
+           \begin{bmatrix}
+             e & 2f \\
+             f & e
+           \end{bmatrix} \in K
+         \end{align*}
+       #+END_SRC
+    11. Finally, distributivity of multiplication over addition:
+       #+HEADER: :exports results
+       #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+       #+BEGIN_SRC latex
+         \begin{align*}
+           \begin{bmatrix}
+             a & 2b \\
+             b & a
+           \end{bmatrix} \times 
+           \left(\begin{bmatrix}
+             c & 2d \\
+             d & c
+           \end{bmatrix} + 
+           \begin{bmatrix}
+             e & 2f \\
+             f & e
+           \end{bmatrix}\right) =
+           \begin{bmatrix}
+             a & 2b \\
+             b & a
+           \end{bmatrix} \times 
+           \begin{bmatrix}
+             c + e & 2(d + f) \\
+             d + f & c + e 
+           \end{bmatrix} = \\
+           \begin{bmatrix}
+             a(c + e) + 2b(d + f) & 2b(c + e) + 2a(d + f) \\
+             a(d + f) + b(c + e)  & 2b(d + f) + a(c + e)
+           \end{bmatrix} = \\
+           \begin{bmatrix}
+             ac + 2bd & 2ad + 2bc \\
+             bc + ad & 2bd + ac
+           \end{bmatrix} + 
+           \begin{bmatrix}
+             ae + 2bf & 2af + 2be \\
+             be + af & 2bf + ae
+           \end{bmatrix} = \\  
+           \begin{bmatrix}
+             a & 2b \\
+             b & a
+           \end{bmatrix} \times 
+           \begin{bmatrix}
+             c & 2d \\
+             d & c
+           \end{bmatrix} + 
+           \begin{bmatrix}
+             a & 2b \\
+             b & a
+           \end{bmatrix} \times 
+           \begin{bmatrix}
+             e & 2f \\
+             f & e
+           \end{bmatrix}
+         \end{align*}
+      #+END_SRC
+
 ** Problem 3
    Verify that $V$ is a vectors space over field $\textbf{F}$:
    1. $\textbf{F} = \mathbb{C}, V = \mathbb{M}_{n\times n}^{\mathbb{C}}$ and
-      addition defined to be the rational addition, while multiplication is
+      addition defined to be the regular addition, while multiplication is
       defined to be $\lambda\times A = \abs{\lambda}\times A$.
    2. $\textbf{F} = \mathbb{R}, V = \{(x,y) \in \mathbb{R}^2\;|\;y=2x\}$,
       with addition being the addition of $\mathbb{R}^2$ and multiplication
       $\lambda\times (x,y) = (\lambda x, 0)$.
+
+*** Answer 5
+    1. Distributivity of scalar addition prevents $V$ from being a field over
+       $\textbf{F}$.  Consider this example:
+       #+HEADER: :exports results
+       #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+       #+BEGIN_SRC latex
+         \begin{align*}
+           \abs{-1+i} \times
+           \begin{bmatrix}
+             1 & 0 \\
+             0 & 1
+           \end{bmatrix} +
+           \abs{1-i} \times
+           \begin{bmatrix}
+             1 & 0 \\
+             0 & 1
+           \end{bmatrix} &= \\
+           \sqrt{(-1)^2+1^2} \times
+           \begin{bmatrix}
+             1 & 0 \\
+             0 & 1
+           \end{bmatrix} +
+           \sqrt{1^2+(-1)^2} \times
+           \begin{bmatrix}
+             1 & 0 \\
+             0 & 1
+           \end{bmatrix} &=
+           \begin{bmatrix}
+             2\sqrt{2} & 0 \\
+             0 & 2\sqrt{2}
+           \end{bmatrix}
+         \end{align*}
+       #+END_SRC
+       while, at the same time:
+       #+HEADER: :exports results
+       #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+       #+BEGIN_SRC latex
+         \begin{align*}
+           \abs{(-1+i) + (1-i)} \times
+           \begin{bmatrix}
+             1 & 0 \\
+             0 & 1
+           \end{bmatrix} = 
+           \sqrt{0^2+0^2} \times
+           \begin{bmatrix}
+             1 & 0 \\
+             0 & 1
+           \end{bmatrix} &=
+           \begin{bmatrix}
+             0 & 0 \\
+             0 & 0
+           \end{bmatrix}
+         \end{align*}
+       #+END_SRC
+       Obviously, 
+       #+HEADER: :exports results
+       #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+       #+BEGIN_SRC latex
+         \begin{align*}
+           \begin{bmatrix}
+             2\sqrt{2} & 0 \\
+             0 & 2\sqrt{2}
+           \end{bmatrix} \neq 
+           \begin{bmatrix}
+             0 & 0 \\
+             0 & 0
+           \end{bmatrix}
+         \end{align*}
+       #+END_SRC
+    2. Of course $V$ is not a vector space over $\mathbf{F}$, almost none of
+       scalar multiples are in $V$, since they are of the form $(x, y)$, where
+       $y = 0$ and $y = 2x$, but this is only true when $x = 0$ as well.  Any
+       other value of $x$ will not satisfy closure under multiplication
+       requirement.
 
 ** Problem 4
    Given sets:
@@ -106,6 +597,34 @@
    Fore each of sets given, assert them being vector spaces.  In case they are,
    prove this in two different ways.
 
+*** Answer 6
+    1. By substitution find that $x = 4t - 2z$, $y = 3z - 5t$.  This gives us
+       vectors $\vec{v}_1 = (4, -5, 0, 1)^T$ and $\vec{v}_2 = (-2, 3, 1, 0)^T$
+       which span $K$.  In other words, $K$ is a vector space over the field of
+       real numbers with the operations of vector addition and multiplication.
+    2. $L$ is not a vector space.  For example, it doesn't have additive
+       inverse.  Suppose for contradiction that there exists additive inverse in
+       $L$, then $f(x) + f'(x) = 0$, in particular, $f(\frac{1}{2}) +
+       f'(\frac{1}{2}) = 0$ and $f(2) + f'(2) = 0$.  We know that
+       $f(\frac{1}{2}) > f(2)$.  Let $f(\frac{1}{2}) = n$ and $f(2) = m$.  Then
+       $f'(\frac{1}{2}) = -n$ and $f'(2) = -m$.  However, if $n > m$, then $-n <
+       -m$.  Contradiction.  Hence, $L$ is not a vector space.
+    3. $M$ is a vector space with the span $P = \Sp\{(1, 0, 0, (-3)^3), (0, 1,
+       0, (-3)^2), (0, 0, 1, (-3)^1), \allowbreak (0, 0, 0, 0)\}$.  To see why
+       these vectors span $M$ suppose there was a polinomial $p(x)$ s.t. $p(-3)
+       = 0$, but it is not a linear combination of $P$.  However, $p(x)$ must be
+       representable as follows $(\alpha(-3)^3 - c_{\alpha}) + (\beta(-3)^2 -
+       c_{\beta}) + (\gamma(-3)^1 - c_{\gamma}) = 0$, with $c_i$ some constants.
+       Now, note that each of the summands individually can be represented by
+       the elements of $P$, hence, contrary to assumed, $p(x)$ is a linear
+       combinaton of $P$.  Hence, $P$ spans $M$.
+    4. $R$ is a vector space, if you allow vector spaces with just one element:
+       the condition $x^2+y^2=0$ in real numbers can only be satisfied when
+       $x=y=0$, since squares of real numbers are non-negative.  This space
+       would be the $\Sp\{(0, 0)\}$.
+    5. $S$ is a vector space defined by $\Sp\{(1, 1), (0, 0)\}$, it is equivalent
+       to just the real numbers.
+
 ** Problem 5
    Given vector space $V$ and $\vec{v}_1, \vec{v}_2, \vec{v}_3$ distinct vectors
    prove or disprove:
@@ -114,10 +633,93 @@
    2. If $\vec{v}_1 - 2\vec{v}_2 + \vec{v}_3 = \vec{0}$, then 
       $\Sp\{\vec{v}_1, \vec{v}_2\} = \Sp\{\vec{v}_1, \vec{v}_3\}$.
    3. If $\{\vec{v}_1, \vec{v}_2, \vec{v}_3\}$ is linearly dependent, then
-      $\Sp\{\vec{v}_1, \vec{v}_2\} = \Sp\{\vec{v}_1 + \vec{v}_3, \vec{v}_3 +
+      $\Sp\{\vec{v}_1, \vec{v}_2\} = \Sp\{\vec{v}_1 + \vec{v}_3, \vec{v}_2 +
       \vec{v}_3\}$.
 
+*** Answer 7
+    1. False, counterexample: $\vec{v}_1 = (1, 0)^T$, $\vec{v}_2 = (1, 1)^T$,
+       $\vec{v}_3 = (0, 1)^T$, but there doesn't exist $\lambda$ s.t.
+       $\lambda \vec{v}_2 = \vec{v}_3$.
+    2. True, take any vector generated by the first span: 
+       #+HEADER: :exports results
+       #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+       #+BEGIN_SRC latex
+         \begin{align*}
+           \vec{x} &= \alpha(2\vec{v}_2 - \vec{v}_3) + \beta \vec{v}_2 \\
+           \vec{y} &= \gamma(2\vec{v}_2 - \vec{v}_3) + \delta \vec{v}_3 \\
+           &\textit{Group the coefficients: } \\
+           \vec{x} &= (2\alpha + \beta) \vec{v}_2 - \alpha \vec{v}_3 \\
+           \vec{y} &= 2\gamma \vec{v}_2 - (\delta - \gamma) \vec{v}_3
+         \end{align*}
+       #+END_SRC
+       Since both $\vec{x}$ and $\vec{y}$ are linear combinations of $\vec{v}_2$
+       and $\vec{v}_3$, they are in the same span.  Hence $\Sp\{\vec{v}_1,
+       \vec{v}_2\} = \Sp\{\vec{v}_1, \vec{v}_3\}$.
+    3. False, counterexample: $\vec{v}_1 = (0, 0)^T$, $\vec{v}_2 = (1, 0)^T$,
+       $\vec{v}_3 = (0, 1)^T$, but $\dim\Sp\{\vec{v}_1, \vec{v}_2\} = 1$ and
+       $\dim\Sp\{\vec{v}_2, \vec{v}_3\} = 2$.
+
 ** Problem 6
-   Given following subspaces of $\mathbb{R}^4$:
+   Given following subspaces of $\mathbb{R}^3$:
    $U = \Sp\{(1,1,2), (2,2,1)\}$ and $W = \Sp\{(1,3,4), (2,5,1)\}$,
    find spanning set of $U \cap W$.
+
+*** Answer 8
+    Using linear space sum dimension theorem: $\dim(W + U) = \dim W + \dim U -
+    \dim(W \cap U)$ we have that $\dim(W \cap U) = \dim W + \dim U - \dim(W +
+    U)$.
+    Now, let's find the summands:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \dim{U} &= \dim \left(\begin{bmatrix}
+                 1 & 1 & 2 \\
+                 2 & 2 & 1
+               \end{bmatrix} \right) \\
+                &= \dim \left(\begin{bmatrix}
+                 1 & 1 & 2 \\
+                 0 & 0 & -3
+               \end{bmatrix} \right) \\
+                &= 2\;. \\
+        \dim{W} &= \dim \left(\begin{bmatrix}
+                 1 & 3 & 4 \\
+                 2 & 5 & 1
+               \end{bmatrix} \right) \\
+                &= \dim \left(\begin{bmatrix}
+                 1 & 1  & 2 \\
+                 0 & -1 & -7
+               \end{bmatrix} \right) \\
+                &= 2\;. \\
+        \dim(W + U) &= \dim \left(\begin{bmatrix}
+                 1 & 3  & 4 \\
+                 0 & -1 & -7 \\
+                 1 & 1  & 2 \\
+                 0 & 0  & -3
+               \end{bmatrix} \right) \\
+                &= \dim \left(\begin{bmatrix}
+                 1 & 3  & 4 \\
+                 0 & -1 & -7 \\
+                 0 & -2 & 2 \\
+                 0 & 0  & -3
+               \end{bmatrix} \right) \\
+                &= \dim \left(\begin{bmatrix}
+                 1 & 3  & 4 \\
+                 0 & -1 & -7 \\
+                 0 & 0  & 16 \\
+                 0 & 0  & -3
+               \end{bmatrix} \right) \\
+                &= \dim \left(\begin{bmatrix}
+                 1 & 3  & 4 \\
+                 0 & -1 & -7 \\
+                 0 & 0  & 16 \\
+                 0 & 0  & 0
+               \end{bmatrix} \right) \\
+                &= 3\;.
+      \end{align*}
+    #+END_SRC
+    Imporatnt observation here is that the number of pivot elements in reduced
+    echelon form is the dimension of the matrix.
+
+    Hence, $\dim(W \cap U) = 2 + 2 - 3 = 1$, or, in other words, $U$ and $W$
+    share one common axis.
