@@ -1,0 +1,157 @@
+# -*- fill-column: 80; org-confirm-babel-evaluate: nil -*-
+
+#+TITLE:     Assignment 14, Linear Algebra 1
+#+AUTHOR:    Oleg Sivokon
+#+EMAIL:     olegsivokon@gmail.com
+#+DATE:      <2016-05-20 Fri>
+#+DESCRIPTION: Third asssignment in the course Linear Algebra 1
+#+KEYWORDS: Assignment, Linear Algebra
+#+LANGUAGE: en
+#+LaTeX_CLASS: article
+#+LATEX_HEADER: \usepackage[usenames,dvipsnames]{color}
+#+LATEX_HEADER: \usepackage{a4wide}
+#+LATEX_HEADER: \usepackage{commath}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{marginnote}
+#+LATEX_HEADER: \usepackage{enumerate}
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \usepackage{breqn}
+#+LATEX_HEADER: \usepackage{flexisym}
+#+LATEX_HEADER: \usepackage{mathstyle}
+#+LATEX_HEADER: \hypersetup{urlcolor=blue}
+#+LATEX_HEADER: \hypersetup{colorlinks,urlcolor=blue}
+#+LATEX_HEADER: \setlength{\parskip}{16pt plus 2pt minus 2pt}
+#+LATEX_HEADER: \definecolor{codebg}{rgb}{0.96,0.99,0.8}
+#+LATEX_HEADER: \DeclareMathOperator{\Sp}{Sp}
+#+LATEX_HEADER: \DeclareMathOperator{\cis}{cis}
+
+#+BEGIN_SRC emacs-lisp :exports none
+  (setq org-latex-pdf-process
+          '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -f %f")
+          ;; org-latex-listings t
+          org-src-fontify-natively t
+          ;; org-latex-custom-lang-environments '((maxima "maxima"))
+          ;; org-listings-escape-inside '("(*@" . "@*)")
+          ;; org-babel-latex-htlatex "htlatex"
+          )
+
+    (defmacro by-backend (&rest body)
+      `(progn
+         (cl-case org-export-current-backend ,@body)))
+#+END_SRC
+
+#+RESULTS:
+: by-backend
+
+#+BEGIN_LATEX
+\definecolor{codebg}{rgb}{0.96,0.99,0.8}
+\lstnewenvironment{maxima}{%
+  \lstset{backgroundcolor=\color{codebg},
+    frame=single,
+    framerule=0pt,
+    basicstyle=\ttfamily\scriptsize,
+    columns=fixed}}{}
+}
+\makeatletter
+\newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
+\makeatother
+\verbatimfont{\small}%
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+\clearpage
+#+END_LATEX
+
+* Problems
+
+** Problem 1
+   Given $f, g, h$ are functions from $\mathbb{R}$ to $\mathbb{R}$, check that
+   all of them are linearly independent when:
+   1. $f(x) = \sin x$, $g(x) = \cos x$, $h(x) = x \cos x$.
+   2. $f(x) = x(x - 1)$, $g(x) = x(x - 2)$, $h(x) = (x - 1)(x - 2)$.
+   3. $f(x) = \sin^2 x$, $g(x) = \cos^2 x$, $h(x) = 3$.
+
+*** Answer 1
+
+*** Answer 2
+
+*** Answer 3
+
+** Problem 2
+   Given the following subsets of $\mathbb{R}^4$:
+   #+HEADER: :exports results
+   #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+   #+BEGIN_SRC latex
+     \begin{align*}
+       U &= \{(x, y, z, t) \in \mathbb{R}^4 \;|\; x - y + z = 0 \land x - y - 2t = 0\} \\
+       W &= \Sp\{(1,0,1,1), (0,1,0,-1), (1,0,1,0)\}
+     \end{align*}
+   #+END_SRC
+   
+   1. Prove that $U$ and $W$ are subspaces of $\mathbb{R}^4$.
+   2. Find basis for $U$, $W$ and $U+W$.
+   3. Find basis for $U \cap W$.
+   4. Find subspace $T$ of $\mathbb{R}^4$ s.t. $U \oplus T = \mathbb{R}^4$.
+
+*** Answer 4
+
+*** Answer 5
+
+*** Answer 6
+
+*** Answer 7
+
+** Problem 3
+   Let $\vec{v}_1, \vec{v}_2, \dots, \vec{v}_k$ and $\vec{w}$ be vectors in
+   linear space $V$.  Given $\{\vec{v}_1, \vec{v}_2, \dots, \vec{v}_k\}$ is
+   linearly independent and that $\vec{w} \not \in \Sp\{\vec{v}_1, \vec{v}_2,
+   \dots, \vec{v}_k\}$, prove that $\vec{v_1} \not \in \Sp\{\vec{v}_1 + \vec{w},
+   \vec{v}_2 + \vec{w}, \dots, \vec{v}_k + \vec{w}\}$.
+
+*** Answer 8
+
+** Problem 4
+   Let $U$ and $W$ be distinct linear subspaces of $\mathbb{R}^5$ of
+   dimension 3.  Suppose $(2, 1, 0, 1), (1, 0, 1, 1) \in U \cap W$, what is the
+   dimension of $U + W$?
+
+*** Answer 9
+
+** Problem 5
+   Let $A$ and $B$ be square matrices of size $n$, $n \geq 2$.  Suppose $A$ and
+   $B$ are of the rank 1, 
+   1. what are the possible ranks of $A + B$?
+   2. What is the possible rank of $A + B$ when they both are of rank 2?
+   3. Prove that it is possible to write any matrix of rank 2 as a sum of
+      matrices of rank 1.
+
+*** Answer 10
+
+** Problem 6
+   Given bases $B = (\vec{u}_1, \vec{u}_2, \vec{u}_3)$ and $C = (\vec{v}_1,
+   \vec{v}_2, \vec{v}_3)$ both in $\mathbb{R}^3$ s.t.
+   #+HEADER: :exports results
+   #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+   #+BEGIN_SRC latex
+     \begin{align*}
+       \vec{u}_1 &= (2,1,1) \\
+       \vec{u}_2 &= (2,-1,1) \\
+       \vec{u}_3 &= (1,2,1) \\
+       \vec{v}_1 &= (3,1,-5) \\
+       \vec{v}_2 &= (1,1,-3) \\
+       \vec{v}_3 &= (-1,0,2)
+     \end{align*}
+   #+END_SRC
+   1. Write the matrix of change of basis from $B$ to $C$ and its inverse.
+   2. Compute the coordinate vector $[w]_B$ where $\vec{w} = (-5,8,-5)$.
+   3. Similarly, compute $[w]_C$.
+
+*** Answer 11
+
+*** Answer 12
+
+*** Answer 13
