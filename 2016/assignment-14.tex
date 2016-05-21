@@ -1,4 +1,4 @@
-% Created 2016-05-20 Fri 11:37
+% Created 2016-05-21 Sat 02:42
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -83,12 +83,55 @@ all of them are linearly independent when:
 
 \subsubsection{Answer 1}
 \label{sec-1-1-1}
+Assuming interval is $(-\infty, \infty)$, using Wronskian determinant:
+\begin{align*}
+  D = \left|
+  \begin{array}{lll}
+    \sin x  & \cos x  & x\cos x \\
+    \cos x  & -\sin x & \cos x - x \sin x \\
+    -\sin x & -\cos x & -\sin x - \sin x - x \cos x
+  \end{array}
+  \right| = \left|
+  \begin{array}{lll}
+    \sin x  & \cos x  & x\cos x \\
+    \cos x  & -\sin x & \cos x - x \sin x \\
+    0       & 0       & -2\sin x
+  \end{array}
+  \right| = \\
+  -2\sin x \times \left|\begin{array}{lll}
+    \sin x  & \cos x \\
+    \cos x  & -\sin x 
+  \end{array}
+  \right| = -2 \sin x (-\sin^2 x - \cos^2 x) = 2 \sin x\;.
+\end{align*}
+
+Since determinant depends on $x$, it is certanly not zero for all $x$, hence
+$f, g, h$ are linearly independent.
 
 \subsubsection{Answer 2}
 \label{sec-1-1-2}
+Assuming interval is $(-\infty, \infty)$, using Wronskian determinant:
+\begin{align*}
+  D = \left|
+  \begin{array}{lll}
+    x^2 - x & x^2 - 2x & x^2 - 3x - 3 \\
+    2x - 1  & 2x - 2  & 2x - 3 \\
+    2       & 2       & 2
+  \end{array}
+  \right| = \\
+  2(x^2 - x)(2x - 2 - 2x + 3) - 4(x^2 - 2x)(2x - 1 - 2x - 2) - 2(x^2 - 3x - 3) = \\
+  2x^2 - 2x - 4x^2 + 8x - 2x^2 + 6x + 6 = \\
+  -4x^2 + 12x + 6\;.
+\end{align*}
+
+Since determinant depends on $x$, it is certanly not zero for all $x$, hence
+$f, g, h$ are linearly independent.
 
 \subsubsection{Answer 3}
 \label{sec-1-1-3}
+Assuming interval is $(-\infty, \infty)$, $a\sin^2(x) + b\cos^2(x) + 3c = 0$
+has a solution when $a = b = 1$ and $c = -\frac{1}{3}$.  Thus $f, g, h$ are
+linearly dependent.
 
 \subsection{Problem 2}
 \label{sec-1-2}
@@ -108,9 +151,59 @@ Given the following subsets of $\mathbb{R}^4$:
 
 \subsubsection{Answer 4}
 \label{sec-1-2-1}
+$W$ is a subspace of $\mathbb{R}^4$ immediately from definition of span.
+$U$ is a subspace because it can be represented by $\Sp\{(1,0,0,0),
+    (1,1,-1,-2), (0,-1,1,2), (0,-\frac{1}{2},\frac{1}{2},1)\}$ by noting that $x
+    = y - 2t$ and $z = 2t$, which is again, by definition, a subspace of
+$\mathbb{R}^4$.
 
 \subsubsection{Answer 5}
 \label{sec-1-2-2}
+Span of $U$ is also its basis since all vectors in it are linearly
+independent.  Span of $W$ contains linearly dependent vectors, $t$ is a
+multiple of $z$ and both of them are multiples of linear combination of $x$
+and $y$, hence its basis has only two vectors, for example $\{(1,0,0,0),
+    (0,1,-1,2)\}$.  We can find the basis of $U + W$ by adjoining both basis
+and performing Gaussian elimination:
+\begin{align*}
+  \begin{bmatrix}
+    1 & 0 & 1 & 1 \\
+    0 & 1 & 0 & -1 \\ 
+    1 & 0 & 1 & 0 \\
+    1 & 0 & 0 & 0 \\
+    0 & 1 & -1 & 2
+  \end{bmatrix} \sim
+  \begin{bmatrix}
+    1 & 0 & 0 & 0 \\
+    0 & 0 & 1 & 1 \\
+    0 & 1 & 0 & -1 \\ 
+    0 & 0 & 1 & 0 \\
+    0 & 1 & -1 & 2
+  \end{bmatrix} \sim
+  \begin{bmatrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 0 & -1 \\ 
+    0 & 0 & -1 & 3 \\
+    0 & 0 & 1 & 0 \\
+    0 & 0 & 1 & 1 \\
+  \end{bmatrix} \sim
+  \begin{bmatrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 0 & -1 \\ 
+    0 & 0 & 1 & 0 \\
+    0 & 0 & 0 & 3 \\
+    0 & 0 & 0 & 1
+  \end{bmatrix} \sim
+  \begin{bmatrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 0 & -1 \\ 
+    0 & 0 & 1 & 0 \\
+    0 & 0 & 0 & 1 \\
+    0 & 0 & 0 & 0
+  \end{bmatrix}
+\end{align*}
+
+Which is the standard basis for $\mathbb{R}^4$.
 
 \subsubsection{Answer 6}
 \label{sec-1-2-3}
@@ -128,29 +221,139 @@ linearly independent and that $\vec{w} \not \in \Sp\{\vec{v}_1, \vec{v}_2,
 
 \subsubsection{Answer 8}
 \label{sec-1-3-1}
+ Suppose, for contradiction, $\vec{v}_1 = a(\vec{v}_1 + \vec{w}) +
+   b(\vec{v}_2 + \vec{w}) + \dots + c(\vec{v}_k + \vec{w})$ for some constants
+$a, b \dots c$.  Then we have $(1 - a)\vec{v}_1 - b\vec{v}_2 - \dots -
+   c\vec{v}_k = -(a + b + \dots + c)\vec{w}$.  Notice that this says that
+$\vec{w}$ is a linear combination of $\{\vec{v}_1, \vec{v}_2, \dots,
+   \vec{v}_k\}$, which is a contradiction to the given.  Hence, $\vec{v}_1 \not
+   \in \Sp\{\vec{v}_1 + \vec{w}, \vec{v}_2 + \vec{w}, \dots, \vec{v}_k +
+   \vec{w}\}$.
 
 \subsection{Problem 4}
 \label{sec-1-4}
-Let $U$ and $W$ be distinct linear subspaces of $\mathbb{R}^5$ of
+Let $U$ and $W$ be distinct linear subspaces of $\mathbb{R}^4$ of
 dimension 3.  Suppose $(2, 1, 0, 1), (1, 0, 1, 1) \in U \cap W$, what is the
 dimension of $U + W$?
 
 \subsubsection{Answer 9}
 \label{sec-1-4-1}
+Spans of both $U$ and $W$ have a vector that the other doesn't have
+(otherwise they would be the same subspace).  Since the span of their
+intersection has two distinct vectors, it means that their sum must contain
+all linear combinations of the vectors in the span of intersection and the
+remaining distinct vector.  This leaves us the only option of $\dim(U+W) =
+    4$.
 
 \subsection{Problem 5}
 \label{sec-1-5}
 Let $A$ and $B$ be square matrices of size $n$, $n \geq 2$.  Suppose $A$ and
-$B$ are of the rank 1, 
+$B$ are of rank 1, 
 \begin{enumerate}
 \item what are the possible ranks of $A + B$?
 \item What is the possible rank of $A + B$ when they both are of rank 2?
 \item Prove that it is possible to write any matrix of rank 2 as a sum of
-matrices of rank 1.
+two matrices of rank 1.
 \end{enumerate}
 
 \subsubsection{Answer 10}
 \label{sec-1-5-1}
+It can be either zero, one or two.
+\begin{enumerate}
+\item It can be zero when $A = -B$.  Since this is the zero matrix, its rank is 0.
+\item It can be one when, for example, $A = B$, since it would imply $A + B =
+       2A$ and rank is preserved under scalar multiplication.
+\item For matrix to have rank equal to one it means that all of its non-zero
+values are concentrated in either the same row, or the same column.
+Whenever a matrix has two or more rows (or columns), where one of the
+rows (or columns) is the zero vector, it is possible to find another
+matrix, which has in the corresponding position its non-zero entries.
+Thus, the rank can be also 2, but no more than that, since another matrix
+will necessarily have at most one non-zero row.
+\end{enumerate}
+
+\subsubsection{Answer 11}
+\label{sec-1-5-2}
+Similarly, for matrices of rank 2, we can have rank at leas 0 or at most 4,
+or anything in between.
+\begin{enumerate}
+\item Zeroth rank will result from adding $A$ and $B$ s.t. $A = -B$.
+\item Rank of one will result from matrices s.t. the entries of $A$ are
+$a_{i,j}$, the entries of $B$ are $b_{i,j}$ and $\forall (0 \geq i \geq n,
+       0 \geq j \geq n): a_{i, j} = -b_{i, j}$, unless $i = k$ and $j = m$ (some
+constants).  In other words, when all but one entries in these two
+matrices are additive inverses of each other except for one entry.
+\item The rank will be two when, for example, $A = B$ for the same reason as
+above.
+\item Example of rank three sum:
+\begin{align*}
+  \begin{bmatrix}
+    1 & 0 & 0 \\
+    0 & 1 & 0 \\
+    0 & 0 & 0
+  \end{bmatrix} +
+  \begin{bmatrix}
+    0 & 0 & 0 \\
+    0 & 1 & 0 \\
+    0 & 0 & 1
+  \end{bmatrix} = 
+  \begin{bmatrix}
+    1 & 0 & 0 \\
+    0 & 1 & 0 \\
+    0 & 0 & 1
+  \end{bmatrix}
+\end{align*}
+
+\item Rank can similarly be four:
+\begin{align*}
+  \begin{bmatrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0 \\
+    0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0
+  \end{bmatrix} +
+  \begin{bmatrix}
+    0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 \\
+    0 & 0 & 1 & 0 \\
+    0 & 0 & 0 & 1
+  \end{bmatrix} = 
+  \begin{bmatrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0 \\
+    0 & 0 & 1 & 0 \\
+    0 & 0 & 0 & 1
+  \end{bmatrix}
+\end{align*}
+
+But it cannot be more than four since both $A$ and $B$ will have at most
+two non-zero rows (or columns), which is only enough to produce four
+pivot elements in the total.  Since rank is equal to the dimension of
+column (or row) span of the matrix, and the dimesnion of these spaces is
+determined by the number of pivots, it is thus impossible to have rank
+higher than four when adding $A$ and $B$.
+\end{enumerate}
+
+\subsubsection{Answer 12}
+\label{sec-1-5-3}
+Let $C$ be arbitrary matrix of rank 2.  Since rank is preserved under
+multiplication with fully-ranked matrix, we can perform Gaussian elimination
+on $C$ to obtain a general-form matrix $C'$ lookin like this:
+\begin{align*}
+  C' &= \begin{bmatrix}
+    1      & \dots  & \dots \\
+    0      & 1      & \dots \\
+    \vdots & \vdots & \ddots
+  \end{bmatrix}
+\end{align*}
+
+Which, clearly, can be decomposed into two matrices of rank 1.  From
+distributivity of matrix multiplication over addition we can show that by
+multiplying by elementary matrices we can restore the obtained sum to match
+$C$ (the original matrix).  In other words: $C \times c_1E \times c_2E
+    \times \dots \times c_nE = C'$, where $Es$ are some elementary matrices and
+$c_i$ are some constants, hence $(A + B) \times c_1E \times c_2E \times
+    \dots \times c_nE = C$, provided $A + B = C'$.
 
 \subsection{Problem 6}
 \label{sec-1-6}
@@ -171,13 +374,13 @@ Given bases $B = (\vec{u}_1, \vec{u}_2, \vec{u}_3)$ and $C = (\vec{v}_1,
 \item Similarly, compute $[w]_C$.
 \end{enumerate}
 
-\subsubsection{Answer 11}
+\subsubsection{Answer 13}
 \label{sec-1-6-1}
 
-\subsubsection{Answer 12}
+\subsubsection{Answer 14}
 \label{sec-1-6-2}
 
-\subsubsection{Answer 13}
+\subsubsection{Answer 15}
 \label{sec-1-6-3}
 % Emacs 25.1.50.2 (Org mode 8.2.10)
 \end{document}
