@@ -1,0 +1,213 @@
+% Created 2016-06-03 Fri 14:40
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage[hidelinks]{hyperref}
+\tolerance=1000
+\usepackage[utf8]{inputenc}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{a4wide}
+\usepackage{commath}
+\usepackage{amsmath}
+\usepackage{marginnote}
+\usepackage{enumerate}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{breqn}
+\usepackage{flexisym}
+\usepackage{mathstyle}
+\hypersetup{urlcolor=blue}
+\hypersetup{colorlinks,urlcolor=blue}
+\setlength{\parskip}{16pt plus 2pt minus 2pt}
+\definecolor{codebg}{rgb}{0.96,0.99,0.8}
+\DeclareMathOperator{\Sp}{Sp}
+\DeclareMathOperator{\image}{\mathrm{im}}
+\author{Oleg Sivokon}
+\date{\textit{<2016-06-03 Fri>}}
+\title{Assignment 15, Linear Algebra 1}
+\hypersetup{
+  pdfkeywords={Assignment, Linear Algebra},
+  pdfsubject={Third asssignment in the course Linear Algebra 1},
+  pdfcreator={Emacs 25.1.50.2 (Org mode 8.2.10)}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+\definecolor{codebg}{rgb}{0.96,0.99,0.8}
+\lstnewenvironment{maxima}{%
+  \lstset{backgroundcolor=\color{codebg},
+    frame=single,
+    framerule=0pt,
+    basicstyle=\ttfamily\scriptsize,
+    columns=fixed}}{}
+}
+\makeatletter
+\newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
+\makeatother
+\verbatimfont{\small}%
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+\clearpage
+
+\section{Problems}
+\label{sec-1}
+
+\subsection{Problem 1}
+\label{sec-1-1}
+For each of the given transformations check if it is linear:
+\begin{enumerate}
+\item $T:\mathbb{R}_2[x] \to \mathbb{R}_4[x]$ defined as $T(f(x)) = (x^3 -
+      x)f(x^2)$.
+\item $T:\mathbb{M}^{\mathbb{R}}_{n\times n} \to
+      \mathbb{M}^{\mathbb{R}}_{n\times n}$ defined as $T(X) = AXA$ for some $A
+      \in \mathbb{M}^{\mathbb{R}}_{n\times n}$.
+\end{enumerate}
+
+\subsubsection{Answer 1}
+\label{sec-1-1-1}
+
+\subsubsection{Answer 2}
+\label{sec-1-1-2}
+
+\subsection{Problem 2}
+\label{sec-1-2}
+\begin{enumerate}
+\item Does there exist an isomorphism $T:\mathbb{R}_3[x] \to \mathbb{R}^3$ for
+which $T(x^2 + 2x) = (1, 2, 1)$, $T(x + 1) = (0, 1, 1)$, $T(x^2 - 2) = (1,
+      0, -1)$?
+\item Given linear space $V$ and linear transformations $S, T: V \to V$, prove
+that, if $V$ is finite-dimensional and $\ker S = \{0\}$, then $\image TS =
+      \image S$.
+\end{enumerate}
+
+\subsubsection{Answer 3}
+\label{sec-1-2-1}
+
+\subsubsection{Answer 4}
+\label{sec-1-2-2}
+
+\subsection{Problem 3}
+\label{sec-1-3}
+Let $T: \mathbb{R}^5 \to \mathbb{R}^5$ be a linear transformation s.t. $T^2 =
+   0$.
+\begin{enumerate}
+\item Prove that $\image T \subseteq \ker T$.
+\item What are the possible values for the dimension of $\ker T$?
+\item Let $U$ be a subspace of $\mathbb{R}^5$ s.t. $\dim U = 3$, prove that $U
+      \cap \ker T \neq \{0\}$.
+\end{enumerate}
+
+\subsubsection{Answer 5}
+\label{sec-1-3-1}
+
+\subsubsection{Answer 6}
+\label{sec-1-3-2}
+
+\subsubsection{Answer 7}
+\label{sec-1-3-3}
+
+\subsection{Problem 4}
+\label{sec-1-4}
+Let $a \in \mathbb{R}$ and $T:\mathbb{R}^3 \to \mathbb{R}^3$ be a linear
+transformation.  Let $B = ((1,0,0),(1,1,0),(1,1,1))$ be a basis in
+$\mathbb{R}^3$.  Then $T$ with respect to the basis $B$ is given by
+\begin{align*}
+  [T]_B = \begin{bmatrix}
+    a     & 1 - 1 & 0 \\
+    a     & 2a    & 2a + 2 \\
+    a + 1 & a + 1 & 2a + 2
+  \end{bmatrix} \;.
+\end{align*}
+
+Also, $(2, 2, 2) \in \ker T$.
+\begin{enumerate}
+\item Find $a$ and compute $T(x,y,z)$ for any $(x,y,z) \in \mathbb{R}^3$.
+\item Find the matrix representing $T$ with respect to standard basis.
+\item Find basis for $\image T$ and $\ker T$.
+\end{enumerate}
+
+\subsubsection{Answer 8}
+\label{sec-1-4-1}
+
+\subsubsection{Answer 9}
+\label{sec-1-4-2}
+
+\subsubsection{Answer 10}
+\label{sec-1-4-3}
+
+\subsection{Problem 5}
+\label{sec-1-5}
+Let $T:\mathbb{R}^2 \to \mathbb{R}^2$ be a linear transformation given by
+$T(x,y) = (x+2y,y)$
+\begin{enumerate}
+\item Find the basis $B$ of $\mathbb{R}^2$ s.t.
+\begin{align*}
+  [T]_B = \begin{bmatrix}
+    1 & 0 \\
+    2 & 1
+  \end{bmatrix} \;.
+\end{align*}
+
+\item Prove that 
+\begin{align*}
+  \begin{bmatrix}
+    1 & 0 \\
+    2 & 1
+  \end{bmatrix} \sim
+  \begin{bmatrix}
+    1 & 2 \\
+    0 & 1
+  \end{bmatrix}
+\end{align*}
+\end{enumerate}
+
+\subsubsection{Answer 11}
+\label{sec-1-5-1}
+
+\subsubsection{Answer 12}
+\label{sec-1-5-2}
+
+\subsection{Problem 6}
+\label{sec-1-6}
+Let $a, b, c \in \mathbb{R}$, prove that $A \sim B \sim C$.
+\begin{align*}
+  A = \begin{bmatrix}
+    b & c & a \\
+    c & a & b \\
+    a & b & c
+  \end{bmatrix},
+  B = \begin{bmatrix}
+    c & a & b \\
+    a & b & c \\
+    b & c & a
+  \end{bmatrix},
+  C = \begin{bmatrix}
+    a & b & c \\
+    b & c & a \\
+    c & a & b
+  \end{bmatrix}\;.
+\end{align*}
+
+\subsubsection{Answer 13}
+\label{sec-1-6-1}
+% Emacs 25.1.50.2 (Org mode 8.2.10)
+\end{document}

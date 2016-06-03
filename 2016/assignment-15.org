@@ -1,0 +1,193 @@
+# -*- fill-column: 80; org-confirm-babel-evaluate: nil -*-
+
+#+TITLE:     Assignment 15, Linear Algebra 1
+#+AUTHOR:    Oleg Sivokon
+#+EMAIL:     olegsivokon@gmail.com
+#+DATE:      <2016-06-03 Fri>
+#+DESCRIPTION: Third asssignment in the course Linear Algebra 1
+#+KEYWORDS: Assignment, Linear Algebra
+#+LANGUAGE: en
+#+LaTeX_CLASS: article
+#+LATEX_HEADER: \usepackage[usenames,dvipsnames]{color}
+#+LATEX_HEADER: \usepackage{a4wide}
+#+LATEX_HEADER: \usepackage{commath}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{marginnote}
+#+LATEX_HEADER: \usepackage{enumerate}
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \usepackage{breqn}
+#+LATEX_HEADER: \usepackage{flexisym}
+#+LATEX_HEADER: \usepackage{mathstyle}
+#+LATEX_HEADER: \hypersetup{urlcolor=blue}
+#+LATEX_HEADER: \hypersetup{colorlinks,urlcolor=blue}
+#+LATEX_HEADER: \setlength{\parskip}{16pt plus 2pt minus 2pt}
+#+LATEX_HEADER: \definecolor{codebg}{rgb}{0.96,0.99,0.8}
+#+LATEX_HEADER: \DeclareMathOperator{\Sp}{Sp}
+#+LATEX_HEADER: \DeclareMathOperator{\image}{\mathrm{im}}
+
+#+BEGIN_SRC emacs-lisp :exports none
+  (setq org-latex-pdf-process
+          '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -f %f")
+          ;; org-latex-listings t
+          org-src-fontify-natively t
+          ;; org-latex-custom-lang-environments '((maxima "maxima"))
+          ;; org-listings-escape-inside '("(*@" . "@*)")
+          ;; org-babel-latex-htlatex "htlatex"
+          )
+
+    (defmacro by-backend (&rest body)
+      `(progn
+         (cl-case org-export-current-backend ,@body)))
+#+END_SRC
+
+#+RESULTS:
+: by-backend
+
+#+BEGIN_LATEX
+\definecolor{codebg}{rgb}{0.96,0.99,0.8}
+\lstnewenvironment{maxima}{%
+  \lstset{backgroundcolor=\color{codebg},
+    frame=single,
+    framerule=0pt,
+    basicstyle=\ttfamily\scriptsize,
+    columns=fixed}}{}
+}
+\makeatletter
+\newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
+\makeatother
+\verbatimfont{\small}%
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+\clearpage
+#+END_LATEX
+
+* Problems
+
+** Problem 1
+   For each of the given transformations check if it is linear:
+   1. $T:\mathbb{R}_2[x] \to \mathbb{R}_4[x]$ defined as $T(f(x)) = (x^3 -
+      x)f(x^2)$.
+   2. $T:\mathbb{M}^{\mathbb{R}}_{n\times n} \to
+      \mathbb{M}^{\mathbb{R}}_{n\times n}$ defined as $T(X) = AXA$ for some $A
+      \in \mathbb{M}^{\mathbb{R}}_{n\times n}$.
+
+*** Answer 1
+
+*** Answer 2
+
+** Problem 2
+   1. Does there exist an isomorphism $T:\mathbb{R}_3[x] \to \mathbb{R}^3$ for
+      which $T(x^2 + 2x) = (1, 2, 1)$, $T(x + 1) = (0, 1, 1)$, $T(x^2 - 2) = (1,
+      0, -1)$?
+   2. Given linear space $V$ and linear transformations $S, T: V \to V$, prove
+      that, if $V$ is finite-dimensional and $\ker S = \{0\}$, then $\image TS =
+      \image S$.
+
+*** Answer 3
+
+*** Answer 4
+
+** Problem 3
+   Let $T: \mathbb{R}^5 \to \mathbb{R}^5$ be a linear transformation s.t. $T^2 =
+   0$.
+   1. Prove that $\image T \subseteq \ker T$.
+   2. What are the possible values for the dimension of $\ker T$?
+   3. Let $U$ be a subspace of $\mathbb{R}^5$ s.t. $\dim U = 3$, prove that $U
+      \cap \ker T \neq \{0\}$.
+
+*** Answer 5
+
+*** Answer 6
+
+*** Answer 7
+
+** Problem 4
+   Let $a \in \mathbb{R}$ and $T:\mathbb{R}^3 \to \mathbb{R}^3$ be a linear
+   transformation.  Let $B = ((1,0,0),(1,1,0),(1,1,1))$ be a basis in
+   $\mathbb{R}^3$.  Then $T$ with respect to the basis $B$ is given by
+   #+HEADER: :exports results
+   #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+   #+BEGIN_SRC latex
+     \begin{align*}
+       [T]_B = \begin{bmatrix}
+         a     & 1 - 1 & 0 \\
+         a     & 2a    & 2a + 2 \\
+         a + 1 & a + 1 & 2a + 2
+       \end{bmatrix} \;.
+     \end{align*}
+   #+END_SRC
+   Also, $(2, 2, 2) \in \ker T$.
+   1. Find $a$ and compute $T(x,y,z)$ for any $(x,y,z) \in \mathbb{R}^3$.
+   2. Find the matrix representing $T$ with respect to standard basis.
+   3. Find basis for $\image T$ and $\ker T$.
+
+*** Answer 8
+
+*** Answer 9
+
+*** Answer 10
+
+** Problem 5
+   Let $T:\mathbb{R}^2 \to \mathbb{R}^2$ be a linear transformation given by
+   $T(x,y) = (x+2y,y)$
+   1. Find the basis $B$ of $\mathbb{R}^2$ s.t.
+      #+HEADER: :exports results
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
+        \begin{align*}
+          [T]_B = \begin{bmatrix}
+            1 & 0 \\
+            2 & 1
+          \end{bmatrix} \;.
+        \end{align*}
+      #+END_SRC
+   2. Prove that 
+      #+HEADER: :exports results
+      #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+      #+BEGIN_SRC latex
+        \begin{align*}
+          \begin{bmatrix}
+            1 & 0 \\
+            2 & 1
+          \end{bmatrix} \sim
+          \begin{bmatrix}
+            1 & 2 \\
+            0 & 1
+          \end{bmatrix}
+        \end{align*}
+      #+END_SRC
+
+*** Answer 11
+
+*** Answer 12
+
+** Problem 6
+   Let $a, b, c \in \mathbb{R}$, prove that $A \sim B \sim C$.
+   #+HEADER: :exports results
+   #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+   #+BEGIN_SRC latex
+     \begin{align*}
+       A = \begin{bmatrix}
+         b & c & a \\
+         c & a & b \\
+         a & b & c
+       \end{bmatrix},
+       B = \begin{bmatrix}
+         c & a & b \\
+         a & b & c \\
+         b & c & a
+       \end{bmatrix},
+       C = \begin{bmatrix}
+         a & b & c \\
+         b & c & a \\
+         c & a & b
+       \end{bmatrix}\;.
+     \end{align*}
+   #+END_SRC
+
+*** Answer 13

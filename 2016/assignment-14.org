@@ -158,7 +158,7 @@
     independent.  Span of $W$ contains linearly dependent vectors, $t$ is a
     multiple of $z$ and both of them are multiples of linear combination of $x$
     and $y$, hence its basis has only two vectors, for example $\{(1,0,0,0),
-    (0,1,-1,2)\}$.  We can find the basis of $U + W$ by adjoining both basis
+    (0,1,-1,2)\}$.  We can find the basis of $U + W$ by adjoining both bases
     and performing Gaussian elimination:
     #+HEADER: :exports results
     #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
@@ -204,8 +204,69 @@
     Which is the standard basis for $\mathbb{R}^4$.
 
 *** Answer 6
+    A generic vector $\vec{v} \in U \cap W$ must be representable as $\vec{v} =
+    a(1,0,1,1) + b(0,1,0,-1) + c(1,0,1,0)$ and $\vec{v} = d(1,0,0,0) +
+    e(0,1,-1,2)$.  Equating both parts gives: $a(1,0,1,1) + b(0,1,0,-1) +
+    c(1,0,1,0) - d(1,0,0,0) - e(0,1,-1,2) = 0$.  Solving for $(a, b, c, d, e)$
+    will give us the kernel space of $U \cap W$
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \begin{bmatrix}
+          1 & 0  & 1 & -1 & 0 \\
+          0 & 1  & 0 & 0  & -1 \\ 
+          1 & 0  & 1 & 0  & 1 \\
+          1 & -1 & 0 & 0  & -2 
+        \end{bmatrix} \sim
+        \begin{bmatrix}
+          1 & 0  & 1  & -1 & 0 \\
+          0 & 1  & 0  & 0  & -1 \\ 
+          0 & 0  & 0  & 1  & 1 \\
+          0 & -1 & -1 & 1  & -2 
+        \end{bmatrix} \sim
+        \begin{bmatrix}
+          1 & 0 & 0  & 0 & -3 \\
+          0 & 1 & 0  & 0  & -1 \\ 
+          0 & 0 & -1 & 0  & -4 \\ 
+          0 & 0 & 0  & 1  & 1
+        \end{bmatrix}
+      \end{align*}
+    #+END_SRC
+    Since the only column that doesn't have a pivot element is the last one, the
+    basis contains just one vector.  That is any solution to $a(1,0,1,1) +
+    b(0,1,0,-1) + c(1,0,1,0) - d(1,0,0,0) - e(0,1,-1,2) = 0$ will give us the
+    basis of $U \cap W$.
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        3(1,0,1,1) + 1(0,1,0,-1) - 4(1,0,1,0) + 1(1,0,0,0) - 1(0,1,-1,2) = 0 \\
+        \vec{v} = 3(1,0,1,1) + 1(0,1,0,-1) - 4(1,0,1,0) = \\
+        (3,0,3,3) + (0,1,0,-1) - (4,0,4,0) = (3-4,1,3-4,3-1) = (-1,1,-1,2)
+      \end{align*}
+    #+END_SRC
+    Hence, the basis of $U \cap W = \{(-1,1,-1,2)\}$.
 
 *** Answer 7
+    One way to find such subspace of $\mathbb{R}^4$ we can simply complete the
+    two vectors of the basis of $U$ with two vectors from the standard basis to
+    form an invertible matrix like so:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \begin{bmatrix}
+          1 & 0 & 0 & 0 \\
+          0 & 1 & -1 & 2 \\ 
+          0 & 0 & 1 & 0 \\
+          0 & 0 & 0 & 1 
+        \end{bmatrix}
+      \end{align*}
+    #+END_SRC
+    This is an upper-triangular matrix, therefor invertible, therefore its row
+    space spans $\mathbb{R}^4$.  Thus $U \oplus \{(0,0,1,0),(0,0,0,1)\} =
+    \mathbb{R}^4$.
 
 ** Problem 3
    Let $\vec{v}_1, \vec{v}_2, \dots, \vec{v}_k$ and $\vec{w}$ be vectors in
@@ -362,11 +423,217 @@
      \end{align*}
    #+END_SRC
    1. Write the matrix of change of basis from $B$ to $C$ and its inverse.
-   2. Compute the coordinate vector $[w]_B$ where $\vec{w} = (-5,8,-5)$.
-   3. Similarly, compute $[w]_C$.
+   2. Compute the coordinate vector $[\vec{w}]_B$ where $\vec{w} = (-5,8,-5)$.
+   3. Similarly, compute $[\vec{w}]_C$.
 
 *** Answer 13
+    The change of basis matrix from $B$ to $C$ can be found as follow:
+    1. Undo the transformation from the standard basis to basis $B$ by
+       multiplying the coordinates vector by $B^{-1}$.
+    2. Multiply by $C$ to perform transformation.
+    3. Multiply by $B$ to represent the resulting coordinates with respect to
+       $B$.
+       
+    Or, in other words, $T_{B\to C} = C^{-1}BC$:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \begin{bmatrix}
+          3  & 1  & -1 \\
+          1  & 1  & 0 \\
+          -5 & -3 & 2
+        \end{bmatrix}^{-1} \times
+        \begin{bmatrix}
+          2 & 2  & 1 \\
+          1 & -1 & 2 \\
+          1 & 1  & 1
+        \end{bmatrix} \times
+        \begin{bmatrix}
+          3  & 1  & -1 \\
+          1  & 1  & 0 \\
+          -5 & -3 & 2
+        \end{bmatrix} = \\
+        \begin{bmatrix}
+          3  & 1  & -1 \\
+          1  & 1  & 0 \\
+          -5 & -3 & 2
+        \end{bmatrix}^{-1} \times
+        \begin{bmatrix}
+          6 + 1 - 1 & 6 - 1 - 1 & 3 + 2 - 1 \\
+          2 + 1 + 0 & 2 - 1 + 0 & 1 + 2 + 0 \\
+          -10 - 3 + 2 & -10 + 3 + 2 & -5 - 6 + 3
+        \end{bmatrix} = \\
+        \begin{bmatrix}
+          3  & 1  & -1 \\
+          1  & 1  & 0 \\
+          -5 & -3 & 2
+        \end{bmatrix}^{-1} \times
+        \begin{bmatrix}
+          6 & 4 & 4 \\
+          3 & 1 & 3 \\
+          -11 & -5 & -8
+        \end{bmatrix}
+      \end{align*}
+    #+END_SRC
+    Now, let's find $C^{-1}$:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \begin{bmatrix}
+          3  & 1  & -1 & 1 & 0 & 0 \\
+          1  & 1  & 0  & 0 & 1 & 0 \\
+          -5 & -3 & 2  & 0 & 0 & 1
+        \end{bmatrix} \sim
+        \begin{bmatrix}
+          1 & 1  & 0  & 0 & 1  & 0 \\
+          0 & -2 & -1 & 1 & -3 & 0 \\
+          0 & 2  & 2  & 0 & 5  & 1
+        \end{bmatrix} \sim \\
+        \begin{bmatrix}
+          1 & 1 & 0           & 0            & 1           & 0 \\
+          0 & 1 & \frac{1}{2} & -\frac{1}{2} & \frac{3}{2} & 0 \\
+          0 & 0 & 1           & 1            & 2           & 1
+        \end{bmatrix} \sim 
+        \begin{bmatrix}
+          1 & 0 & 0 & 1  & -\frac{1}{2} & \frac{1}{2} \\
+          0 & 1 & 0 & -1 & \frac{1}{2}  & -\frac{1}{2} \\
+          0 & 0 & 1 & 1  & 2            & 1
+        \end{bmatrix}
+      \end{align*}
+    #+END_SRC
+    finally:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \begin{bmatrix}
+          3  & 1  & -1 \\
+          1  & 1  & 0 \\
+          -5 & -3 & 2
+        \end{bmatrix}^{-1} \times
+        \begin{bmatrix}
+          6   & 4  & 4 \\
+          3   & 1  & 3 \\
+          -11 & -5 & -8
+        \end{bmatrix} = 
+        \begin{bmatrix}
+          1  & -\frac{1}{2} & \frac{1}{2} \\
+          -1 & \frac{1}{2}  & -\frac{1}{2} \\
+          1  & 2            & 1
+        \end{bmatrix} \times
+        \begin{bmatrix}
+          6   & 4  & 4 \\
+          3   & 1  & 3 \\
+          -11 & -5 & -8
+        \end{bmatrix} = \\
+        \begin{bmatrix}
+          6 - \frac{3}{2} - \frac{11}{2}  & 4 - \frac{1}{2} - \frac{5}{2}  & 4 - \frac{3}{2} - 4 \\
+          -6 + \frac{3}{2} + \frac{11}{2} & -4 + \frac{1}{2} + \frac{5}{2} & -4 + \frac{3}{2} + 4 \\
+          6 + 6 - 11                      & 4 + 2 - 5                      & 4 + 6 - 8
+        \end{bmatrix} = 
+        \begin{bmatrix}
+          -1 & 1 & \frac{3}{2} \\
+          1  & 1 & \frac{3}{2} \\
+          1  & 1 & 2
+        \end{bmatrix}
+      \end{align*}
+    #+END_SRC
 
 *** Answer 14
+    $[\vec{w}]_B$ is just $B^{-1}w$.  First, compute $B^{-1}$:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \begin{bmatrix}
+          2 & 2  & 1 & 1 & 0 & 0 \\
+          1 & -1 & 2 & 0 & 1 & 0 \\
+          1 & 1  & 1 & 0 & 0 & 1
+        \end{bmatrix} \sim
+        \begin{bmatrix}
+          1 & 1  & 1  & 0 & 0 & 1 \\
+          0 & -2 & 1  & 0 & 1 & -1 \\
+          0 & 0  & -1 & 1 & 0 & -2
+        \end{bmatrix} \sim
+        \begin{bmatrix}
+          1 & 1 & 1            & 0  & 0            & 1 \\
+          0 & 1 & -\frac{1}{2} & 0  & -\frac{1}{2} & \frac{1}{2} \\
+          0 & 0 & 1            & -1 & 0            & 2
+        \end{bmatrix} \sim \\
+        \begin{bmatrix}
+          1 & 1 & 0 & 1            & 0            & -1 \\
+          0 & 1 & 0 & -\frac{1}{2} & -\frac{1}{2} & \frac{3}{2} \\
+          0 & 0 & 1 & -1           & 0            & 2
+        \end{bmatrix} \sim
+        \begin{bmatrix}
+          1 & 0 & 0 & \frac{3}{2}  & \frac{1}{2}  & -\frac{5}{2} \\
+          0 & 1 & 0 & -\frac{1}{2} & -\frac{1}{2} & \frac{3}{2} \\
+          0 & 0 & 1 & -1           & 0            & 2
+        \end{bmatrix} \\
+        \textit{Hence }B^{-1} = 
+        \begin{bmatrix}
+          \frac{3}{2}  & \frac{1}{2}  & -\frac{5}{2} \\
+          -\frac{1}{2} & -\frac{1}{2} & \frac{3}{2} \\
+          -1           & 0            & 2
+        \end{bmatrix}
+      \end{align*}
+    #+END_SRC
+    Thus, $[\vec{w}]_B$ can be computed via:
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \begin{bmatrix}
+          \frac{3}{2}  & \frac{1}{2}  & -\frac{5}{2} \\
+          -\frac{1}{2} & -\frac{1}{2} & \frac{3}{2} \\
+          -1           & 0            & 2
+        \end{bmatrix} \times 
+        \begin{bmatrix}
+          -5 \\
+          8 \\
+          -5
+        \end{bmatrix} =
+        \begin{bmatrix}
+          -\frac{15}{2} + 4 + \frac{25}{2} \\
+          \frac{5}{2} - 4 - \frac{15}{2} \\
+          5 - 10
+        \end{bmatrix} = 
+        \begin{bmatrix}
+          9 \\
+          1 \\
+          -5
+        \end{bmatrix}
+      \end{align*}
+    #+END_SRC
 
 *** Answer 15
+    Similarly, $[\vec{w}]_C$ is just $C^{-1}w$ (we've already computed $C^{-1}$
+    in the previous answer.)
+    #+HEADER: :exports results
+    #+HEADER: :results (by-backend (pdf "latex") (t "raw"))
+    #+BEGIN_SRC latex
+      \begin{align*}
+        \begin{bmatrix}
+          1  & -\frac{1}{2} & \frac{1}{2} \\
+          -1 & \frac{1}{2}  & -\frac{1}{2} \\
+          1  & 2            & 1
+        \end{bmatrix} \times
+        \begin{bmatrix}
+          -5 \\
+          8 \\
+          -5
+        \end{bmatrix} =
+        \begin{bmatrix}
+          -5 - 4 - \frac{5}{2} \\
+          5  + 4 + \frac{5}{2} \\
+          -5 + 16 - 5
+        \end{bmatrix} =
+        \begin{bmatrix}
+          -\frac{23}{2} \\
+          \frac{23}{2} \\
+          6
+        \end{bmatrix}
+      \end{align*}
+    #+END_SRC
